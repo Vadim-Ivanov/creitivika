@@ -1,0 +1,33 @@
+speed=5
+speed2=1
+def setup():
+    size(600,600)
+    fill(255,255,0)
+    frameRate(24)
+def draw():
+    global speed,speed2
+    background(255,255,255)
+    translate(300,300)
+    ellipse(0,0,50,50)
+    rotate(radians(speed2))
+    translate(-100,200)
+    ellipse(0,0,50,50)
+    rotate(radians(speed))
+    rotate(radians(360/8))
+    triangle(30,10,30,-10,60,0)
+    rotate(radians(360/8))
+    triangle(30,10,30,-10,60,0)
+    rotate(radians(360/8))
+    triangle(30,10,30,-10,60,0)
+    rotate(radians(360/8))
+    triangle(30,10,30,-10,60,0)
+    rotate(radians(360/8))
+    triangle(30,10,30,-10,60,0)
+    rotate(radians(360/8))
+    triangle(30,10,30,-10,60,0)
+    rotate(radians(360/8))
+    triangle(30,10,30,-10,60,0)
+    rotate(radians(360/8))
+    triangle(30,10,30,-10,60,0)
+    speed=speed+5
+    speed2=speed2+2
