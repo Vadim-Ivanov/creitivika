@@ -1,0 +1,16 @@
+x=0
+napr=10
+def setup():
+    size(600,400)
+    rectMode(CENTER)
+    frameRate(24)
+    fill(255,255,255)
+def draw(): 
+    background(0,0,0)
+    global x,napr
+    if(x>289):
+        translate(x,0)
+        napr=180-napr
+        rotate(radians(napr))
+    ellipse(x,0,20,20)
+    x=x+10
