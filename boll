@@ -1,0 +1,14 @@
+y=200
+speed=5
+x=speed
+def setup():
+    size(600,400)
+def draw(): 
+    background(0,0,0)
+    global x,y
+    ellipse(300,y,50,50)
+    y=y+x
+    if(y > 374):
+        x=0-speed
+    if(y < 26):
+        x=speed
