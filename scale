@@ -1,0 +1,15 @@
+x = 0
+rad = 1
+s = 0.5
+def setup():    
+    size(600,600)
+def draw():
+    global rad,x,s
+    translate(300,300)
+    scale(s)
+    rotate(radians(rad))
+    rect(x, x, 50, 50)
+    rad=rad+1
+    s=s+random(-0.1,0.1)
+    if(s > 5):
+        s = 0.5
