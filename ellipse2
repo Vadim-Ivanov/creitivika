@@ -1,0 +1,25 @@
+r=20
+R=random(0,255)
+G=random(0,255)
+B=random(0,255)
+def setup():
+    size(600,400)
+    fill(R,G,B)
+    background(0,0,0)
+    ellipse(300,200,r,r)
+def draw():
+    if mousePressed:
+        global r,R,G,B
+        background(0,0,0)
+        R=random(0,255)
+        G=random(0,255) 
+        B=random(0,255)
+        fill(R,G,B)
+        if mouseButton == LEFT:
+            global r
+            ellipse(300,200,r,r)
+            r+=1
+        if mouseButton == RIGHT:
+            global r
+            ellipse(300,200,r,r)
+            r-=1
