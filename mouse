@@ -1,0 +1,27 @@
+x=0
+y=0
+speedx=10
+speedy=15
+dx=speedx
+dy=speedy
+def setup():
+    size(600,400)
+    frameRate(25)
+    fill(255,255,255)
+    background(0,0,0)
+def draw(): 
+    if mousePressed:
+        if mouseButton == LEFT:
+            background(0,0,0)
+            global x,y,dx,dy
+            ellipse(x,y,40,40)
+            x+=dx
+            y+=dy
+            if(x>579):
+                dx=-speedx
+            if(x<21):
+                dx=speedx
+            if(y>379):
+                dy=-speedy
+            if(y<21):
+                dy=speedy
