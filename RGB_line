@@ -1,0 +1,23 @@
+x=0
+y=0
+R=random(0,255)
+G=random(0,255)
+B=random(0,255)
+def setup():
+    size(600,400)
+    fill(R,G,B)
+    background(0,0,0)
+def draw():
+    global R,G,B
+    R=random(0,255)
+    G=random(0,255) 
+    B=random(0,255)
+    stroke(R,G,B)
+    if mousePressed:
+        if mouseButton == LEFT:
+            global x,y
+            x = mouseX
+            y = mouseY
+        if mouseButton == RIGHT:
+            background(0,0,0)
+    line(x,y,pmouseX,pmouseY)
