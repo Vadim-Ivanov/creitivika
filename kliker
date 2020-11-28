@@ -5,13 +5,14 @@ def setup():
     rectMode(CENTER)
     fill(255,0,0)
 def draw():
+    global x
     background(255,255,255)
     rect(300,200,40,40)
     text(x,100,100)
-    if mousePressed:
-        if mouseX > 280:
-            if mouseX < 320:
-                if mouseY > 180:
-                    if mouseY < 220:
-                        global x
-                        x+=1
+def mouseClicked():
+    if mouseX > 280:
+        if mouseX < 320:
+            if mouseY > 180:
+                if mouseY < 220:
+                    global x
+                    x+=1
