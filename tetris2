@@ -55,23 +55,19 @@ def draw():
             y=y+speedY
     if p == 0:
         ellipse(200,400,20,20)
-    if x >= 1175:
-        dx = -speedX+1
-    if x <= 25:
-        dx = -speedX+1
-    if y >= 675:
-        dy = -speedY+1
-    if y <= 25:
-        dy = -speedY+1
-    text(lx, 20, 40)
-    text(ly, 20, 80)
+    if x >= 1189:
+        if dx > 0:
+            dx = -speedX*0.9
+    if x <= 11:
+        if dx < 0:
+            dx = -speedX*0.9
+    if y >= 689:
+        if dy > 0:
+            dy = -speedY*0.9
+    if y <= 11:
+        if dy < 0:
+            dy = -speedY*0.9
     text(dx, 20, 120)
     text(dy, 20, 160)
-    text(x, 20, 200)
-    text(y, 20, 240)
-    text(p, 20, 280)
-    text(k, 20, 320)
-    text(mouseX, 20, 360)
-    text(mouseY, 20, 400)
     text(speedY, 20, 440)
     text(speedX, 20, 480)
