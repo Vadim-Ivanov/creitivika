@@ -1,7 +1,7 @@
 k=0
 x=200
 y=400
-dx=10
+dx=0
 dy=0
 lx=0
 ly=0
@@ -67,7 +67,13 @@ def draw():
     if y <= 11:
         if dy < 0:
             dy = -speedY*0.9
-    text(dx, 20, 120)
-    text(dy, 20, 160)
-    text(speedY, 20, 440)
-    text(speedX, 20, 480)
+    if speedX < 0.002:
+        if speedX > -0.002:
+            speedX = 0
+    if speedY < 0.002:
+        if speedY > -0.002:
+            speedY = 0
+    text("Speed y:", 20, 40)
+    text(speedY, 250, 40)
+    text("Speed x:", 20, 80)
+    text(speedX, 250, 80)
