@@ -1,7 +1,7 @@
 k=0
 x=200
 y=400
-dx=0
+dx=10
 dy=0
 lx=0
 ly=0
@@ -17,34 +17,40 @@ def setup():
     textSize(50)
     rectMode(CENTER)
 def mouseDragged():
-    global x,y,dx,dy,mouse,Xmouse,Ymouse,lx,ly,p
+    global p
     if mouseX > 190:
         if mouseX < 210:
             if mouseY > 390:
                 if mouseY < 410:
                     p = 1
+def mouseReleased():
+    global x,y,dx,dy,mouse,Xmouse,Ymouse,lx,ly,p
     if p == 1:                
         Xmouse=mouseX
         Ymouse=mouseY
         lx=200-Xmouse
         ly=400-Ymouse
-        dx=lx*1/10
-        dy=ly*1/10
+        dx=lx*1/100
+        dy=ly*1/100
         x=x+dx
         y=y+dy
+    if p == 1:
+        if mousePressed == 0:
+            pass
+        else:
+            ellipse(x,y,20,20) 
+
 def draw():
     global x,y,dx,dy,mouse,Xmouse,Ymouse,lx,ly,p
     background(0,0,0)
     if p == 1:
-        if mousePressed == True:
-            pass
-        else:
-            ellipse(x,y,20,20) 
+        ellipse(x,y,20,20)
+    if p == 1:
+        dy=dy+0.1
+        x=x+dx
+        y=y+dy
     if p == 0:
-        ellipse(200,400,20,20) 
-    dy=dy-1
-    x=x+dx
-    y=y+dy
+        ellipse(200,400,20,20)
     text(lx, 20, 40)
     text(ly, 20, 80)
     text(dx, 20, 120)
