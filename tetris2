@@ -1,24 +1,77 @@
-x=0
-y=0
-speedx=10
-speedy=15
-dx=speedx
-dy=speedy
+k=0
+x=200
+y=400
+dx=10
+dy=0
+lx=0
+ly=0
+speedX=0
+speedY=0
+Xmouse=0
+Ymouse=0
+mouse=0
+p=0
 def setup():
-    size(600,400)
+    size(1200,700)
     frameRate(24)
     fill(255,255,255)
     background(0,0,0)
-def draw(): 
-    global x,y,dx,dy
-    ellipse(x,y,40,40)
-    x+=dx
-    y+=dy
-    if(x>579):
-        dx=-speedx
-    if(x<21):
-        dx=speedx
-    if(y>379):
-        dy=-speedy
-    if(y<21):
-        dy=speedy
+    textSize(50)
+    rectMode(CENTER)
+def mouseDragged():
+    global p
+    if mouseX > 190:
+        if mouseX < 210:
+            if mouseY > 390:
+                if mouseY < 410:
+                    p = 1
+def mouseReleased():
+    global x,y,dx,dy,mouse,Xmouse,Ymouse,lx,ly,p,speedX,speedY
+    if p == 1:                
+        Xmouse=mouseX
+        Ymouse=mouseY
+        lx=200-Xmouse
+        ly=400-Ymouse
+        dx=lx*1/10
+        dy=ly*1/5
+    if p == 1:
+        if mousePressed == 1:
+            pass
+        else:
+            ellipse(x,y,20,20) 
+
+def draw():
+    global x,y,dx,dy,mouse,Xmouse,Ymouse,lx,ly,p,speedX,speedY
+    speedX = dx
+    speedY = dy
+    background(0,0,0)
+    if p == 1:
+        if mousePressed == 1:
+            ellipse(200,400,20,20)
+        else:
+            ellipse(x,y,20,20)
+            dy=dy+0.3
+            x=x+speedX
+            y=y+speedY
+    if p == 0:
+        ellipse(200,400,20,20)
+    if x >= 1175:
+        dx = -speedX+1
+    if x <= 25:
+        dx = -speedX+1
+    if y >= 675:
+        dy = -speedY+1
+    if y <= 25:
+        dy = -speedY+1
+    text(lx, 20, 40)
+    text(ly, 20, 80)
+    text(dx, 20, 120)
+    text(dy, 20, 160)
+    text(x, 20, 200)
+    text(y, 20, 240)
+    text(p, 20, 280)
+    text(k, 20, 320)
+    text(mouseX, 20, 360)
+    text(mouseY, 20, 400)
+    text(speedY, 20, 440)
+    text(speedX, 20, 480)
