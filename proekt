@@ -1,0 +1,57 @@
+k=0
+x=200
+y=400
+dx=0
+dy=0
+lx=0
+ly=0
+Xmouse=0
+Ymouse=0
+mouse=0
+p=0
+def setup():
+    size(1000,700)
+    frameRate(24)
+    fill(255,255,255)
+    background(0,0,0)
+    textSize(50)
+    rectMode(CENTER)
+def mouseDragged():
+    global x,y,dx,dy,mouse,Xmouse,Ymouse,lx,ly,p
+    if mouseX > 190:
+        if mouseX < 210:
+            if mouseY > 390:
+                if mouseY < 410:
+                    p = 1
+    if p == 1:                
+        Xmouse=mouseX
+        Ymouse=mouseY
+        lx=200-Xmouse
+        ly=400-Ymouse
+        dx=lx*1/10
+        dy=ly*1/10
+        x=x+dx
+        y=y+dy
+def draw():
+    global x,y,dx,dy,mouse,Xmouse,Ymouse,lx,ly,p
+    background(0,0,0)
+    if p == 1:
+        if mousePressed == True:
+            pass
+        else:
+            ellipse(x,y,20,20) 
+    if p == 0:
+        ellipse(200,400,20,20) 
+    dy=dy-1
+    x=x+dx
+    y=y+dy
+    text(lx, 20, 40)
+    text(ly, 20, 80)
+    text(dx, 20, 120)
+    text(dy, 20, 160)
+    text(x, 20, 200)
+    text(y, 20, 240)
+    text(p, 20, 280)
+    text(k, 20, 320)
+    text(mouseX, 20, 360)
+    text(mouseY, 20, 400)
