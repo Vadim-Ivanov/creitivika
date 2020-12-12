@@ -20,41 +20,38 @@ def setup():
     size(1200,700)
     frameRate(24)
     fill(255,255,255)
-    background(0,0,0)
+    background(30,255,10)
     textSize(50)
-    rectMode(CENTER)
+    noFill()
     kolsoX=random(500,1000)
     kolsoY=random(200,400)
 def draw():
     global x,y,dx,dy,mouse,Xmouse,Ymouse,lx,ly,p,speedX,speedY,start,kolsoX,kolsoY,score,zabil
     speedX = dx
     speedY = dy
-    background(0,0,0)
-    if y > kolsoY - 2 and y < kolsoY + 2 and x > kolsoX - 40 and x < kolsoX + 40 and dy > 0:
+    background(30,255,10)
+    fill(100,100,255)
+    rect(-5,0,1205,300)
+    if y > kolsoY - 5 and y < kolsoY + 5 and x > kolsoX - 55 and x < kolsoX + 55 and dy > 0:
         score+=1
         kolsoX=random(500,1000)
         kolsoY=random(200,400)
         zabil=1
     else:
-        fill(255,255,255)
+        fill(255,0,0)
+        rect(kolsoX+30,kolsoY,10,200)
+        fill(50,250,250)
+        quad(kolsoX, kolsoY, kolsoX+70, kolsoY+30,kolsoX+70, kolsoY-70, kolsoX, kolsoY-100)
+        fill(30,70,255)
         ellipse(kolsoX,kolsoY,100,40)
         fill(0,0,0)
         ellipse(kolsoX,kolsoY,90,30)
-        fill(255,255,255)
-    if (x > kolsoX - 60) and (x < kolsoX - 55) and (y < kolsoY + 30) and (y > kolsoY - 30):
+    if (x < kolsoX + 60) and (x > kolsoX + 50) and (y < kolsoY + 10) and (y > kolsoY - 70):
         if dx > 0:
-            dx = -speedX*0.7
-    if (x < kolsoX - 60) and (x > kolsoX - 55) and (y < kolsoY + 30) and (y > kolsoY - 30):
-        if dx < 0:
-            dx = speedX*0.7
-    if (x > kolsoX + 60) and (x < kolsoX + 55) and (y < kolsoY + 30) and (y > kolsoY - 30):
-        if dx > 0:
-            dx = -speedX*0.7
-    if (x > kolsoX + 60) and (x < kolsoX + 55) and (y < kolsoY + 30) and (y > kolsoY - 30):
-        if dx < 0:
-            dx = speedX*0.7
+            dx = -speedX*0.5
     if p == 1:
         if mousePressed == 1 and start == 0:
+            fill(255,0,0)
             ellipse(150,550,20,20)
             x=150
             y=550
@@ -62,11 +59,13 @@ def draw():
             dy=0
         else:
             start=1
+            fill(255,0,0)
             ellipse(x,y,20,20)
             dy=dy+0.3
             x=x+speedX
             y=y+speedY
     if p == 0:
+        fill(255,0,0)
         ellipse(150,550,20,20)
     if x >= 1189:
         if dx > 0:
@@ -94,18 +93,9 @@ def draw():
         start=0
         p=0
         zabil=0
-    text("Speed y:", 20, 40)
-    text(speedY, 250, 40)
-    text("Speed x:", 20, 80)
-    text(speedX, 250, 80)
-    text("start:", 20, 125)
-    text(start, 175, 125)
-    text("X:", 20, 170)
-    text(kolsoX, 75, 170)
-    text("Y:", 20, 210)
-    text(kolsoY, 75, 210)
-    text("score:", 20, 255)
-    text(score, 175, 255)
+    fill(0,0,0)
+    text("score:", 20, 40)
+    text(score, 175, 40)
 
 def mouseDragged():
     global start,kolsoX,kolsoY
@@ -131,4 +121,5 @@ def mouseReleased():
             if mousePressed == 1:
                 pass
             else:
-                ellipse(x,y,20,20)  
+                fill(255,0,0)
+                ellipse(x,y,20,20)
