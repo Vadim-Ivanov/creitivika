@@ -21,7 +21,6 @@ def setup():
     frameRate(24)
     background(30,255,10)
     textSize(50)
-    noFill()
     kolsoX=random(500,1000)
     kolsoY=random(200,400)
 def draw():
@@ -36,6 +35,13 @@ def draw():
         kolsoX=random(500,1000)
         kolsoY=random(200,400)
         zabil=1
+        x=150
+        y=550
+        dx=0
+        dy=0
+        start=0
+        p=0
+        zabil=0
     else:
         fill(255,0,0)
         rect(kolsoX+30,kolsoY,10,200)
@@ -116,9 +122,6 @@ def mouseReleased():
             ly=550-Ymouse
             dx=lx*1/10
             dy=ly*1/5
-        if p == 1:
-            if mousePressed == 1:
-                pass
-            else:
+            if mousePressed == 0:
                 fill(255,0,0)
                 ellipse(x,y,20,20)
