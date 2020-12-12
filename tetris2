@@ -19,7 +19,6 @@ def setup():
     global kolsoX,kolsoY
     size(1200,700)
     frameRate(24)
-    fill(255,255,255)
     background(30,255,10)
     textSize(50)
     noFill()
@@ -69,16 +68,16 @@ def draw():
         ellipse(150,550,20,20)
     if x >= 1189:
         if dx > 0:
-            dx = -speedX*0.1
+            dx = -speedX*0.7
     if x <= 11:
         if dx < 0:
-            dx = -speedX*0.1
+            dx = -speedX*0.7
     if y >= 689:
         if dy > 0:
-            dy = -speedY*0.1
+            dy = -speedY*0.7
     if y <= 11:
         if dy < 0:
-            dy = -speedY*0.1
+            dy = -speedY*0.7
     if speedX < 0.002:
         if speedX > -0.002:
             speedX = 0
