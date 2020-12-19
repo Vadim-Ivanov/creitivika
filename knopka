@@ -1,0 +1,80 @@
+x=500
+y=20
+x2=500
+y2=90
+x3=500
+y3=160
+x4=500
+y4=230
+Nx=70
+Ny=50
+r=1
+R=random(0,255)
+G=random(0,255)
+B=random(0,255)
+knopka=0
+knopka=0
+knopka=0
+knopka=0
+knopka=0
+def setup():
+    size(600,400)
+    background(255,255,255)
+    textSize(50)
+def draw():
+    global x,y,Nx,Ny,R,G,B,r
+    strokeWeight(1)
+    fill(255,255,255)
+    stroke(255,255,255)
+    rect(450,0,150,400)
+    rect(0,300,450,100)
+    fill(255,0,0)
+    stroke(255,0,0)
+    rect(x,y,Nx,Ny)
+    fill(R,G,B)
+    stroke(R,G,B)
+    rect(x2,y2,Nx,Ny)
+    fill(255,255,0)
+    stroke(255,255,0)
+    rect(x3,y3,Nx/2,Ny)
+    fill(30,240,10)
+    stroke(30,240,10)
+    rect(x3+Nx/2,y3,Nx/2,Ny)
+    fill(0,0,0)
+    stroke(0,0,0)
+    rect(x4,y4,Nx,Ny)
+    strokeWeight(r)
+    if mousePressed == 1:
+        stroke(R,G,B)
+        if
+        if mouseX>=0 and mouseX<=450 and mouseY>=0 and mouseY<=300:
+            line(pmouseX,pmouseY,mouseX,mouseY)
+        if mouseX>450 and mouseY<300:
+            line(450,pmouseY,450,mouseY)
+        if mouseY>300 and mouseX<450:
+            line(pmouseX,300,mouseX,300)
+    if r>10:
+        r=10
+    if r<1:
+        r=1
+    fill(0,0,0)
+    text(r,500,205)
+def mouseClicked():
+    global x,y,Nx,Ny,R,G,B,r
+    if mouseX>=x and mouseX<=x+Nx and mouseY>=y and mouseY<=y+Ny:
+        background(255,255,255)
+    if mouseX>=x2 and mouseX<=x2+Nx and mouseY>=y2 and mouseY<=y2+Ny:
+        R=random(0,255)
+        G=random(0,255)
+        B=random(0,255)
+        fill(R,G,B)
+        stroke(R,G,B)
+    if mouseX>=x3 and mouseX<=x3+Nx/2 and mouseY>=y3 and mouseY<=y3+Ny:
+        r-=1
+    if mouseX>=x3+Nx/2 and mouseX<=x3+Nx and mouseY>=y3 and mouseY<=y3+Ny:
+        r+=1
+    if mouseX>=x4 and mouseX<=x4+Nx and mouseY>=y4 and mouseY<=y4+Ny:
+        fill(255,255,255)
+        stroke(255,255,255)
+        rect(0,0,450,300)
+    
