@@ -23,7 +23,7 @@ def draw():
         ret = floor(random(1,4))
         radius=random(0,360)
         push()
-        fill(random(0,300),random(0,100),random(0,100))
+        fill(random(0,300),random(0,100),random(50,100))
         translate(x,y)
         rotate(radians(radius))
         if ret == 1:
@@ -42,3 +42,5 @@ def draw():
     pop()
     fill(43, 75, 51)
     rect(285,350,30,50)
+    fill(248, 99, 99)
+    text("Happy New Year!",10,30)
