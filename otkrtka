@@ -1,3 +1,8 @@
+ret=0
+x=0
+y=0
+r=0
+radius=0
 def setup():
     size(600,400)
     noStroke()
@@ -5,8 +10,25 @@ def setup():
     frameRate(1)
     colorMode(HSB,360,100,100)
     background(0,0,100)
+    textSize(30)
 def draw():
-    background(0,0,100)
+    global x,y,r,ret,radius
     for a in range(floor(random(5,10))):
+        global x,y,r,ret,radius
+        background(0,0,100)
+        x = random(0,600)
+        y = random(0,400)
+        r = random(10,50)
+        ret = floor(random(1,4))
+        radius=random(0,360)
+        push()
         fill(random(0,300),random(0,100),random(0,100))
-        circle(random(0,600),random(0,400),random(10,50))
+        translate(x,y)
+        rotate(radians(radius))
+        if ret == 1:
+            circle(0,0,r)
+        if ret == 2:
+            rect(-r/2,r/2,r,r)
+        if ret == 3:
+            triangle(0,-r/2,-r/2,r/2,r/2,r/2)
+        pop()
