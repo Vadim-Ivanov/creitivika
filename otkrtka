@@ -38,7 +38,8 @@ def draw():
     for i in range(3):
         fill(104, 93, 97)
         triangle(-100,50,100,50,0,-50)
-        translate(0,-70)
+        translate(0,-60)
+        scale(0.80)
     pop()
     fill(43, 75, 51)
     rect(285,350,30,50)
