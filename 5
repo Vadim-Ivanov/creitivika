@@ -1,0 +1,16 @@
+x=8
+y=x/8
+def setup():    
+    size(600,400)
+    background(255,255,255)
+    frameRate(24)
+    rectMode(CENTER)
+    fill(255,200,0)
+def draw():
+    global x,y
+    background(255,255,255)
+    ellipse(300,200,50,50)
+    translate(300,200)
+    for i in range(x):
+        triangle(30,10/y,30,-10/y,60,0)
+        rotate(radians(360/x))
