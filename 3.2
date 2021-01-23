@@ -1,0 +1,17 @@
+x=0
+y=0
+def setup():
+    size(600,400)
+    rectMode(CENTER)
+    background(255,255,255)
+def draw():
+    global x,y,d
+    x=0
+    y=0
+    while x<600:
+        while y<400:
+            stroke(random(0,255))
+            point(x,y)
+            y+=1
+        y=0    
+        x+=1
