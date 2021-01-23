@@ -1,0 +1,12 @@
+x=300
+y=200
+d=400
+def setup():
+    size(x*2,y*2)
+    rectMode(CENTER)
+    background(255,255,255)
+def draw():
+    global x,y,d
+    while d>1:
+        ellipse(x,y,d,d)
+        d-=5
