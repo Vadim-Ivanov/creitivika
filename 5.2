@@ -1,0 +1,23 @@
+speed=5
+x=0
+k=0
+def setup():
+    size(600,600)
+    fill(255,0,0)
+    frameRate(24)
+    noStroke()
+    background(255,255,255)
+def draw():
+    global speed,x,k
+    background(255,255,255)
+    x=0
+    k=0
+    while k<850:
+        push()
+        translate(300,300)
+        rotate(radians(speed))
+        ellipse(x,x,30,30)
+        speed+=2
+        x+=0.2
+        k+=1
+        pop()
