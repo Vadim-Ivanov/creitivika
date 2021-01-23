@@ -1,0 +1,15 @@
+x=0
+y=395
+i=0
+def setup():
+    size(600,400)
+    rectMode(CENTER)
+    background(255,255,255)
+def draw():
+    background(255,255,255)
+    global x,y,i
+    y=395
+    while y>mouseY:
+        fill(random(0,255),random(0,255),random(0,255))
+        rect(mouseX,y,20,10)
+        y-=10
