@@ -1,0 +1,27 @@
+i=600
+j=400
+d=100
+u=30
+w=0
+def setup():
+    global i,j,d,u,w
+    size(i,j)
+    fill(0)
+def draw():
+    background(255,255,255)
+    global i,j,d,u,w
+    translate(i/2,j/2)
+    rotate(radians(w))
+    scale(150/d)
+    for y in range(0,360,u):
+        rotate(radians(u))
+        for x in range(0,480,d):
+            ellipse(x,0,d,d)
+            fill("#E8DB60")
+            ellipse(x,0,100,100)
+            fill(140,110,10)
+            stroke(140,110,10)
+            ellipse(x-20,-10,20,22)
+            ellipse(x+20,-10,20,22)
+            ellipse(x,20,20,28)
+    w+=1
