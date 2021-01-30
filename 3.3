@@ -1,0 +1,8 @@
+def setup():
+    size(600,400)
+    colorMode(HSB, 360,600,400)
+def draw():
+    for y in range(60,380,40):
+        for x in range(140,460,40):
+            fill(200,x,y)
+            ellipse(x,y,40,40)
