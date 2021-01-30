@@ -1,0 +1,19 @@
+i=600
+j=400
+d=20
+u=10
+w=0
+def setup():
+    global i,j,d,u,w
+    size(i,j)
+    fill(0)
+def draw():
+    background(255,255,255)
+    global i,j,d,u,w
+    translate(i/2,j/2)
+    rotate(radians(w))
+    for y in range(0,360,u):
+        rotate(radians(u))
+        for x in range(0,480,d):
+            ellipse(x,0,d,d)
+    w+=1
