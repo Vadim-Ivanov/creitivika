@@ -1,0 +1,13 @@
+sizei=600
+sizej=400
+def setup():
+    global sizei,sizej
+    size(sizei,sizej)
+def draw():
+    for j in range(0,8,1):
+        for i in range(0,8,1):
+            if (i + j) % 2 == 0:
+                fill(0)
+            else:
+                fill(255)
+            rect(i*40,j*40,40,40)
