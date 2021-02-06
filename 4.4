@@ -1,0 +1,12 @@
+x=[[255,0,50],[0,50,150],[250,200,20],[20,250,210],[20,240,30],[230,30,220]]
+def setup():
+    size(600,400)
+    background(255,255,255)
+    fill(255,0,0)
+    textSize(40)
+def draw():
+    global x
+    background(255,255,255)
+    for i in range(len(x)):
+        fill(x[i][0],x[i][1],x[i][2])
+        ellipse(60*(i+1),60,30,30)
