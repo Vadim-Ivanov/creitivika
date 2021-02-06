@@ -14,22 +14,19 @@ def draw():
     background(50)
     fill(255,255,255)
     for i in range(0,10):
-        x.append([floor(random(0,600)),floor(random(5,15))])
+        x.append(floor(random(0,600)))
+        d.append(floor(random(5,15)))
         pos_y.append(floor(random(5,15)))
-        v[i]=(floor(random(5,15)))
-
-
-
-
-    for i in range(0,len(x)):
+        v.append(floor(random(5,15)))
+    for i in range(len(x)-1,0,-1):
         pos_y[i]+=v[i]
         if pos_y[i] > 400:
-            del pos_y[i]
-            del x[i]
-            del v[i]
-            del d[i]
+            pos_y.pop[i]
+            x.pop[i]
+            v.pop[i]
+            d.pop[i]
     for i in range(0,len(x)):
-        ellipse(x[i][0],pos_y[i],x[i][1],x[i][1])
+        ellipse(x[i],pos_y[i],d[i],d[i])
    # fill(100,255,50)
    # triangle(250,350,350,350,300,300)
    # triangle(250,350-40,350,350-40,300,300-40)
