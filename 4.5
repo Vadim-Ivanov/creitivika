@@ -1,0 +1,23 @@
+x=[]
+y=[]
+def setup():
+    size(600,400)
+    background(0)
+    fill(255,255,255)
+    textSize(40)
+    noStroke()
+def draw():
+    global x,y
+    background(50)
+    fill(255,255,255)
+    for i in range(0,100):
+        x.append([floor(random(0,600)),floor(random(5,15))])
+        y.append(floor(random(5,15)))
+        y[i]+=floor(random(5,10))
+        ellipse(x[i][0],y[i],x[i][1],x[i][1])
+        if y[i] > 400:
+             y[i] = 0
+    fill(100,255,50)
+    triangle(250,350,350,350,300,300)
+    triangle(250,350-40,350,350-40,300,300-40)
+    triangle(250,350-80,350,350-80,300,300-80)
