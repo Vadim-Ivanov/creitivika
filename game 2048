@@ -19,11 +19,14 @@ def setup():
     global numbers
     size(dlina,shirina)
     rectMode(CENTER)
+    colorMode(HSB,300,100,100)
 def draw():
-    push()
     translate(100,100)
+    fill()
     for i in range(0,4):
         for j in range(0,4):
             rect(j*200,i*200,200,200)
-    pop()
+    for i in range(0,4):
+        for j in range(0,4):
+            rect(j*200,i*200,200,200)
     
