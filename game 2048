@@ -1,0 +1,29 @@
+dlina=800
+shirina=800
+random_number=0
+the_move_is_made=0
+numbers=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+def come_up_with_a_random_number():
+    global numbers,random_number,the_move_is_made
+    random_number=floor(random(1,15))
+    if numbers[random_number]>0:
+        come_up_with_a_random_number()
+def new_cube():
+    global numbers,random_number,the_move_is_made
+    come_up_with_a_random_number()
+    numbers[random_number]=1
+    the_move_is_made=0
+def setup():
+    new_cube()
+    new_cube()
+    global numbers
+    size(dlina,shirina)
+    rectMode(CENTER)
+def draw():
+    push()
+    translate(100,100)
+    for i in range(0,4):
+        for j in range(0,4):
+            rect(j*200,i*200,200,200)
+    pop()
+    
