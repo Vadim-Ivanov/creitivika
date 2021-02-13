@@ -1,0 +1,18 @@
+x=[]
+y=[]
+def setup():
+    size(1200,800)
+    background(255)
+    fill(255,0,0)
+    noStroke()
+def draw():
+    background(255)
+    for i in range(len(x)):
+        ellipse(x[i],y[i],20,20)
+def mouseClicked():
+    if mouseButton == LEFT:
+        x.append(mouseX)   
+        y.append(mouseY) 
+    if mouseButton == RIGHT and len(x) > 0:
+        del x[len(x)-1]   
+        del y[len(y)-1]
