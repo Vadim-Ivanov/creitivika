@@ -1,0 +1,30 @@
+x=['text:']
+y=[]
+speed=0
+index=0
+lst=[]
+def setup():
+    size(1500,850)
+    background(255)
+    fill(255,0,0)
+    noStroke()
+    rectMode(CENTER)
+    textSize(25)
+def keyPressed():
+    global x,y
+    if key == ENTER:
+        y.append(''.join(x))
+    x.append(''.join(key))
+def draw():
+    global x,y,speed,index
+    background(255)
+    text(x[0],15,50)
+    for i in range(len(x)-1):
+        if key == BACKSPACE:
+            del x[i]
+            i-=1
+        if index < i:
+            index = i
+        text(x[i+1],(i+5)*15,50)
+    for i in range(len(y)-1):
+        text(y[i+1],850,(i+4)*15)
