@@ -2,6 +2,8 @@ dlina=800
 shirina=800
 random_number=0
 the_move_is_made=0
+t=0
+hod=0
 numbers=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 def come_up_with_a_random_number():
     global numbers,random_number,the_move_is_made
@@ -13,20 +15,108 @@ def new_cube():
     come_up_with_a_random_number()
     numbers[random_number]=1
     the_move_is_made=0
+def summon(where_from,where):
+    numbers[where] += numbers[where_from]
+    numbers[where_from] = 0
+def move(where_from,where):
+    numbers[where] = numbers[where_from]
+    numbers[where_from] = 0
+def move_attempt(where_from,where):
+    global numbers
+    if numbers[where_from] > 0:
+        if numbers[where] == 0:
+            move(where_from,where)
+        if numbers[where] == numbers[where_from]:
+            summon(where_from,where)
 def setup():
-    new_cube()
     new_cube()
     global numbers
     size(dlina,shirina)
     rectMode(CENTER)
     colorMode(HSB,300,100,100)
+    textSize(20)
+    textAlign(CENTER, BOTTOM)
 def draw():
+    global numbers,t,hod
+    background(0,0,100)
     translate(100,100)
-    fill()
     for i in range(0,4):
         for j in range(0,4):
             rect(j*200,i*200,200,200)
     for i in range(0,4):
         for j in range(0,4):
+            if numbers[i*4+j] > 0:
+                fill(numbers[i*4+j]*5,100,100)
+            else:
+                fill(0,0,100)
             rect(j*200,i*200,200,200)
+            if numbers[i*4+j] > 0 and numbers[i*4+j] != 1:
+                fill(0,0,0)
+                text(2*numbers[i*4+j],j*200,i*200)
+            if numbers[i*4+j] == 1:
+                fill(0,0,0)
+                text('2',j*200,i*200)
+    if hod == 0:
+        new_cube()
+        hod=1
+    fill(0)
+    text(hod,100,100)
+def keyPressed():
+    global numbers,hod
+    if (keyCode == UP):
+        move_attempt(12,8)
+        move_attempt(13,9)
+        move_attempt(14,10)
+        move_attempt(15,11)
+        move_attempt(8,4)
+        move_attempt(9,5)
+        move_attempt(10,6)
+        move_attempt(11,7)
+        move_attempt(4,0)
+        move_attempt(5,1)
+        move_attempt(6,2)
+        move_attempt(7,3)
+        hod=0
+    if (keyCode == DOWN):
+        move_attempt(0,4)
+        move_attempt(1,5)
+        move_attempt(2,6)
+        move_attempt(3,7)
+        move_attempt(4,8)
+        move_attempt(5,9)
+        move_attempt(6,10)
+        move_attempt(7,11)
+        move_attempt(8,12)
+        move_attempt(9,13)
+        move_attempt(10,14)
+        move_attempt(11,15)
+        hod=0
+    if (keyCode == RIGHT):
+        move_attempt(0,1)
+        move_attempt(4,5)
+        move_attempt(8,9)
+        move_attempt(12,13)
+        move_attempt(1,2)
+        move_attempt(5,6)
+        move_attempt(9,10)
+        move_attempt(13,14)
+        move_attempt(2,3)
+        move_attempt(6,7)
+        move_attempt(10,11)
+        move_attempt(14,15)
+        hod=0
+    if (keyCode == LEFT):
+        move_attempt(3,2)
+        move_attempt(7,6)
+        move_attempt(11,10)
+        move_attempt(15,14)
+        move_attempt(2,1)
+        move_attempt(6,5)
+        move_attempt(10,9)
+        move_attempt(14,13)
+        move_attempt(1,0)
+        move_attempt(5,4)
+        move_attempt(9,8)
+        move_attempt(13,12)
+        hod=0
     
