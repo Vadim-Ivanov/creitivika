@@ -1,0 +1,25 @@
+x=0
+def setup ():
+    global immage
+    size(600,400)
+    background(255)
+    textSize(30)
+    rectMode(CENTER)
+    noStroke()
+    fill(0)
+    immage=[loadImage("leo.jpg"),loadImage("don.png"),loadImage("raf2.png"),loadImage("raf.png")]
+def mouseClicked():
+    global x,immage
+    if mouseX > 75 and mouseX < 125 and mouseY > 175 and mouseY < 225:
+        if x > 0:
+            x-=1
+    if mouseX > 475 and mouseX < 525 and mouseY > 175 and mouseY < 225:
+        if x < len(immage)-1:
+            x+=1
+def draw():
+    background(255)
+    global x,immage
+    rect(100,200,50,50)
+    rect(500,200,50,50)
+    #text(week[x],250,210)
+    image(immage[x],150,100,300,200)
