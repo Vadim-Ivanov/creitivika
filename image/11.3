@@ -1,0 +1,32 @@
+x=0
+name=["leo","don","raf","raf"]
+def setup ():
+    global immage,name
+    size(600,400)
+    background(255)
+    textSize(30)
+    rectMode(CENTER)
+    noStroke()
+    fill(0)
+    immage=[loadImage("leo.jpg"),loadImage("don.png"),loadImage("raf2.png"),loadImage("raf.png")]
+def mouseClicked():
+    global x,immage,name
+    if mouseX > 75 and mouseX < 125 and mouseY > 175 and mouseY < 225 and mouseButton == LEFT:
+        if x > 0:
+            x-=1
+    if mouseX > 475 and mouseX < 525 and mouseY > 175 and mouseY < 225 and mouseButton == LEFT:
+        if x < len(immage)-1:
+            x+=1
+    if mouseButton == RIGHT:
+        x = floor(random(0,len(immage)))
+def draw():
+    background(255)
+    global x,immage,name
+    rect(100,200,50,50)
+    rect(500,200,50,50)
+    image(immage[x],150,100,300,200)
+    #text(name[x],270,320)
+    for i in range(0,len(immage)):
+        rect(100+(i*18),320,14,14)
+        if mouseX > 100+(i*18)-7 and mouseX < 100+(i*18)+7 and mouseY > 320-7 and mouseY < 320+7 and mouseButton == LEFT:
+            x = i
