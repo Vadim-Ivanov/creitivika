@@ -1,0 +1,22 @@
+lst = [["white","black","white","black","white","black","white","black"],
+       ["black","white","black","white","black","white","black","white"],
+       ["white","black","white","black","white","black","white","black"],
+       ["black","white","black","white","black","white","black","white"],
+       ["white","black","white","black","white","black","white","black"],
+       ["black","white","black","white","black","white","black","white"],
+       ["white","black","white","black","white","black","white","black"],
+       ["black","white","black","white","black","white","black","white"]]
+dlina=500
+razmer=0
+def setup():
+    size(dlina,dlina)
+def draw():
+    global dlina,lst,razmer
+    razmer=dlina/len(lst[0])
+    for indexy in range(len(lst)):
+        for indexx in range(len(lst[indexy])):
+            if lst[indexy][indexx] == "black":
+                fill(0)
+            if lst[indexy][indexx] == "white":
+                fill(255)
+            square(indexx*razmer,indexy*razmer,razmer)
