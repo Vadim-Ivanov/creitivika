@@ -1,0 +1,50 @@
+lst = [[1,1,1,1,1,1,1,1],
+       [1,1,1,1,1,1,1,1],
+       [1,1,1,1,1,1,1,1],
+       [1,1,1,1,1,1,1,1],
+       [1,1,1,1,1,1,1,1],
+       [1,1,1,1,1,1,1,1],
+       [1,1,1,1,1,1,1,1],
+       [1,1,1,1,1,1,1,1],]
+dlina=800
+razmer=0
+x=0
+y=0
+on=0
+def setup():
+    global polex,poley,razmer,x,y
+    size(dlina,dlina)
+    razmer=dlina/len(lst[0])
+    x=razmer/2
+    y=razmer/2
+    textSize(20)
+def draw():
+    global dlina,lst,razmer,x,y,on
+    if on > 1:
+        on = 0
+    background(255)
+    for indexy in range(len(lst)):
+        for indexx in range(len(lst[indexy])):
+            if lst[indexy][indexx] == 0:
+                fill(0)
+            if lst[indexy][indexx] == 1:
+                fill(255)
+            if mouseButton == RIGHT:
+                lst[indexy][indexx] = 1
+            if on == 1:
+                lst[(y-razmer/2)/razmer][(x-razmer/2)/razmer] = 0
+            square(indexx*razmer,indexy*razmer,razmer)
+    fill(0,0,255)
+    circle(x,y,20)
+def keyPressed():
+    global x,y,razmer,dlina,on
+    if keyCode == DOWN and y < dlina-(razmer/2):
+        y+=razmer
+    if keyCode == UP and y > razmer/2:
+        y-=razmer
+    if keyCode == RIGHT and x < dlina-(razmer/2):
+        x+=razmer
+    if keyCode == LEFT and x > razmer/2:
+        x-=razmer
+    if key == ' ':
+        on += 1
