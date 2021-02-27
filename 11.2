@@ -1,0 +1,27 @@
+lst = [[1,1,1,1,1,1,1,1],
+       [1,1,1,1,1,1,1,1],
+       [1,1,1,1,1,1,1,1],
+       [1,1,1,1,1,1,1,1],
+       [1,1,1,1,1,1,1,1],
+       [1,1,1,1,1,1,1,1],
+       [1,1,1,1,1,1,1,1],
+       [1,1,1,1,1,1,1,1],]
+dlina=600
+razmer=0
+def setup():
+    global polex,poley
+    size(dlina,dlina)
+def draw():
+    global dlina,lst,razmer
+    razmer=dlina/len(lst[0])
+    for indexy in range(len(lst)):
+        for indexx in range(len(lst[indexy])):
+            if lst[indexy][indexx] == 0:
+                fill(0)
+            if lst[indexy][indexx] == 1:
+                fill(255)
+            if mouseX > indexx*razmer and mouseX < indexx*razmer+razmer and mouseY > indexy*razmer and mouseY < indexy*razmer+razmer and mouseButton == LEFT:
+                 lst[indexy][indexx] = 0
+            if mouseButton == RIGHT:
+                lst[indexy][indexx] = 1
+            square(indexx*razmer,indexy*razmer,razmer)
