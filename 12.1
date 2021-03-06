@@ -1,0 +1,13 @@
+def snowman(x,y,r):
+    push()
+    translate(x,y/r)
+    scale(r)
+    circle(0,120,100)
+    circle(0,50,70)
+    circle(0,0,40)
+    pop()
+    return
+def setup():
+    size(600,400)
+def draw():
+    snowman(300,100,0.5)
