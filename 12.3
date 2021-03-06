@@ -1,0 +1,20 @@
+def uzor(x,y,d,r):
+    push()
+    translate(300,200)
+    rotate(radians(d))
+    for i in range(360/r):
+        rotate(radians(r))
+        line(0,0,200,0)
+    pop()
+r=5
+d=1
+x=300
+y=200
+def setup():
+    size(600,400)
+    background(255)
+def draw():
+    background(255)
+    global x,y,d,r
+    uzor(x,y,d,r)
+    d+=1
