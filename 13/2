@@ -1,0 +1,23 @@
+x1=100
+y1=100
+w1=100
+x2=110
+y2=105
+w2=90
+def func(x1,y1,w1,x2,y2,w2):
+    fill(255)
+    rect(x1,y1,w1,w1)
+    fill(0)
+    rect(x2,y2,w2,w2)
+    if w1 >= w2 and x1+w1 >= x2+w2 and y1+w1 >= y2+w2 and x1 <= x2 and y1 <= y2:
+        return "True"
+    else:
+        return "False"
+def setup():
+    global x1,y1,w1,x2,y2,w2
+    size(600,400)
+    textSize(25)
+    noStroke()
+def draw():
+    global x1,y1,w1,x2,y2,w2
+    text(func(x1,y1,w1,x2,y2,w2),300,200)
