@@ -4,7 +4,12 @@ random_number=0
 the_move_is_made=0
 t=0
 hod=0
+nohod=0
 numbers=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+def nohod():
+    global nonhod,numbers
+    if numbers[1] != numbers[0] and numbers[4] != numbers[0]:
+        nonhod+=1
 def come_up_with_a_random_number():
     global numbers,random_number,the_move_is_made
     random_number=floor(random(1,15))
