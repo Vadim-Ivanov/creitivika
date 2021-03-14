@@ -1,0 +1,15 @@
+x=200
+y=100
+def func(x,y):
+    fill(255)
+    rect(300,200,x,y)
+    fill(0)
+    return x * y
+def setup():
+    global x,y
+    rectMode(CENTER)
+    size(600,400)
+    textSize(25)
+def draw():
+    global x,y
+    text(func(x,y),300,200)
