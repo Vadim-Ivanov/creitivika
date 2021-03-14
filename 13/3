@@ -1,0 +1,16 @@
+        x=[1,2,3,4,5]
+l=len(x)
+def f(x,l):
+    y=0
+    for i in range(l):
+        y=y+x[i]
+    return y
+def setup():
+    global x
+    size(600,400)
+    textSize(25)
+    noStroke()
+def draw():
+    global x
+    fill(0)
+    text(f(x,l),300,200)
