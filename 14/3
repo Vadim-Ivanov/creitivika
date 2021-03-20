@@ -1,0 +1,27 @@
+def rct(x,y,r):
+    if r >= 4:
+        rect(0,0,r,r)
+        push()
+        translate(x,0)
+        rct(x*1/2,y*1/2,r*1/2)
+        pop()
+        push()
+        translate(-x,0)
+        rct(x*1/2,y*1/2,r*1/2)
+        pop()
+        push()
+        translate(0,y)
+        rct(x*1/2,y*1/2,r*1/2)
+        pop()
+        push()
+        translate(0,-y)
+        rct(x*1/2,y*1/2,r*1/2)
+        pop()
+def setup():
+    size(600,600)
+    fill(255)
+    frameRate(24)
+    rectMode(CENTER)
+def draw():
+    translate(300,300)
+    rct(150,150,100)
