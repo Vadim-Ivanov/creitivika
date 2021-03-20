@@ -1,1 +1,16 @@
+def rct(raz):
+    if raz < 10:
+        pass
+    else:
+        rotate(radians(45))
+        rect(0,0,raz,raz)
+        rct(raz/sqrt(2))
+def setup():
+    size(600,400)
+    fill(255)
+    frameRate(24)
+    rectMode(CENTER)
+def draw():
+    translate(300,200)
+    rct(400)
 
