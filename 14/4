@@ -1,0 +1,23 @@
+def rct(x,d):
+    global s
+    if d >= 20:
+        line(0,0,0,-d)
+        translate(0,-d)
+        push()
+        rotate(radians(15))
+        rct(x*3/4,d*3/4)
+        pop()
+        push()
+        rotate(radians(-15))
+        rct(x*3/4,d*3/4)
+        pop()
+def setup():
+    size(600,600)
+    fill(255)
+    frameRate(24)
+    rectMode(CENTER)
+    background(255)
+def draw():
+    background(255)
+    translate(300,580)
+    rct(0,150)
