@@ -1,0 +1,61 @@
+def func():
+    global screen
+    if screen[0] >= 0 and screen[1] >= 0:
+        screen[0] = str(screen[0]) + str(screen[1])
+        screen[0] = screen[0]
+        del screen[1]
+    if screen[0] >= 0 and screen[1] == str and screen[2] >= 0:
+        if screen[1] == '/':
+            screen[0] = screen[0] / screen[2]
+            screen[0] = int(screen[0])
+            del screen[1]
+        if screen[1] == '+':
+            screen[0] = screen[0] + screen[2]
+            screen[0] = int(screen[0])
+            del screen[1]
+        if screen[1] == '-':
+            screen[0] = screen[0] - screen[2]
+            screen[0] = int(screen[0])
+            del screen[1]        
+        if screen[1] == '*':
+            screen[0] = screen[0] * screen[2]
+            screen[0] = int(screen[0])
+            del screen[1]
+screen = [0,'+']
+buttom = [['%','CE','C','<='],
+          ['1/x','x**2','x^2','/'],
+          [7,8,9,'*'],
+          [4,5,6,'-'],
+          [1,2,3,'+'],
+          ['+/-',0,',','=']]
+def setup(): 
+    size(400,600)
+    fill(255)
+    frameRate(24)
+    background(255)
+    textSize(24)
+
+def draw():
+    background(200,250,235)
+    global start
+    fill(150,250,210)
+    rect(-1,0,401,86)
+    for i in range(4):
+        for j in range(6):
+            fill(200,250,235)
+            rect(100*i,86*(j+1),100,86)
+            fill(0)
+            text(buttom[j][i],100*i+43,86*(j+1)+55)
+    print(screen)
+    textSize(60)
+    text(screen[0],20,75)
+    textSize(24)
+    if screen[0] >= 0 and screen[1] >= 0 and len(screen) > 1:
+        func()
+    if screen[0] >= 0 and screen[1] == str and screen[2] >= 0 and len(screen) > 2:
+        func()
+def mousePressed():
+    for i in range(4):
+        for j in range(6):
+            if mouseX > 100*i and mouseX < 100*i+100 and mouseY > 86*(j+1) and mouseY < 86*(j+1)+86:
+                screen.append(buttom[j][i])
