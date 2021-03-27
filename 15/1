@@ -1,1 +1,43 @@
+ball = {'x' : 300, 'y' : 200,'r' : 50}
+rocket = {'x' : 300, 'y' : 360}
+speed = {'speedX' : random(5,7) , 'speedY' : random(5,7)}
+speed2 = {'speedX' : speed['speedX'] , 'speedY' : speed['speedY']}
+start = 0
+def setup(): 
+    size(600,400)
+    fill(255)
+    frameRate(24)
+    rectMode(CENTER)
+    background(255)
+def draw():
+    background(255)
+    global start
 
+    if mousePressed == 1:
+        start = 1
+    if start == 0:
+        ball['x'] = 300
+        ball['y'] = 200
+        rocket['x'] = 300 
+        fill(0,0,255)
+        circle(ball['x'],ball['y'],ball['r'])
+        fill(0,255,0)
+        rect(rocket['x'],rocket['y'],70,15)
+    if start == 1:
+        ball['x'] += speed['speedX']
+        ball['y'] += speed['speedY']
+        fill(0,0,255)
+        circle(ball['x'],ball['y'],ball['r'])
+        fill(0,255,0)
+        rect(rocket['x'],rocket['y'],70,15)
+        rocket['x'] = mouseX 
+        if(ball['y'] > rocket['y']-ball['r']/2 and ball['x'] > rocket['x']-(70/2)-ball['r']/2 and ball['x'] < rocket['x']+(70/2)+ball['r']/2):
+            speed['speedY'] = -speed2['speedY'] 
+        if(ball['y'] < ball['r']/2):
+            speed['speedY'] = speed2['speedY']
+        if(ball['x'] > 600-ball['r']/2):
+            speed['speedX'] = -speed2['speedX']
+        if(ball['x'] < ball['r']/2):
+            speed['speedX'] = speed2['speedX']
+        if ball['y'] > 400-ball['r']/2:
+            start = 0
