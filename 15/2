@@ -1,0 +1,37 @@
+student=[]
+student.append(dict(name = "April", surname = "Smith", appraisal = floor(random(2,5))))
+student.append(dict(name = 'Daisy', surname = 'Johnson', appraisal = floor(random(2,5))))
+student.append(dict(name = 'Michelle', surname = 'Williams', appraisal = floor(random(2,5))))
+student.append(dict(name = 'Amber', surname = 'Brown', appraisal = floor(random(2,5))))
+student.append(dict(name = 'Angela', surname = 'Jones', appraisal = floor(random(2,5))))
+stroka=0
+def setup(): 
+    size(600,400)
+    fill(0)
+    frameRate(24)
+    background(255)
+    textSize(24)
+def draw():
+    background(255)
+    global student
+    fill(255,0,0)
+    rect(540,360,60,40)
+    for i in range(len(student)):
+        if i == stroka:
+            fill(255,0,0)
+        else:
+            fill(0)
+        text(student[i]['name'], 50*1, 50*(i+1))
+        text(student[i]['surname'], 50*5, 50*(i+1))
+        text(student[i]['appraisal'], 50*9, 50*(i+1))
+def keyPressed():
+    global stroka
+    if keyCode == UP and stroka > 0:
+        stroka -= 1
+    if keyCode == DOWN and stroka < len(student)-1:
+        stroka += 1
+def mousePressed():
+    global stroka
+    if mouseX > 540 and mouseX < 600 and mouseY > 360 and mouseY < 400:
+        del student[stroka]
+        
