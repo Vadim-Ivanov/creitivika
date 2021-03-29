@@ -1,34 +1,27 @@
-def func():
-    global screen
-    if screen[0] >= 0 and screen[1] >= 0:
-        screen[0] = str(screen[0]) + str(screen[1])
-        screen[0] = screen[0]
-        del screen[1]
-    if screen[0] >= 0 and screen[1] == str and screen[2] >= 0:
-        if screen[1] == '/':
-            screen[0] = screen[0] / screen[2]
-            screen[0] = int(screen[0])
-            del screen[1]
-        if screen[1] == '+':
-            screen[0] = screen[0] + screen[2]
-            screen[0] = int(screen[0])
-            del screen[1]
-        if screen[1] == '-':
-            screen[0] = screen[0] - screen[2]
-            screen[0] = int(screen[0])
-            del screen[1]        
-        if screen[1] == '*':
-            screen[0] = screen[0] * screen[2]
-            screen[0] = int(screen[0])
-            del screen[1]
-screen = [0,'+']
+def do_op():
+    global ch,result,operation,cur_number
+    if operation == '+':
+        result = result + cur_number    
+    elif operation == '-':
+        result = result - cur_number
+    elif operation == '*':
+        result = result * cur_number
+    elif operation == '/':
+        result = result / cur_number
 buttom = [['%','CE','C','<='],
-          ['1/x','x**2','x^2','/'],
+          ['1/x','x**2','sqrt','/'],
           [7,8,9,'*'],
           [4,5,6,'-'],
           [1,2,3,'+'],
           ['+/-',0,',','=']]
+ch=0
+result=0
+operation=' '
+cur_number=0
+#last_operation=False
+cur_num_active=True
 def setup(): 
+    global ch,result,operation,cur_number,last_operation,cur_num_active
     size(400,600)
     fill(255)
     frameRate(24)
@@ -36,6 +29,7 @@ def setup():
     textSize(24)
 
 def draw():
+    global ch,result,operation,cur_number,last_operation,cur_num_active
     background(200,250,235)
     global start
     fill(150,250,210)
@@ -46,16 +40,62 @@ def draw():
             rect(100*i,86*(j+1),100,86)
             fill(0)
             text(buttom[j][i],100*i+43,86*(j+1)+55)
-    print(screen)
-    textSize(60)
-    text(screen[0],20,75)
-    textSize(24)
-    if screen[0] >= 0 and screen[1] >= 0 and len(screen) > 1:
-        func()
-    if screen[0] >= 0 and screen[1] == str and screen[2] >= 0 and len(screen) > 2:
-        func()
+    if cur_num_active == False: 
+        textSize(60)
+        text(result,20,75)
+        textSize(24)
+    else:
+        textSize(60)
+        text(cur_number,20,75)
+        textSize(24)
+    
+
+    print('result = ', result)
+    print('ch =  ', ch)
+    print('operation = ', operation)
+    print('cur_number = ', cur_number)
+    print('cur_num_active = ', cur_num_active)
 def mousePressed():
+    global ch,result,operation,cur_number,last_operation,cur_num_active
     for i in range(4):
         for j in range(6):
             if mouseX > 100*i and mouseX < 100*i+100 and mouseY > 86*(j+1) and mouseY < 86*(j+1)+86:
-                screen.append(buttom[j][i])
+                ch=buttom[j][i]
+                if ch >= 0 and ch <= 9:
+                    if cur_num_active == False:
+                        cur_number = 0
+                        if operation == ' ':
+                            result = 0
+                    cur_number = cur_number * 10 + ch
+                    cur_num_active = True
+                    #last_operation = False 
+                elif ch == '=':
+                    do_op()
+                    operation = ' '
+                    cur_num_active = False
+                    cur_number = result
+                    #last_operation = False 
+                else:
+                    if operation != ' ':
+                        if cur_num_active == True:
+                            do_op()
+                    else:
+                        result = cur_number
+                        cur_number = 0
+                    operation = ch
+                    cur_num_active = False
+                    #last_operation = True 
+                if operation == 'C':
+                    result = 0
+                    operation = ' '
+                    cur_number = 0
+                if operation == 'CE':  
+                    cur_number = 0
+                    operation = ' '
+                if operation == '<=':   
+                    result = result / 10
+                    operation = ' '
+                elif operation == 'x**2':
+                    result = result ** 2
+                elif operation == '+/-':
+                    result = -result
