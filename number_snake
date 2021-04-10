@@ -1,0 +1,111 @@
+list_prep = [] 
+#Змейка
+class Snake:
+    def __init__(self,x_,y_,d,n):
+        self.d = d
+        self.n = n
+        self.p = []
+        for i in range(n):
+            self.p.append(dict(x = x_,y = y_))
+    def draw_(self):
+        fill(255)
+        strokeWeight(1)
+        for i in range(self.n):
+            circle(self.p[self.n-1-i]['x'],self.p[self.n-1-i]['y'],self.d)
+    def move_to(self,x,y,polog_prep_Y):
+        global list_prep
+        if polog_prep_Y > 495 and polog_prep_Y < 620: 
+            for i in range(len(list_prep)):
+                if x > list_prep[i] and x < list_prep[i] + 120:
+                    print('2')
+                    self.p[0]['x'] = x
+                    #return ' '
+                else:
+                    if x > list_prep[i] + 120:
+                        print('3')
+                        self.p[0]['x'] = list_prep[i] + 120
+                        return ' '
+                    elif x < list_prep[i]:
+                        print('4')
+                        self.p[0]['x'] = list_prep[i]
+                        return ' '
+        else:
+            self.p[0]['x'] = x
+        self.p[0]['y'] = y
+        self.move_tail()
+    def move(self,dx,dy):
+        self.p[0]['x'] += dx
+        self.p[0]['y'] += dy
+        self.move_tail()
+    def move_tail(self):
+        for i in range(1,self.n):
+            dx = self.p[i]['x'] - self.p[i-1]['x']
+            dy = self.p[i]['y'] - self.p[i-1]['y']
+            d = sqrt(dx**2 + dy**2)
+            if self.d < d:
+                self.p[i]['x'] = (self.d / d) * (self.p[i]['x'] - self.p[i-1]['x']) + self.p[i-1]['x']
+                self.p[i]['y'] = (self.d / d) * (self.p[i]['y'] - self.p[i-1]['y']) + self.p[i-1]['y']
+    def scroll_tail_Y(self,dy):
+        for i in range(1,self.n):
+            self.p[i]['y'] += dy
+    def get_n(self):
+        return self.n
+    def head_X(self):
+        return self.p[0]['x']
+#Препятствия
+class Prep:
+    def __init__(self):
+        self.prep = []
+        for i in range(5):
+            self.prep.append(dict(x = 120*i,y = 0,num = floor(random(3,30))))
+    def move_prep(self,get_n,head):
+        strokeWeight(10)
+        for i in range(len(self.prep)):
+            if len(self.prep) > 4:
+                if self.prep[i]['y'] < 365:
+                    self.prep[i]['y'] += 3
+                else:
+                    if get_n > 0 and self.prep[i]['x'] <= head and self.prep[i]['x'] + 120 >= head:
+                        self.prep[i]['num'] -= 1
+                if self.prep[i]['num'] > 0:
+                    fill("#34FFFD")
+                    rect(self.prep[i]['x'],self.prep[i]['y'],120,120)
+                    fill(0)
+                    text(self.prep[i]['num'],self.prep[i]['x']+60,self.prep[i]['y']+60)
+                else:
+                    del self.prep[i]
+            else:
+                self.prep[i-1]['y'] += 3
+                if self.prep[i-1]['num'] > 0:
+                    fill("#34FFFD")
+                    rect(self.prep[i-1]['x'],self.prep[i-1]['y'],120,120)
+                    fill(0)
+                    text(self.prep[i-1]['num'],self.prep[i-1]['x']+60,self.prep[i-1]['y']+60)
+                if self.prep[i-1]['y'] >= 800:
+                    self.prep[i-1]['y'] = -120
+                    prep.recovery_prep()
+    def recovery_prep(self):
+        self.prep = []
+        for i in range(5):
+            self.prep.append(dict(x = 120*i,y = 0,num = floor(random(3,30))))
+        for i in range(3):
+            self.prep[i+1]['y'] -= 3  
+    def polog_prep_Y(self):
+        global list_prep
+        for i in range(len(self.prep)):
+            list_prep.append(self.prep[i]['x'])
+        return self.prep[0]['y']
+snake = Snake(300,600,15,40)
+prep = Prep()
+def setup():
+    size(600,800)
+    background(255)
+    textSize(20)
+    textAlign(CENTER, BOTTOM)
+def draw():
+    global d,pX,k
+    background(255)
+    snake.draw_()
+    snake.scroll_tail_Y(3)
+    prep.move_prep(snake.get_n(),snake.head_X())
+    snake.move_to(mouseX,500,prep.polog_prep_Y())
