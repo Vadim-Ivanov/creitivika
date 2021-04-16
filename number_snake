@@ -1,4 +1,6 @@
 list_prep = [] 
+gran_left = 0
+gran_right = 600
 #Змейка
 class Snake:
     def __init__(self,x_,y_,d,n):
@@ -12,39 +14,47 @@ class Snake:
         strokeWeight(1)
         for i in range(self.n):
             circle(self.p[self.n-1-i]['x'],self.p[self.n-1-i]['y'],self.d)
-    def move_to(self,x,y,polog_prep_Y):
-        global list_prep
-        if polog_prep_Y > 495 and polog_prep_Y < 620: 
-            for i in range(len(list_prep)):
-                if x > list_prep[i] and x < list_prep[i] + 120:
-                    print('2')
-                    self.p[0]['x'] = x
-                    #return ' '
-                else:
-                    if x > list_prep[i] + 120:
-                        print('3')
-                        self.p[0]['x'] = list_prep[i] + 120
-                        return ' '
-                    elif x < list_prep[i]:
-                        print('4')
-                        self.p[0]['x'] = list_prep[i]
-                        return ' '
-        else:
-            self.p[0]['x'] = x
+    def move_to(self,x,y):
+        x_old = self.p[0]['x']
+        y_old = self.p[0]['y']
+        self.p[0]['x'] = x
         self.p[0]['y'] = y
-        self.move_tail()
+        self.head_to_gran()
+        self.move_tail(x_old,y_old)
     def move(self,dx,dy):
         self.p[0]['x'] += dx
         self.p[0]['y'] += dy
+        self.head_to_gran()
         self.move_tail()
-    def move_tail(self):
+    def head_to_gran(self):
+        global gran_left,gran_right
+        if self.p[0]['x'] < gran_left:
+            self.p[0]['x'] = gran_left
+        if self.p[0]['x'] > gran_right:
+            self.p[0]['x'] = gran_right
+    def dlina(self):
+        if snake.get_n() <= 0:
+            self.n = 20
+        else:
+            self.n -= 1
+    def move_tail(self,x_old,y_old):
         for i in range(1,self.n):
+            #x_old_i = self.p[i]['x']
+            #y_old_i = self.p[i]['y']
             dx = self.p[i]['x'] - self.p[i-1]['x']
             dy = self.p[i]['y'] - self.p[i-1]['y']
             d = sqrt(dx**2 + dy**2)
+            #if self.d*1.01 < d:
+        #   self.p[i]['x'] = x_old
+            #    self.p[i]['y'] = y_old
+            #    dx = self.p[i]['x'] - self.p[i-1]['x']
+            #    dy = self.p[i]['y'] - self.p[i-1]['y']
+            #    d = sqrt(dx**2 + dy**2)
             if self.d < d:
                 self.p[i]['x'] = (self.d / d) * (self.p[i]['x'] - self.p[i-1]['x']) + self.p[i-1]['x']
                 self.p[i]['y'] = (self.d / d) * (self.p[i]['y'] - self.p[i-1]['y']) + self.p[i-1]['y']
+            #x_old = x_old_i
+            #y_old = y_old_i
     def scroll_tail_Y(self,dy):
         for i in range(1,self.n):
             self.p[i]['y'] += dy
@@ -55,47 +65,56 @@ class Snake:
 #Препятствия
 class Prep:
     def __init__(self):
+        self.del_index = 5
         self.prep = []
         for i in range(5):
-            self.prep.append(dict(x = 120*i,y = 0,num = floor(random(3,30))))
+            self.prep.append(dict(x = 120*i,y = -120,num = floor(random(3,30))))
+    def recovery_prep(self):
+        self.del_index = 5
+        self.prep = []
+        for i in range(5):
+            self.prep.append(dict(x = 120*i,y = -120,num = floor(random(3,30))))
     def move_prep(self,get_n,head):
+        global gran_left,gran_right
+        if self.prep[0]['y'] > 380 and self.prep[0]['y'] < 530 and self.del_index < 5:
+            gran_left = self.prep[self.del_index]['x']
+            gran_right = self.prep[self.del_index]['x'] + 120
+        else:
+            gran_left = 0
+            gran_right = 600
         strokeWeight(10)
         for i in range(len(self.prep)):
-            if len(self.prep) > 4:
+            if self.del_index == 5:
                 if self.prep[i]['y'] < 365:
                     self.prep[i]['y'] += 3
                 else:
                     if get_n > 0 and self.prep[i]['x'] <= head and self.prep[i]['x'] + 120 >= head:
                         self.prep[i]['num'] -= 1
-                if self.prep[i]['num'] > 0:
+                        snake.dlina()
+                if self.prep[i]['num'] > 0 and i != self.del_index:
                     fill("#34FFFD")
                     rect(self.prep[i]['x'],self.prep[i]['y'],120,120)
                     fill(0)
                     text(self.prep[i]['num'],self.prep[i]['x']+60,self.prep[i]['y']+60)
                 else:
-                    del self.prep[i]
+                    self.del_index = i
+                    #del self.prep[i]
             else:
-                self.prep[i-1]['y'] += 3
-                if self.prep[i-1]['num'] > 0:
+                self.prep[i]['y'] += 3
+                if self.prep[i]['num'] > 0:
                     fill("#34FFFD")
-                    rect(self.prep[i-1]['x'],self.prep[i-1]['y'],120,120)
+                    rect(self.prep[i]['x'],self.prep[i]['y'],120,120)
                     fill(0)
-                    text(self.prep[i-1]['num'],self.prep[i-1]['x']+60,self.prep[i-1]['y']+60)
-                if self.prep[i-1]['y'] >= 800:
-                    self.prep[i-1]['y'] = -120
+                    text(self.prep[i]['num'],self.prep[i]['x']+60,self.prep[i]['y']+60)
+                if self.prep[0]['y'] >= 800:
+                    self.prep[i]['y'] = -120
                     prep.recovery_prep()
-    def recovery_prep(self):
-        self.prep = []
-        for i in range(5):
-            self.prep.append(dict(x = 120*i,y = 0,num = floor(random(3,30))))
-        for i in range(3):
-            self.prep[i+1]['y'] -= 3  
-    def polog_prep_Y(self):
-        global list_prep
-        for i in range(len(self.prep)):
-            list_prep.append(self.prep[i]['x'])
-        return self.prep[0]['y']
-snake = Snake(300,600,15,40)
+        if snake.get_n() <= 0:
+            for i in range(len(self.prep)):
+                self.del_index = i
+        text(head,50,50)            
+start = 0
+snake = Snake(300,600,15,20)
 prep = Prep()
 def setup():
     size(600,800)
@@ -103,9 +122,16 @@ def setup():
     textSize(20)
     textAlign(CENTER, BOTTOM)
 def draw():
-    global d,pX,k
+    global d,pX,k,start
     background(255)
-    snake.draw_()
-    snake.scroll_tail_Y(3)
-    prep.move_prep(snake.get_n(),snake.head_X())
-    snake.move_to(mouseX,500,prep.polog_prep_Y())
+    if start == 1:
+        prep.move_prep(snake.get_n(),snake.head_X())
+        snake.dlina()
+        snake.draw_()
+        snake.scroll_tail_Y(3)
+        snake.move_to(mouseX,500)
+    if snake.get_n() <= 0:
+        start = 0
+def mousePressed():
+    global start
+    start = 1 
