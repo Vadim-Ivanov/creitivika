@@ -1,0 +1,19 @@
+x=450
+y=450
+speed=10
+
+def Human(x,y):
+    image(loadImage("10101.png"),x,y,150,150)
+
+def setup():
+    size(1000,600)
+    background(225)
+def draw():
+    background(225)
+    global x,y,speed
+    Human(x,y)
+    if keyPressed:
+        if keyCode == LEFT and x > -40:
+            x-= speed
+        elif keyCode == RIGHT and x < 880:
+            x+= speed 
