@@ -1,0 +1,71 @@
+polog = []
+i = 0
+x=450
+y=450
+speed=10
+score = 0
+def Human(x,y):
+    global immage
+    image(immage[0],x,y,150,150)
+class Koronavirus:
+    def __init__(self,r):
+        self.r = r
+        self.img = [loadImage("maska.png")]
+    def loading(self):
+        global polog
+        x = random(30,970)
+        y = -10
+        polog.append({'x': x,'y': y})
+    def draw_(self):
+        global polog,start,x,score
+        for j in range(len(polog)-1):
+            image(self.img[0],polog[j]['x'],polog[j]['y'],self.r+10,self.r+10)
+            polog[j]['y'] += 2
+            if polog[j]['y'] > 450 and polog[j]['x'] > x and polog[j]['x'] < x+150:
+                del polog[j]
+                score += 1
+            if polog[j]['y'] > 600:
+                start = 0
+                polog = []
+                return ' '
+
+start = 0
+def setup():
+    global koronavirus,immage
+    immage = [loadImage("10101.png")]
+    koronavirus = Koronavirus(50)
+    size(1000,600)
+    background(255)
+    textSize(25)
+    rectMode(CENTER)
+    noStroke()
+def draw():
+    background(255)
+    global i,polog,x,y,speed,start
+    if start == 1:
+        if i % 80 == 0:
+            print(1)
+            koronavirus.loading()
+        i+=1
+        koronavirus.draw_()
+        Human(x,y)
+        if keyPressed:
+            if keyCode == LEFT and x > -40:
+                x-= speed
+            elif keyCode == RIGHT and x < 880:
+                x+= speed 
+        fill(0)
+        text(score,500,50)
+    else:
+        fill(0)
+        text(score,500,50)
+        fill("#F0B71B")
+        rect(500,300,150,100)
+        fill(255,0,0)
+        triangle(475,275,475,325,525,300)
+def mousePressed():
+    global start,score,x
+    if mouseX > 425 and mouseX < 575 and mouseY > 250 and mouseY < 350:
+        start = 1
+        score = 0
+        x = 450
