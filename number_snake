@@ -1,26 +1,211 @@
+def button_shop():
+    pass
+class button_palette():
+    def __init__(self):
+        self.x = [175,175,175]
+        self._fill_ = []
+    def palette(self):
+        snake.draw_()
+        snake.scroll_tail_Y(3)
+        snake.move_to(400,100)
+        strokeWeight(1)
+        stroke(0)
+        fill(125)
+        rect(150,200,50,50)
+        strokeWeight(5)
+        stroke(125)
+        for i in range(1,4):
+            stroke(125)
+            line(50,50*i,305,50*i)
+        stroke(255)
+        line(self.x[0],40,self.x[0],60)
+        line(self.x[1],90,self.x[1],110)
+        line(self.x[2],140,self.x[2],160)
+        if mousePressed == 1:
+            for i in range(1,4):
+                if mouseX >= 50 and mouseX <= 305 and mouseY > i * (50 - 16) + i * 10 and mouseY < i * (50 + 16):
+                    self.x[i-1] = mouseX
+                if mouseX < 50 and mouseX > 0 and mouseY > i * (50 - 16) + i * 10 and mouseY < i * (50 + 16):
+                    self.x[i-1] = 50
+                if mouseX > 305 and mouseX < 350 and mouseY > i * (50 - 16) + i * 10 and mouseY < i * (50 + 16):
+                    self.x[i-1] = 305
+            if mouseX > 50 and mouseX < 100 and mouseY > 200 and mouseY < 250:
+                self._fill_.append(dict(R = self.x[0]-50,G = self.x[1]-50,B = self.x[2]-50))
+            for i in range(len(self._fill_)):
+                if self._fill_[i]['R'] == self.x[0]-50:
+                    if self._fill_[i]['G'] == self.x[1]-50:
+                        if self._fill_[i]['B'] == self.x[2]-50:
+                            snake.fill_(self.x[0]-50,self.x[1]-50,self.x[2]-50)
+        for i in range(len(self._fill_)):
+            if self._fill_[i]['R'] == self.x[0]-50 and self._fill_[i]['G'] == self.x[1]-50 and self._fill_[i]['B'] == self.x[2]-50:
+                stroke(0,255,0)
+            else:
+                stroke(255,0,0)
+        fill(self.x[0]-50,self.x[1]-50,self.x[2]-50)
+        rect(50,200,50,50)
+        print(self._fill_)
+        stroke(0)
+def button_start():
+    global start,score
+    snake.dlina(0)
+    prep.recovery_prep()
+    score = 0
+    start = 1
+def button():
+    fill(255,0,0)
+    ellipse(300,400,200,125)
+    fill(255)
+    triangle(280,375,280,425,330,400)
+    
+    fill(0,255,0)
+    rect(500,700,75,75)
+    fill(0,255,0)
+    strokeWeight(3)
+    ellipse(537.5,730,20,20)
+    strokeWeight(1)
+    fill(255,0,0)
+    rect(520,730,35,35)
+    
+    fill(0,0,255)
+    rect(25,700,75,75)
+    fill(0,255,0)
+    ellipse(25+37.5,737.5,70,70)
+    push()
+    noStroke()
+    fill(0,0,255)
+    ellipse(25+37.5,737.5+20,15,15)
+    pop()
+    fill(255,0,0)
+    ellipse(40,737+10,15,15)
+    fill(0,0,0)
+    ellipse(45,725,15,15)
+    fill("#F2EB11")
+    ellipse(65,715,15,15)
+    fill('#3DF2BD')
+    ellipse(80,732,15,15)
+    fill(0,0,255)
+    push()
+    noStroke()
+    translate(87,757)
+    rotate(radians(120))
+    ellipse(0,0,30,25)
+    pop()
 list_prep = [] 
 gran_left = 0
 gran_right = 600
-#Змейка
+# class Wall:
+#     def __init__(self):
+#         self.p = []
+#         self.p_old = [] 
+#     def draw_wall(self,head_X):
+#         global gran_left,gran_right
+#         self.graniza = 0
+#         strokeWeight(10)
+#         stroke("#9AECFA")
+#         for i in range(len(self.p)):
+#             line(self.p[i]['x'] * 120,self.p[i]['y'],self.p[i]['x'] * 120,self.p[i]['y2'])
+#             if self.p[i]['y'] >= 500 and self.p[i]['y'] <= 600 and self.graniza == 0:
+#                 print('1')
+#                 #print('------------------------------------------------')
+#                 #for gran in range(len(self.p)):
+#                 if head_X < self.p[i]['x'] * 120:
+#                     gran_right = self.p[i]['x'] * 120
+#                     #print(gran_right)
+#                 else: 
+#                     gran_right = 600
+#                 if head_X > self.p[i]['x'] * 120:
+#                     gran_left = self.p[i]['x'] * 120
+#                 else: 
+#                     gran_left = 0
+#                 self.graniza = 1
+#             if len(self.p_old) > 0:
+#                 if self.p_old[len(self.p_old)-1]['y2'] - 600 > 0 and self.p_old[len(self.p_old)-1]['y2'] - 600 < 50 and self.graniza == 1:
+#                     print('2')
+#                     self.graniza = 2
+#                     gran_right = 600
+#                     gran_left = 0
+#             if prep.polog_Y() < 360 or prep.polog_Y() > 370:
+#                 self.p[i]['y'] += 3
+#                 self.p[i]['y2'] += 3
+#         for i in range(len(self.p_old)):
+#             if prep.polog_Y() < 360 or prep.polog_Y() > 370:
+#                 self.p_old[i]['y'] += 3
+#                 self.p_old[i]['y2'] += 3
+#         if len(self.p) > 0:
+#             if self.p[0]['y'] > 600:
+#                 self.p_old.append(self.p[0])
+#                 del self.p[0]
+#         for i in range(len(self.p_old)):
+#             line(self.p_old[i]['x'] * 120,self.p_old[i]['y'],self.p_old[i]['x'] * 120,self.p_old[i]['y2'])
+#         stroke(0)
+#     def plus_wall(self):
+#         self.p.append(dict(x = floor(random(1,5)),y = -100,y2 = -200))
+class Ball:
+    def __init__(self):
+        self.p = [dict(x = random(10,590),y = -15,num = floor(random(1,10)),gold = 0)]
+    def draw_ball(self,head_X):
+        for i in range(len(self.p)):
+            strokeWeight(1)
+            if self.p[i]['gold'] == 0:
+                fill(255,0,0)
+            else:
+                fill('#FFF827')
+            ellipse(self.p[i]['x'],self.p[i]['y'],10,10)
+            textSize(12)
+            fill('#FFF827')
+            text(self.p[i]['num'],self.p[i]['x'],self.p[i]['y']-5)
+            if prep.polog_Y() < 360 or prep.polog_Y() > 370:
+                self.p[i]['y'] += 3
+        if len(self.p) > 0:
+            if self.p[0]['y'] >= 800:
+                del self.p[0]
+        for i in range(len(self.p)):
+            if self.p[i]['y'] >= 460 and self.p[i]['y'] <= 540 and self.p[i]['x'] >= head_X - 40 and self.p[i]['x'] <= head_X + 40:
+                snake.dlina(self.p[i]['num'])
+                del self.p[i]
+                return ' '
+    def plus_ball(self):
+        x = floor(random(0,1000))
+        if x == 1:
+            self.p.append(dict(x = random(10,590),y = -15,num = floor(random(100,1000)),gold = 1))
+        else:
+            self.p.append(dict(x = random(10,590),y = -15,num = floor(random(1,10)),gold = 0))
+#Змейка  
 class Snake:
     def __init__(self,x_,y_,d,n):
         self.d = d
         self.n = n
         self.p = []
         for i in range(n):
-            self.p.append(dict(x = x_,y = y_))
+            self.p.append(dict(x = x_,y = y_,R = 255,G = 255,B = 255))
+    def fill_(self,r,g,b):
+        for i in range(len(self.p)):
+            if mousePressed == 1:
+                if mouseX >= 390 and mouseX <= 410 and mouseY > self.p[i]['y'] - 7 and mouseY < self.p[i]['y'] + 7:
+                    self.p[i]['R'] = r
+                    self.p[i]['G'] = g
+                    self.p[i]['B'] = b
+                    #print(self.p[len(self.p)-i-1]['y'])
+                    #print(mouseY)
     def draw_(self):
-        fill(255)
+        global palette
         strokeWeight(1)
-        for i in range(self.n):
-            circle(self.p[self.n-1-i]['x'],self.p[self.n-1-i]['y'],self.d)
+        if self.n <= 40:
+            for i in range(self.n):
+                fill(self.p[self.n-1-i]['R'], self.p[self.n-1-i]['G'], self.p[self.n-1-i]['B'])
+                circle(self.p[self.n-1-i]['x'],self.p[self.n-1-i]['y'],self.d)
+        else:
+            for i in range(40):
+                fill(self.p[40-1-i]['R'], self.p[40-1-i]['G'], self.p[40-1-i]['B'])
+                circle(self.p[40-1-i]['x'],self.p[40-1-i]['y'],self.d)
+        textSize(10)
+        if palette == 0:
+            text(self.n,self.p[0]['x'],self.p[0]['y']-10)
     def move_to(self,x,y):
-        x_old = self.p[0]['x']
-        y_old = self.p[0]['y']
         self.p[0]['x'] = x
         self.p[0]['y'] = y
         self.head_to_gran()
-        self.move_tail(x_old,y_old)
+        self.move_tail()
     def move(self,dx,dy):
         self.p[0]['x'] += dx
         self.p[0]['y'] += dy
@@ -28,33 +213,26 @@ class Snake:
         self.move_tail()
     def head_to_gran(self):
         global gran_left,gran_right
-        if self.p[0]['x'] < gran_left:
+        if self.p[0]['x'] <= gran_left:
             self.p[0]['x'] = gran_left
-        if self.p[0]['x'] > gran_right:
+        if self.p[0]['x'] >= gran_right:
             self.p[0]['x'] = gran_right
-    def dlina(self):
+    def dlina(self,d):
         if snake.get_n() <= 0:
-            self.n = 20
+            self.n = 40
         else:
-            self.n -= 1
-    def move_tail(self,x_old,y_old):
+            self.n += d
+            if d > 0:
+                for i in range(d):
+                    self.p.append(dict(x = 300,y = 1000,R = 255,G = 255,B = 255))
+    def move_tail(self):
         for i in range(1,self.n):
-            #x_old_i = self.p[i]['x']
-            #y_old_i = self.p[i]['y']
             dx = self.p[i]['x'] - self.p[i-1]['x']
             dy = self.p[i]['y'] - self.p[i-1]['y']
             d = sqrt(dx**2 + dy**2)
-            #if self.d*1.01 < d:
-        #   self.p[i]['x'] = x_old
-            #    self.p[i]['y'] = y_old
-            #    dx = self.p[i]['x'] - self.p[i-1]['x']
-            #    dy = self.p[i]['y'] - self.p[i-1]['y']
-            #    d = sqrt(dx**2 + dy**2)
             if self.d < d:
                 self.p[i]['x'] = (self.d / d) * (self.p[i]['x'] - self.p[i-1]['x']) + self.p[i-1]['x']
                 self.p[i]['y'] = (self.d / d) * (self.p[i]['y'] - self.p[i-1]['y']) + self.p[i-1]['y']
-            #x_old = x_old_i
-            #y_old = y_old_i
     def scroll_tail_Y(self,dy):
         for i in range(1,self.n):
             self.p[i]['y'] += dy
@@ -67,15 +245,15 @@ class Prep:
     def __init__(self):
         self.del_index = 5
         self.prep = []
-        for i in range(5):
-            self.prep.append(dict(x = 120*i,y = -120,num = floor(random(3,30))))
+        self.graniza = 0
     def recovery_prep(self):
+        global score
         self.del_index = 5
         self.prep = []
         for i in range(5):
-            self.prep.append(dict(x = 120*i,y = -120,num = floor(random(3,30))))
+            self.prep.append(dict(x = 120*i,y = -120,num = floor(random(3,50))))            
     def move_prep(self,get_n,head):
-        global gran_left,gran_right
+        global gran_left,gran_right,score
         if self.prep[0]['y'] > 380 and self.prep[0]['y'] < 530 and self.del_index < 5:
             gran_left = self.prep[self.del_index]['x']
             gran_right = self.prep[self.del_index]['x'] + 120
@@ -83,14 +261,15 @@ class Prep:
             gran_left = 0
             gran_right = 600
         strokeWeight(10)
-        for i in range(len(self.prep)):
-            if self.del_index == 5:
+        if self.del_index == 5:
+            for i in range(len(self.prep)):
                 if self.prep[i]['y'] < 365:
                     self.prep[i]['y'] += 3
                 else:
                     if get_n > 0 and self.prep[i]['x'] <= head and self.prep[i]['x'] + 120 >= head:
                         self.prep[i]['num'] -= 1
-                        snake.dlina()
+                        score += 1
+                        snake.dlina(-1)
                 if self.prep[i]['num'] > 0 and i != self.del_index:
                     fill("#34FFFD")
                     rect(self.prep[i]['x'],self.prep[i]['y'],120,120)
@@ -99,39 +278,89 @@ class Prep:
                 else:
                     self.del_index = i
                     #del self.prep[i]
-            else:
+        else:
+            for i in range(len(self.prep)):
                 self.prep[i]['y'] += 3
                 if self.prep[i]['num'] > 0:
                     fill("#34FFFD")
                     rect(self.prep[i]['x'],self.prep[i]['y'],120,120)
                     fill(0)
                     text(self.prep[i]['num'],self.prep[i]['x']+60,self.prep[i]['y']+60)
-                if self.prep[0]['y'] >= 800:
-                    self.prep[i]['y'] = -120
-                    prep.recovery_prep()
+            if self.prep[0]['y'] >= 800:
+                self.recovery_prep()
         if snake.get_n() <= 0:
             for i in range(len(self.prep)):
-                self.del_index = i
-        text(head,50,50)            
+                self.del_index = i  
+    def polog_Y(self):
+        return self.prep[0]['y']
 start = 0
-snake = Snake(300,600,15,20)
+snake = Snake(300,600,15,40)
 prep = Prep()
+background_ = [0,0,0]
+score = 0
+ball = Ball()
+i = 1
+#wall = Wall()
+palette = 0
+Button_palette = button_palette()
 def setup():
+    global immage
+    immage = loadImage("fon2.png")
     size(600,800)
     background(255)
     textSize(20)
     textAlign(CENTER, BOTTOM)
+    #frameRate(1)
 def draw():
-    global d,pX,k,start
-    background(255)
+    global start,immage,background_,i,palette
+    background(background_[0],background_[1],background_[2])
+    image(immage,0,0,600,800)
     if start == 1:
-        prep.move_prep(snake.get_n(),snake.head_X())
-        snake.dlina()
+        ball.draw_ball(snake.head_X())
+        #wall.draw_wall(snake.head_X())
         snake.draw_()
         snake.scroll_tail_Y(3)
         snake.move_to(mouseX,500)
+        textSize(20)
+        prep.move_prep(snake.get_n(),snake.head_X())
+        fill(255-background_[0],255-background_[1],255-background_[2])
+        textSize(30)
+        text(score,300,50)
+        if i % 100 == 0:
+            ball.plus_ball()
+        #if i % 100 == 0:
+            #wall.plus_wall()
+        i += 1
+    else:
+        i = 1
     if snake.get_n() <= 0:
+        textSize(100)
+        text(score,300,100)
         start = 0
+    if mousePressed == 1:
+        if mouseButton == RIGHT:
+            frameRate(1)
+        else:
+            frameRate(100)
+    if start == 0 and palette == 0:
+        button()
+    if palette == 1:
+        fill(255,0,0)
+        strokeWeight(1)
+        rect(500,740,100,60)
+        Button_palette.palette()
+        fill(0)
+        textSize(20)
+        text('BACK',550,780)
 def mousePressed():
-    global start
-    start = 1 
+    global start,palette
+    if start == 0 and mouseX > 200 and mouseX < 400 and mouseY > 400 - 62.5 and mouseY < 400 + 62.5 and palette == 0:
+        button_start()
+    if start == 0 and mouseX > 500 and mouseX < 575 and mouseY > 700 and mouseY < 775:
+        button_shop()
+    if start == 0 and mouseX > 25 and mouseX < 100 and mouseY > 700 and mouseY < 775:
+        palette = 1
+        snake.dlina(100)
+    if start == 0 and mouseX > 500 and mouseX < 600 and mouseY > 740 and mouseY < 800 and palette == 1:
+        palette = 0
+        snake.dlina(-100)
