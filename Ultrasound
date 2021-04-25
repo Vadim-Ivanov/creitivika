@@ -1,0 +1,63 @@
+speed = 2
+class Ultrasound():
+    def __init__(self,x,y):
+        self.x=x
+        self.y=y
+        self.r=[]
+        self.weight=[]
+    def ultra_volna(self):
+        fill(255)
+        stroke("#FF00E2")
+        global x,speed
+        for i in range(len(self.r)-1):
+            strokeWeight(self.weight[i])
+            ellipse(self.x,self.y,self.r[i],self.r[i])
+            self.r[i]+=3
+            self.weight[i]-=0.01
+        if self.r[0] >= 2600 or self.r[0]/2+100 >= x:
+            del self.r[0]
+            del self.weight[0]
+            speed = -2
+        #else:
+            #speed = 2
+    def ultra_volna_plus(self):
+        self.r.append(0)
+        self.weight.append(10)
+i = 0
+x=1400
+t=1
+ultrasound=Ultrasound(100,500)
+
+def gorod():
+    stroke(0)
+    strokeWeight(1)
+    square(90,490,20)
+def Volna():
+    global x,speed
+    fill('#00ECFF')
+    rect(x,0,2000,1000)
+    x=x-speed
+    
+def setup():
+    size(1400,1000)
+    background(255)
+def draw():
+    global i,t
+    print(x)
+    background(255)
+    if t==1:
+       gorod()
+       Volna()
+    if x < 700:
+        t=2
+    if t==2:
+        push()
+        fill(100,0,0)
+        gorod()
+        pop()
+        Volna()
+    if i % 100 == 0:
+        ultrasound.ultra_volna_plus()
+    i+=1
+    ultrasound.ultra_volna()
+    gorod()
