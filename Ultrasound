@@ -12,14 +12,12 @@ class Ultrasound():
         for i in range(len(self.r)-1):
             strokeWeight(self.weight[i])
             ellipse(self.x,self.y,self.r[i],self.r[i])
-            self.r[i]+=3
+            self.r[i]+=4
             self.weight[i]-=0.01
         if self.r[0] >= 2600 or self.r[0]/2+100 >= x:
             del self.r[0]
             del self.weight[0]
             speed = -2
-        #else:
-            #speed = 2
     def ultra_volna_plus(self):
         self.r.append(0)
         self.weight.append(10)
@@ -43,21 +41,22 @@ def setup():
     background(255)
 def draw():
     global i,t
-    print(x)
     background(255)
-    if t==1:
-       gorod()
-       Volna()
-    if x < 700:
-        t=2
-    if t==2:
-        push()
-        fill(100,0,0)
+    if key == " ":
+        if t==1:
+            Volna()
+        if x < 700:
+            t=2
+        if t==2:
+            push()
+            fill(100,0,0)
+            gorod()
+            pop()
+            Volna()
+        if i % 100 == 0:
+            ultrasound.ultra_volna_plus()
+        i+=1
+        ultrasound.ultra_volna()
         gorod()
-        pop()
-        Volna()
-    if i % 100 == 0:
-        ultrasound.ultra_volna_plus()
-    i+=1
-    ultrasound.ultra_volna()
-    gorod()
+    if t==1:
+        gorod()
