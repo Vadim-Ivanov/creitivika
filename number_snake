@@ -1,20 +1,21 @@
 dict_int = {'i':0}
 dict_const = {'gran_left':0,'gran_right':600,'snake.scroll_tail_Y':3,'snake.move_to_palette_X':400,'snake.move_to_palette_Y':100,'gran_left_palette_line':50,'gran_right_palette_line':305,'palette_Y_line':50}
-dict_const_fill = {'i':0}
-dict_const_stroke = {'line_palette1':125,'line_palette2':255}
-dict_const_strokeWeight = {'line_palette':5}
-dict_const_rect = {'i':0}
+dict_const_fill = {'button_LEFT_RIGHT_palette':125,'text_LEFT_RIGHT_palette':0}
+dict_const_stroke = {'line_palette1':125,'line_palette2':255,'button_collor_green_pallete':[0,255,0],'button_collor_red_pallete':[255,0,0],'button_palette':0}
+dict_const_strokeWeight = {'line_palette':5,'button_palette':1}
+dict_const_rect = {'button_collor_pallete':[50,200,50,50],'button_LEFT_palette':[50,400,25,50],'button_RIGHT_palette':[80,400,25,50]}
 dict_const_triangle = {'i':0}
 dict_const_ellipse = {'i':0}
-
+dict_const_text = {'i':0}
 def button_shop():
     pass
 class button_palette():
     def __init__(self):
         self.x = [175,175,175]
-        self._fill_ = []
+        self._fill_ = [{'R':255,'G':255,'B':255}]
         self.time = True
         self.mousePressed_time = True
+        self.int_fill = 0
     def palette(self):
         snake.draw_()
         snake.scroll_tail_Y(dict_const['snake.scroll_tail_Y'])
@@ -42,22 +43,34 @@ class button_palette():
                 if self._fill_[i]['R'] == self.x[0]-dict_const['gran_left_palette_line']:
                     if self._fill_[i]['G'] == self.x[1]-dict_const['gran_left_palette_line']:
                         if self._fill_[i]['B'] == self.x[2]-dict_const['gran_left_palette_line']:
-                            snake.fill_(self.x[0]-50,self.x[1]-50,self.x[2]-50)
+                            snake.fill_(self.x[0]-dict_const['gran_left_palette_line'],self.x[1]-dict_const['gran_left_palette_line'],self.x[2]-dict_const['gran_left_palette_line'])
         else:
             self.mousePressed_time = True
         for i in range(len(self._fill_)):
             if self.time == True:
                 if self._fill_[i]['R'] == self.x[0]-dict_const['gran_left_palette_line'] and self._fill_[i]['G'] == self.x[1]-dict_const['gran_left_palette_line'] and self._fill_[i]['B'] == self.x[2]-dict_const['gran_left_palette_line']:
-                    stroke(0,255,0)
+                    stroke(dict_const_stroke['button_collor_green_pallete'][0],dict_const_stroke['button_collor_green_pallete'][1],dict_const_stroke['button_collor_green_pallete'][2])
                     self.time = False
                 else:
-                    stroke(255,0,0)
+                    stroke(dict_const_stroke['button_collor_red_pallete'][0],dict_const_stroke['button_collor_red_pallete'][1],dict_const_stroke['button_collor_red_pallete'][2])
         if len(self._fill_) == 0:
-            stroke(255,0,0)
+            stroke(dict_const_stroke['button_collor_red_pallete'][0],dict_const_stroke['button_collor_red_pallete'][1],dict_const_stroke['button_collor_red_pallete'][2])
         self.time = True
         fill(self.x[0]-dict_const['gran_left_palette_line'],self.x[1]-dict_const['gran_left_palette_line'],self.x[2]-dict_const['gran_left_palette_line'])
-        rect(50,200,50,50)
+        
+        rect(dict_const_rect['button_collor_pallete'][0],dict_const_rect['button_collor_pallete'][1],dict_const_rect['button_collor_pallete'][2],dict_const_rect['button_collor_pallete'][3])
         print(self._fill_)
+        strokeWeight(dict_const_strokeWeight['button_palette'])
+        stroke(dict_const_stroke['button_palette'])
+        fill(dict_const_fill['button_LEFT_RIGHT_palette'])
+        rect(dict_const_rect['button_LEFT_palette'][0],dict_const_rect['button_LEFT_palette'][1],dict_const_rect['button_LEFT_palette'][2],dict_const_rect['button_LEFT_palette'][3])
+        rect(dict_const_rect['button_RIGHT_palette'][0],dict_const_rect['button_RIGHT_palette'][1],dict_const_rect['button_RIGHT_palette'][2],dict_const_rect['button_RIGHT_palette'][3])
+        fill(dict_const_fill['text_LEFT_RIGHT_palette'])
+        textSize(30)
+        text('>',92.5,440)
+        text('<',62.5,440)
+        fill(self._fill_[self.int_fill]['R'],self._fill_[self.int_fill]['G'],self._fill_[self.int_fill]['B'])
+        rect(50,480,55,55)
         stroke(0)
 def button_start():
     global start,score
