@@ -1,47 +1,61 @@
+dict_int = {'i':0}
+dict_const = {'gran_left':0,'gran_right':600,'snake.scroll_tail_Y':3,'snake.move_to_palette_X':400,'snake.move_to_palette_Y':100,'gran_left_palette_line':50,'gran_right_palette_line':305,'palette_Y_line':50}
+dict_const_fill = {'i':0}
+dict_const_stroke = {'line_palette1':125,'line_palette2':255}
+dict_const_strokeWeight = {'line_palette':5}
+dict_const_rect = {'i':0}
+dict_const_triangle = {'i':0}
+dict_const_ellipse = {'i':0}
+
 def button_shop():
     pass
 class button_palette():
     def __init__(self):
         self.x = [175,175,175]
         self._fill_ = []
+        self.time = True
+        self.mousePressed_time = True
     def palette(self):
         snake.draw_()
-        snake.scroll_tail_Y(3)
-        snake.move_to(400,100)
-        strokeWeight(1)
-        stroke(0)
-        fill(125)
-        rect(150,200,50,50)
-        strokeWeight(5)
-        stroke(125)
+        snake.scroll_tail_Y(dict_const['snake.scroll_tail_Y'])
+        snake.move_to(dict_const['snake.move_to_palette_X'],dict_const['snake.move_to_palette_Y'])
+        strokeWeight(dict_const_strokeWeight['line_palette'])
+        stroke(dict_const_stroke['line_palette1'])
         for i in range(1,4):
-            stroke(125)
-            line(50,50*i,305,50*i)
-        stroke(255)
-        line(self.x[0],40,self.x[0],60)
-        line(self.x[1],90,self.x[1],110)
-        line(self.x[2],140,self.x[2],160)
-        if mousePressed == 1:
+            line(dict_const['gran_left_palette_line'],dict_const['gran_left_palette_line']*i,dict_const['gran_right_palette_line'],dict_const['gran_left_palette_line']*i)
+        stroke(dict_const_stroke['line_palette2'])
+        line(self.x[0],dict_const['palette_Y_line'] * 1 - 10,self.x[0],dict_const['palette_Y_line'] * 1 + 10)
+        line(self.x[1],dict_const['palette_Y_line'] * 2 - 10,self.x[1],dict_const['palette_Y_line'] * 2 + 10)
+        line(self.x[2],dict_const['palette_Y_line'] * 3 - 10,self.x[2],dict_const['palette_Y_line'] * 3 + 10)
+        if mousePressed == True:
             for i in range(1,4):
-                if mouseX >= 50 and mouseX <= 305 and mouseY > i * (50 - 16) + i * 10 and mouseY < i * (50 + 16):
+                if mouseX >= dict_const['gran_left_palette_line'] and mouseX <= dict_const['gran_right_palette_line'] and mouseY > i * (50 - 16) + i * 10 and mouseY < i * (50 + 16):
                     self.x[i-1] = mouseX
-                if mouseX < 50 and mouseX > 0 and mouseY > i * (50 - 16) + i * 10 and mouseY < i * (50 + 16):
-                    self.x[i-1] = 50
-                if mouseX > 305 and mouseX < 350 and mouseY > i * (50 - 16) + i * 10 and mouseY < i * (50 + 16):
-                    self.x[i-1] = 305
-            if mouseX > 50 and mouseX < 100 and mouseY > 200 and mouseY < 250:
-                self._fill_.append(dict(R = self.x[0]-50,G = self.x[1]-50,B = self.x[2]-50))
+                if mouseX < dict_const['gran_left_palette_line'] and mouseX > dict_const['gran_left'] and mouseY > i * (50 - 16) + i * 10 and mouseY < i * (50 + 16):
+                    self.x[i-1] = dict_const['gran_left_palette_line']
+                if mouseX > dict_const['gran_right_palette_line'] and mouseX < dict_const['gran_right_palette_line'] + 45 and mouseY > i * (50 - 16) + i * 10 and mouseY < i * (50 + 16):
+                    self.x[i-1] = dict_const['gran_right_palette_line']
+            if mouseX > 50 and mouseX < 100 and mouseY > 200 and mouseY < 250 and self.mousePressed_time == True:
+                self._fill_.append(dict(R = self.x[0]-dict_const['gran_left_palette_line'],G = self.x[1]-dict_const['gran_left_palette_line'],B = self.x[2]-dict_const['gran_left_palette_line']))
+                self.mousePressed_time = False
             for i in range(len(self._fill_)):
-                if self._fill_[i]['R'] == self.x[0]-50:
-                    if self._fill_[i]['G'] == self.x[1]-50:
-                        if self._fill_[i]['B'] == self.x[2]-50:
+                if self._fill_[i]['R'] == self.x[0]-dict_const['gran_left_palette_line']:
+                    if self._fill_[i]['G'] == self.x[1]-dict_const['gran_left_palette_line']:
+                        if self._fill_[i]['B'] == self.x[2]-dict_const['gran_left_palette_line']:
                             snake.fill_(self.x[0]-50,self.x[1]-50,self.x[2]-50)
+        else:
+            self.mousePressed_time = True
         for i in range(len(self._fill_)):
-            if self._fill_[i]['R'] == self.x[0]-50 and self._fill_[i]['G'] == self.x[1]-50 and self._fill_[i]['B'] == self.x[2]-50:
-                stroke(0,255,0)
-            else:
-                stroke(255,0,0)
-        fill(self.x[0]-50,self.x[1]-50,self.x[2]-50)
+            if self.time == True:
+                if self._fill_[i]['R'] == self.x[0]-dict_const['gran_left_palette_line'] and self._fill_[i]['G'] == self.x[1]-dict_const['gran_left_palette_line'] and self._fill_[i]['B'] == self.x[2]-dict_const['gran_left_palette_line']:
+                    stroke(0,255,0)
+                    self.time = False
+                else:
+                    stroke(255,0,0)
+        if len(self._fill_) == 0:
+            stroke(255,0,0)
+        self.time = True
+        fill(self.x[0]-dict_const['gran_left_palette_line'],self.x[1]-dict_const['gran_left_palette_line'],self.x[2]-dict_const['gran_left_palette_line'])
         rect(50,200,50,50)
         print(self._fill_)
         stroke(0)
