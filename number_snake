@@ -18,11 +18,12 @@ class button_palette():
         self.mousePressed_time = True
         self.int_fill = 0
     def palette(self):
-        snake.draw_()
+        snake.draw_()#рисуем змейку
         snake.scroll_tail_Y(dict_const['snake.scroll_tail_Y'])
-        snake.move_to(dict_const['snake.move_to_palette_X'],dict_const['snake.move_to_palette_Y'])
+        snake.move_to(dict_const['snake.move_to_palette_X'],dict_const['snake.move_to_palette_Y'])#переносим голову змейки в верх экрана
         strokeWeight(dict_const_strokeWeight['line_palette'])
         stroke(dict_const_stroke['line_palette1'])
+        #рисуем рычажки управления цветом
         for i in range(1,4):
             line(dict_const['gran_left_palette_line'],dict_const['gran_left_palette_line']*i,dict_const['gran_right_palette_line'],dict_const['gran_left_palette_line']*i)
         stroke(dict_const_stroke['line_palette2'])
@@ -31,22 +32,39 @@ class button_palette():
         line(self.x[2],dict_const['palette_Y_line'] * 3 - 10,self.x[2],dict_const['palette_Y_line'] * 3 + 10)
         if mousePressed == True:
             for i in range(1,4):
+                #управляем рычажками мышкой
                 if mouseX >= dict_const['gran_left_palette_line'] and mouseX <= dict_const['gran_right_palette_line'] and mouseY > i * (50 - 16) + i * 10 and mouseY < i * (50 + 16):
                     self.x[i-1] = mouseX
                 if mouseX < dict_const['gran_left_palette_line'] and mouseX > dict_const['gran_left'] and mouseY > i * (50 - 16) + i * 10 and mouseY < i * (50 + 16):
                     self.x[i-1] = dict_const['gran_left_palette_line']
                 if mouseX > dict_const['gran_right_palette_line'] and mouseX < dict_const['gran_right_palette_line'] + 45 and mouseY > i * (50 - 16) + i * 10 and mouseY < i * (50 + 16):
                     self.x[i-1] = dict_const['gran_right_palette_line']
+                #если нажата левая кнопка то изменяем цвет на -1
+                if mouseX > dict_const_rect['button_LEFT_palette'][0]:
+                    if mouseX < dict_const_rect['button_LEFT_palette'][0] + dict_const_rect['button_LEFT_palette'][2]:
+                        if mouseY > dict_const_rect['button_LEFT_palette'][1]:
+                            if mouseY < dict_const_rect['button_LEFT_palette'][1] + dict_const_rect['button_LEFT_palette'][3]:
+                                if self.int_fill > 0 and self.mousePressed_time == True:
+                                    self.int_fill -= 1
+                                    self.mousePressed_time = False
+                #если нажата правая кнопка то изменяем цвет на +1
+                if mouseX > dict_const_rect['button_RIGHT_palette'][0]:
+                    if mouseX < dict_const_rect['button_RIGHT_palette'][0] + dict_const_rect['button_RIGHT_palette'][2]:
+                        if mouseY > dict_const_rect['button_RIGHT_palette'][1]:
+                            if mouseY < dict_const_rect['button_RIGHT_palette'][1] + dict_const_rect['button_RIGHT_palette'][3]:
+                                if self.int_fill < len(self._fill_)-1 and self.mousePressed_time == True:
+                                    self.int_fill += 1
+                                    self.mousePressed_time = False
+            #если нажата кнопка то добавляем цвет в список
             if mouseX > 50 and mouseX < 100 and mouseY > 200 and mouseY < 250 and self.mousePressed_time == True:
                 self._fill_.append(dict(R = self.x[0]-dict_const['gran_left_palette_line'],G = self.x[1]-dict_const['gran_left_palette_line'],B = self.x[2]-dict_const['gran_left_palette_line']))
                 self.mousePressed_time = False
-            for i in range(len(self._fill_)):
-                if self._fill_[i]['R'] == self.x[0]-dict_const['gran_left_palette_line']:
-                    if self._fill_[i]['G'] == self.x[1]-dict_const['gran_left_palette_line']:
-                        if self._fill_[i]['B'] == self.x[2]-dict_const['gran_left_palette_line']:
-                            snake.fill_(self.x[0]-dict_const['gran_left_palette_line'],self.x[1]-dict_const['gran_left_palette_line'],self.x[2]-dict_const['gran_left_palette_line'])
+                self.int_fill = len(self._fill_)-1
+            #если нажимаем мышкой на кружок змейки то он меняе цвет
+            snake.fill_(self._fill_[self.int_fill]['R'],self._fill_[self.int_fill]['G'],self._fill_[self.int_fill]['B'])
         else:
             self.mousePressed_time = True
+        #определяем куплен цвет или нет и изменяем контур кнопки покупки
         for i in range(len(self._fill_)):
             if self.time == True:
                 if self._fill_[i]['R'] == self.x[0]-dict_const['gran_left_palette_line'] and self._fill_[i]['G'] == self.x[1]-dict_const['gran_left_palette_line'] and self._fill_[i]['B'] == self.x[2]-dict_const['gran_left_palette_line']:
@@ -54,6 +72,12 @@ class button_palette():
                     self.time = False
                 else:
                     stroke(dict_const_stroke['button_collor_red_pallete'][0],dict_const_stroke['button_collor_red_pallete'][1],dict_const_stroke['button_collor_red_pallete'][2])
+        
+        for i in range(len(self._fill_)-1):
+            for j in range(len(self._fill_)-1):
+                if self._fill_[i] == self._fill_[j] and i != j:
+                    del self._fill_[j]
+                    self.int_fill -= 1
         if len(self._fill_) == 0:
             stroke(dict_const_stroke['button_collor_red_pallete'][0],dict_const_stroke['button_collor_red_pallete'][1],dict_const_stroke['button_collor_red_pallete'][2])
         self.time = True
