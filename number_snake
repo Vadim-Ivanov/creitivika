@@ -3,10 +3,11 @@ dict_const = {'gran_left':0,'gran_right':600,'snake.scroll_tail_Y':3,'snake.move
 dict_const_fill = {'button_LEFT_RIGHT_palette':125,'text_LEFT_RIGHT_palette':0}
 dict_const_stroke = {'line_palette1':125,'line_palette2':255,'button_collor_green_pallete':[0,255,0],'button_collor_red_pallete':[255,0,0],'button_palette':0}
 dict_const_strokeWeight = {'line_palette':5,'button_palette':1}
-dict_const_rect = {'button_collor_pallete':[50,200,50,50],'button_LEFT_palette':[50,400,25,50],'button_RIGHT_palette':[80,400,25,50]}
+dict_const_rect = {'button_collor_pallete':[50,200,50,50],'button_LEFT_palette':[50,400,25,50],'button_RIGHT_palette':[80,400,25,50],'list_fill':[50,480,55,55]}
 dict_const_triangle = {'i':0}
 dict_const_ellipse = {'i':0}
-dict_const_text = {'i':0}
+dict_const_text = {'RIGHT_paletter':[92.5,440],'LEFT_paletter':[62.5,440]}
+dict_const_textSize = {'LEFT_RIGHT_palette':30}
 def button_shop():
     pass
 class button_palette():
@@ -66,12 +67,11 @@ class button_palette():
         rect(dict_const_rect['button_LEFT_palette'][0],dict_const_rect['button_LEFT_palette'][1],dict_const_rect['button_LEFT_palette'][2],dict_const_rect['button_LEFT_palette'][3])
         rect(dict_const_rect['button_RIGHT_palette'][0],dict_const_rect['button_RIGHT_palette'][1],dict_const_rect['button_RIGHT_palette'][2],dict_const_rect['button_RIGHT_palette'][3])
         fill(dict_const_fill['text_LEFT_RIGHT_palette'])
-        textSize(30)
-        text('>',92.5,440)
-        text('<',62.5,440)
+        textSize(dict_const_textSize['LEFT_RIGHT_palette'])
+        text('>',dict_const_text['RIGHT_paletter'][0],dict_const_text['RIGHT_paletter'][1])
+        text('<',dict_const_text['LEFT_paletter'][0],dict_const_text['LEFT_paletter'][1])
         fill(self._fill_[self.int_fill]['R'],self._fill_[self.int_fill]['G'],self._fill_[self.int_fill]['B'])
-        rect(50,480,55,55)
-        stroke(0)
+        rect(dict_const_rect['list_fill'][0],dict_const_rect['list_fill'][1],dict_const_rect['list_fill'][2],dict_const_rect['list_fill'][3])
 def button_start():
     global start,score
     snake.dlina(0)
