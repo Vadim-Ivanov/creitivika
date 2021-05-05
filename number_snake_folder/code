@@ -11,14 +11,19 @@ dict_const_textSize = {'LEFT_RIGHT_palette':30,'RGB_palette':30}
 class button_shop():
     def __init__(self):
         self.snake_X = 300
-        self.speed_snake = 5
+        self.snake_Y = 100
+        self.speed_snake = 2
     def draw_(self):
         #рисуем змейку
         snake.draw_()
         snake.scroll_tail_Y(dict_const['snake.scroll_tail_Y'])
         #переносим голову змейки в верх экрана
-        snake.move_to(dict_const['snake.move_to_palette_X'],dict_const['snake.move_to_palette_Y'])
-        #if 
+        snake.move_to(self.snake_X,self.snake_Y)
+        if self.snake_X >= 350:
+            self.speed_snake = -2
+        if self.snake_X <= 250:
+            self.speed_snake = 2
+        self.snake_X += self.speed_snake
 class button_palette():
     def __init__(self):
         self.x = [175,175,175]
@@ -270,7 +275,7 @@ class Snake:
                 fill(self.p[40-1-i]['R'], self.p[40-1-i]['G'], self.p[40-1-i]['B'])
                 circle(self.p[40-1-i]['x'],self.p[40-1-i]['y'],self.d)
         textSize(10)
-        if palette == 0:
+        if palette == 0 and dict_int['shop'] == False:
             text(self.n,self.p[0]['x'],self.p[0]['y']-10)
     def move_to(self,x,y):
         self.p[0]['x'] = x
