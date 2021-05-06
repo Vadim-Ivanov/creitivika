@@ -8,11 +8,15 @@ dict_const_triangle = {'i':0}
 dict_const_ellipse = {'i':0}
 dict_const_text = {'RIGHT_paletter':[92.5,440],'LEFT_paletter':[62.5,440]}
 dict_const_textSize = {'LEFT_RIGHT_palette':30,'RGB_palette':30}
+upgrade_dict = {'cooldown':[15,500],}
+#перезарядка,патроны,бонус,мощность выстрела,пробивание,патронов при выстреле,переливающиеся цвета,ЫВАПВЫП,ПВЫП
+upgrade_list = ['cooldown','cartridges','bonus','power of the shot','punching','cartridges when fired','iridescent colors']
 class button_shop():
     def __init__(self):
-        self.snake_X = 300
+        self.snake_X = 250
         self.snake_Y = 100
         self.speed_snake = 2
+        self.str_ = 0
     def draw_(self):
         #рисуем змейку
         snake.draw_()
@@ -24,6 +28,14 @@ class button_shop():
         if self.snake_X <= 250:
             self.speed_snake = 2
         self.snake_X += self.speed_snake
+        for i in range(3):
+            for j in range(3):
+                fill(0,255,0,240)
+                rect(100*i+175,100*j+400,75,75)
+                fill(0)
+                textSize(15)
+                text(upgrade_list[i*3+j],100*i+175+37.5,100*j+400+30)
+                text(upgrade_dict[upgrade_list[i*3+j]][1],100*i+175+37.5,100*j+400+60)
 class button_palette():
     def __init__(self):
         self.x = [175,175,175]
@@ -123,9 +135,10 @@ class button_palette():
         rect(dict_const_rect['list_fill'][0],dict_const_rect['list_fill'][1],dict_const_rect['list_fill'][2],dict_const_rect['list_fill'][3])
 def button_start():
     global start,score
-    snake.dlina_to(0)
+    snake.dlina_to(40)
     prep.recovery_prep()
     dict_int['score'] = 0
+    ball.ball_clear()
     start = 1
 def button():
     fill(255,0,0)
@@ -246,6 +259,9 @@ class Ball:
             self.p.append(dict(x = random(10,590),y = -15,num = floor(random(100,1000)),gold = 1))
         else:
             self.p.append(dict(x = random(10,590),y = -15,num = floor(random(1,10)),gold = 0))
+    def ball_clear(self):
+        for i in range(len(self.p)):
+            del self.p[0]
 #Змейка  
 class Snake:
     def __init__(self,x_,y_,d,n):
@@ -426,8 +442,6 @@ def draw():
             shop.draw_()
 def mousePressed():
     global start,palette
-    if start == 0 and mouseX > 200 and mouseX < 400 and mouseY > 400 - 62.5 and mouseY < 400 + 62.5 and palette == 0:
-        button_start()
     if start == 0 and mouseX > 500 and mouseX < 600 and mouseY > 0 and mouseY < 60 and dict_int['shop'] == True:
         snake.dlina_to(40)
         dict_int['shop'] = False
@@ -441,3 +455,5 @@ def mousePressed():
     if start == 0 and mouseX > 500 and mouseX < 600 and mouseY > 0 and mouseY < 60 and palette == 1:
         palette = 0
         snake.dlina_to(40)
+    if start == 0 and mouseX > 200 and mouseX < 400 and mouseY > 400 - 62.5 and mouseY < 400 + 62.5 and palette == 0 and dict_int['shop'] == False:
+        button_start()
