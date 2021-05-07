@@ -1,4 +1,4 @@
-dict_int = {'score':0,'start':False,'shop':False}
+dict_int = {'score':0,'start':False,'shop':False,'snake_head_X':300,'snake_head_Y':500,'prep_Y':0}
 dict_const = {'gran_left':0,'gran_right':600,'snake.scroll_tail_Y':3,'snake.move_to_palette_X':400,'snake.move_to_palette_Y':100,'gran_left_palette_line':50,'gran_right_palette_line':305,'palette_Y_line':50}
 dict_const_fill = {'button_LEFT_RIGHT_palette':125,'text_LEFT_RIGHT_palette':0}
 dict_const_stroke = {'line_palette1':125,'line_palette2':255,'button_collor_green_pallete':[0,255,0],'button_collor_red_pallete':[255,0,0],'button_palette':0,'RGB_palette':255}
@@ -12,9 +12,30 @@ upgrade_dict = {'cooldown':[15,500,1],'cartridges':[5,500,1],'bonus':[1,500,1],'
                 'iridescent colors':[0,5000,1],'speed':[3,250,1],'speed cartridges':[3,500,1],'speed boss cartridges':[10,10000,1]}
 #перезарядка,патроны,бонус,пробивание,патронов при выстреле,переливающиеся цвета,скорость,скорость стрельбы пушки
 upgrade_list = ['cooldown','cartridges','bonus','punching','invulnerability','iridescent colors','speed','speed cartridges','speed boss cartridges']
-upgrade_list_Russian = [u'перезарядка',u'патроны',u'бонус',u'пробивание',u'неуязвимость',u'переливающиеся \n цвета',u'скорость',u'скорость \n пуль',u'скорость \n стрельбы \n вражеской \n пушки']
+upgrade_list_Russian = [u'перезарядка',u'патроны',u'бонус',u'пробивание',u'неуязвимость',u'переливающиеся \n цвета',u'скорость',u'скорость \n пуль',u'стрельба \n вражеской \n пушки']
 upgrade = {}
-class button_shop():
+class cartridges:
+    def __init__(self):
+        self.quantity = upgrade_dict['cartridges'][0]
+        self.cartridges = []
+        self.keyTime = True
+    def draw_(self):
+        if keyPressed == True and key == " " and len(self.cartridges) <= self.quantity and self.keyTime == True:
+            self.cartridges.append(dict(x = dict_int['snake_head_X'],y = dict_int['snake_head_Y'],speed = upgrade_dict['speed cartridges'][0]))
+            self.keyTime = False
+        if keyPressed == False:
+            self.keyTime = True
+        for i in range(len(self.cartridges)-1):
+            fill('#B2A38A')
+            rect(self.cartridges[i]['x']-4,self.cartridges[i]['y']-7.5,8,15)
+            self.cartridges[i]['y'] -= self.cartridges[i]['speed']
+            if self.cartridges[i]['y'] <= dict_int['prep_Y']-5 and self.cartridges[i]['y'] >= dict_int['prep_Y'] - 115:
+                del self.cartridges[i]
+            if self.cartridges[i]['y'] <= 0:
+                del self.cartridges[i]
+    def Y_cartridges(self):
+        return self.cartridges[0]['y']
+class button_shop:
     def __init__(self):
         self.snake_X = 250
         self.snake_Y = 100
@@ -46,10 +67,11 @@ class button_shop():
                 fill(0,255,0,240)
                 rect(100*i+175,100*j+400,90,90)
                 fill(0)
-                textSize(24)
-                text(upgrade_dict[upgrade_list[i*3+j]][2],100*i+175+45,100*j+400+10)
+                textSize(15)
+                text(u'ур.',100*i+175+35,100*j+400+25)
+                text(upgrade_dict[upgrade_list[i*3+j]][2],100*i+175+55,100*j+400+25)
                 textSize(10)
-                text(upgrade_list_Russian[i*3+j],100*i+175+45,100*j+400+60)
+                text(upgrade_list_Russian[i*3+j],100*i+175+45,100*j+400+70)
                 text(upgrade_dict[upgrade_list[i*3+j]][1],100*i+175+45,100*j+400+90)
                 if mousePressed == True and self.mouseTime == True and dict_int['score'] >= upgrade_dict[upgrade_list[i*3+j]][1]:
                     if mouseX > 100*i+175 and mouseX < 100*i+175+90 and mouseY > 100*j+400 and mouseY < 100*j+400+90:
@@ -59,7 +81,7 @@ class button_shop():
                         self.mouseTime = False
                 if mousePressed == False:
                     self.mouseTime = True
-class button_palette():
+class button_palette:
     def __init__(self):
         self.x = [175,175,175]
         self._fill_ = [{'R':255,'G':255,'B':255}]
@@ -383,6 +405,7 @@ class Prep:
             gran_left = 0
             gran_right = 600
         strokeWeight(10)
+        dict_int['prep_Y'] = self.prep[0]['y'] + 120
         if self.del_index == 5:
             for i in range(len(self.prep)):
                 if self.prep[i]['y'] < 365:
@@ -392,6 +415,9 @@ class Prep:
                         self.prep[i]['num'] -= 1
                         dict_int['score'] += 1
                         snake.dlina(-1)
+                    if cartridge.Y_cartridges() <= self.prep[0]['y'] + 135 and cartridge.Y_cartridges() >= self.prep[0]['y']:
+                        self.prep[i]['num'] -= 1
+                        dict_int['score'] += 1
                 if self.prep[i]['num'] > 0 and i != self.del_index:
                     fill("#34FFFD")
                     rect(self.prep[i]['x'],self.prep[i]['y'],120,120)
@@ -425,6 +451,7 @@ i = 1
 palette = 0
 Button_palette = button_palette()
 shop = button_shop()
+cartridge = cartridges()
 def setup():
     global immage
     immage = loadImage("fon2.png")
@@ -440,6 +467,7 @@ def draw():
     textSize(25)
     text('money:',300,25)
     text(dict_int['score'],300,50)
+    dict_int['snake_head_X'] = mouseX
     if start == 1:
         ball.draw_ball(snake.head_X())
         #wall.draw_wall(snake.head_X())
@@ -448,6 +476,8 @@ def draw():
         snake.move_to(mouseX,500)
         textSize(20)
         prep.move_prep(snake.get_n(),snake.head_X())
+        strokeWeight(1)
+        cartridge.draw_()
         fill(255-background_[0],255-background_[1],255-background_[2])
         if i % 100 == 0:
             ball.plus_ball()
