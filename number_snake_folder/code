@@ -8,17 +8,29 @@ dict_const_triangle = {'i':0}
 dict_const_ellipse = {'i':0}
 dict_const_text = {'RIGHT_paletter':[92.5,440],'LEFT_paletter':[62.5,440]}
 dict_const_textSize = {'LEFT_RIGHT_palette':30,'RGB_palette':30}
-upgrade_dict = {'cooldown':[15,500],'cartridges':[5,500],'bonus':[1,500],'punching':[1,500],'cartridges when fired':[1,500],'iridescent colors':[0,5000],'speed':[3,250],'speed cartridges':[3,500],'speed boss cartridges':[10,10000]}
+upgrade_dict = {'cooldown':[15,500,1],'cartridges':[5,500,1],'bonus':[1,500,1],'punching':[1,500,1],'invulnerability':[1,500,1],
+                'iridescent colors':[0,5000,1],'speed':[3,250,1],'speed cartridges':[3,500,1],'speed boss cartridges':[10,10000,1]}
 #перезарядка,патроны,бонус,пробивание,патронов при выстреле,переливающиеся цвета,скорость,скорость стрельбы пушки
-upgrade_list = ['cooldown','cartridges','bonus','punching','cartridges when fired','iridescent colors','speed','speed cartridges','speed boss cartridges']
-upgrade_list_Russian = [u'перезарядка',u'патроны',u'бонус',u'пробивание',u'патронов \n при \n выстреле',u'переливающиеся \n цвета',u'скорость',u'скорость \n пуль',u'скорость \n стрельбы \n вражеской \n пушки']
+upgrade_list = ['cooldown','cartridges','bonus','punching','invulnerability','iridescent colors','speed','speed cartridges','speed boss cartridges']
+upgrade_list_Russian = [u'перезарядка',u'патроны',u'бонус',u'пробивание',u'неуязвимость',u'переливающиеся \n цвета',u'скорость',u'скорость \n пуль',u'скорость \n стрельбы \n вражеской \n пушки']
+upgrade = {}
 class button_shop():
     def __init__(self):
         self.snake_X = 250
         self.snake_Y = 100
         self.speed_snake = 2
         self.str_ = 0
+        self.mouseTime = True
     def draw_(self):
+        upgrade = {'cooldown':[upgrade_dict['cooldown'][0]-1,upgrade_dict['cooldown'][1]*2,upgrade_dict['cooldown'][2]+1],
+                   'cartridges':[upgrade_dict['cartridges'][0]+2,upgrade_dict['cartridges'][1]*2,upgrade_dict['cartridges'][2]+1],
+                   'bonus':[upgrade_dict['bonus'][0]+1,upgrade_dict['bonus'][1]*2,upgrade_dict['bonus'][2]+1],
+                   'punching':[upgrade_dict['punching'][0]*2,upgrade_dict['punching'][1]*2,upgrade_dict['punching'][2]+1],
+                   'invulnerability':[upgrade_dict['invulnerability'][0]+1,upgrade_dict['invulnerability'][1]*2,upgrade_dict['invulnerability'][2]+1],
+                   'iridescent colors':[upgrade_dict['iridescent colors'][0]+1,upgrade_dict['iridescent colors'][1]*2,upgrade_dict['iridescent colors'][2]+1],
+                   'speed':[upgrade_dict['speed'][0]+1,upgrade_dict['speed'][1]*2,upgrade_dict['speed'][2]+1],
+                   'speed cartridges':[upgrade_dict['speed cartridges'][0]+1,upgrade_dict['speed cartridges'][1]*2,upgrade_dict['speed cartridges'][2]+1],
+                   'speed boss cartridges':[upgrade_dict['speed boss cartridges'][0]/1.5,upgrade_dict['speed boss cartridges'][1]*5,upgrade_dict['speed boss cartridges'][2]+1]}
         #рисуем змейку
         snake.draw_()
         snake.scroll_tail_Y(dict_const['snake.scroll_tail_Y'])
@@ -32,11 +44,21 @@ class button_shop():
         for i in range(3):
             for j in range(3):
                 fill(0,255,0,240)
-                rect(100*i+175,100*j+400,75,75)
+                rect(100*i+175,100*j+400,90,90)
                 fill(0)
+                textSize(24)
+                text(upgrade_dict[upgrade_list[i*3+j]][2],100*i+175+45,100*j+400+10)
                 textSize(10)
-                text(upgrade_list_Russian[i*3+j],100*i+175+37.5,100*j+400+40)
-                text(upgrade_dict[upgrade_list[i*3+j]][1],100*i+175+37.5,100*j+400+70)
+                text(upgrade_list_Russian[i*3+j],100*i+175+45,100*j+400+60)
+                text(upgrade_dict[upgrade_list[i*3+j]][1],100*i+175+45,100*j+400+90)
+                if mousePressed == True and self.mouseTime == True and dict_int['score'] >= upgrade_dict[upgrade_list[i*3+j]][1]:
+                    if mouseX > 100*i+175 and mouseX < 100*i+175+90 and mouseY > 100*j+400 and mouseY < 100*j+400+90:
+                        dict_int['score'] -= upgrade_dict[upgrade_list[i*3+j]][1]
+                        #shop.upgrade(i,j)
+                        upgrade_dict[upgrade_list[i*3+j]] = upgrade[upgrade_list[i*3+j]]
+                        self.mouseTime = False
+                if mousePressed == False:
+                    self.mouseTime = True
 class button_palette():
     def __init__(self):
         self.x = [175,175,175]
@@ -119,7 +141,6 @@ class button_palette():
         fill(self.x[0]-dict_const['gran_left_palette_line'],self.x[1]-dict_const['gran_left_palette_line'],self.x[2]-dict_const['gran_left_palette_line'])
         #рисуем кнопку покупки цветов
         rect(dict_const_rect['button_collor_pallete'][0],dict_const_rect['button_collor_pallete'][1],dict_const_rect['button_collor_pallete'][2],dict_const_rect['button_collor_pallete'][3])
-        print(self._fill_)
         strokeWeight(dict_const_strokeWeight['button_palette'])
         stroke(dict_const_stroke['button_palette'])
         fill(dict_const_fill['button_LEFT_RIGHT_palette'])
@@ -180,6 +201,15 @@ def button():
     rotate(radians(120))
     ellipse(0,0,30,25)
     pop()
+    
+    push()
+    fill(0,0,255)
+    noStroke()
+    rect(0,0,100,60)
+    pop()
+    fill(255)
+    textSize(24)
+    text(u'деньги',50,42)
 list_prep = [] 
 gran_left = 0
 gran_right = 600
@@ -458,3 +488,5 @@ def mousePressed():
         snake.dlina_to(40)
     if start == 0 and mouseX > 200 and mouseX < 400 and mouseY > 400 - 62.5 and mouseY < 400 + 62.5 and palette == 0 and dict_int['shop'] == False:
         button_start()
+    if start == 0 and mouseX > 0 and mouseX < 100 and mouseY > 0 and mouseY < 60 and palette == 0 and dict_int['shop'] == False:
+        dict_int['score'] += 500
