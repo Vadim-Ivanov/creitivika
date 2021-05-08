@@ -39,7 +39,7 @@ class lava:
                 del self.p[i]
                 return ' '
     def plus_lava(self):
-        if prep.polog_Y() > 20:
+        if prep.polog_Y() > 20 and prep.polog_Y() < 800:
             self.p.append(dict(x = random(10,590),y = -15))
     def lava_clear(self):
         for i in range(len(self.p)):
@@ -218,7 +218,6 @@ def button_start():
     global start,score
     snake.dlina_to(40)
     prep.recovery_prep()
-    dict_int['score'] = 0
     ball.ball_clear()
     lava.lava_clear()
     start = 1
@@ -346,13 +345,13 @@ class Ball:
                 return ' '
     def plus_ball(self):
         x = floor(random(0,1000))
-        y = floor(random(0,2))
+        y = floor(random(0,5))
         if x == 1:
             self.p.append(dict(x = random(10,590),y = -15,num = floor(random(100,1000)),gold = 1))
         if x != 1 and y == 0:
-            self.p.append(dict(x = random(10,590),y = -15,num = floor(random(1,10)),gold = 0))
-        else:
             self.p.append(dict(x = random(10,590),y = -15,num = floor(random(-15,-1)),gold = 0))
+        else:
+            self.p.append(dict(x = random(10,590),y = -15,num = floor(random(1,10)),gold = 0))
     def ball_clear(self):
         for i in range(len(self.p)):
             del self.p[0]
@@ -457,7 +456,7 @@ class Prep:
                         self.prep[i]['num'] -= 1
                         dict_int['score'] += 1
                         snake.dlina(-1)
-                    if cartridge.Y_cartridges() <= self.prep[0]['y'] + 135 and cartridge.Y_cartridges() >= self.prep[0]['y']:
+                    if cartridge.Y_cartridges() <= self.prep[0]['y'] + 100 and cartridge.Y_cartridges() >= self.prep[0]['y']:
                         self.prep[i]['num'] -= 1
                         dict_int['score'] += 1
                 if self.prep[i]['num'] > 0 and i != self.del_index:
