@@ -19,6 +19,15 @@ upgrade_list = ['cooldown','cartridges','bonus','punching','invulnerability','ir
 upgrade_list_Russian = [u'перезарядка',u'патроны',u'бонус',u'пробивание',u'неуязвимость',u'переливающиеся \n цвета',u'скорость',u'скорость \n пуль',u'стрельба \n вражеской \n пушки']
 upgrade = {}
 
+class esc:
+    def __init__(self):
+        self.X = 500
+        self.Y = 50
+    def draw_(self):
+        fill(255)
+        strokeWeight(1)
+        rect(self.X,self.Y,10,50)
+        rect(self.X + 20,self.Y,10,50)
 class lava:
     def __init__(self):
         self.p = [dict(x = random(10,590),y = -15,num = floor(random(1,10)),gold = 0)]
@@ -494,6 +503,7 @@ palette = 0
 Button_palette = button_palette()
 shop = button_shop()
 cartridge = cartridges()
+esc = esc()
 def setup():
     global immage
     immage = loadImage("fon2.png")
@@ -525,6 +535,7 @@ def draw():
         if i % 30 == 0:
             ball.plus_ball()
             lava.plus_lava()
+        esc.draw_()
         #if i % 100 == 0:
             #wall.plus_wall()
         i += 1
