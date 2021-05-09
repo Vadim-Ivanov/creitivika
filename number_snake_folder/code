@@ -1,6 +1,9 @@
-#from palette import button_palette
+X = 600
+pX = 600
+kof = 1.0 * pX / X
 
-####### -*- coding: utf-8 -*-
+X_size = 450
+Y_size = 600
 
 dict_int = {'score':0,'start':False,'shop':False,'snake_head_X':300,'snake_head_Y':500,'prep_Y':0}
 dict_const = {'gran_left':0,'gran_right':600,'snake.scroll_tail_Y':3,'snake.move_to_palette_X':400,'snake.move_to_palette_Y':100,'gran_left_palette_line':50,'gran_right_palette_line':305,'palette_Y_line':50}
@@ -21,29 +24,38 @@ upgrade = {}
 
 class esc:
     def __init__(self):
-        self.X = 500
-        self.Y = 50
+        self.X = X_size * 5 / 6
+        self.Y = Y_size / 18
+        self.X_size_rect = X_size / 60
+        self.Y_size_rect = Y_size / 16
+        self.const_X = X_size / 30
     def draw_(self):
         fill(255)
         strokeWeight(1)
-        rect(self.X,self.Y,10,50)
-        rect(self.X + 20,self.Y,10,50)
+        rect(self.X,self.Y,self.X_size_rect,self.Y_size_rect)
+        rect(self.X + 20,self.Y,self.X_size_rect,self.Y_size_rect)
 class lava:
     def __init__(self):
-        self.p = [dict(x = random(10,590),y = -15,num = floor(random(1,10)),gold = 0)]
+        self.p = [dict(x = random(10,X_size),y = -15,num = floor(random(1,10)),gold = 0)]
+        self.X_size_rect = X_size / 20
+        self.Y_size_rect = Y_size / 27
+        self.Y_prep = Y_size * 36 / 80
+        self.Y_prep_2 = Y_size * 37 / 80
+        self.Y_head = Y_size * 925 / 1600
+        self.Y_head_2 = Y_size * 1075 / 1600
     def draw_lava(self,head_X):
         for i in range(len(self.p)):
             strokeWeight(1)
             fill('#F5A328')
-            rect(self.p[i]['x'],self.p[i]['y'],30,30)
+            rect(self.p[i]['x'],self.p[i]['y'],self.X_size_rect,self.Y_size_rect)
             textSize(12)
-            if prep.polog_Y() < 360 or prep.polog_Y() > 370:
+            if prep.polog_Y() < self.Y_prep or prep.polog_Y() > self.Y_prep_2:
                 self.p[i]['y'] += 3
         if len(self.p) > 0:
-            if self.p[0]['y'] >= 800:
+            if self.p[0]['y'] >= Y_size:
                 del self.p[0]
         for i in range(len(self.p)):
-            if self.p[i]['y'] >= 462.5 and self.p[i]['y'] <= 537.5 and self.p[i]['x'] <= head_X and self.p[i]['x'] >= head_X - 37.5:
+            if self.p[i]['y'] >= self.Y_head and self.p[i]['y'] <= self.Y_head_2 and self.p[i]['x'] <= head_X and self.p[i]['x'] >= head_X - (self.X_size_rect + 7.5)37.5:
                 snake.dlina_to(0)
                 del self.p[i]
                 return ' '
@@ -281,53 +293,6 @@ def button():
 list_prep = [] 
 gran_left = 0
 gran_right = 600
-# class Wall:
-#     def __init__(self):
-#         self.p = []
-#         self.p_old = [] 
-#     def draw_wall(self,head_X):
-#         global gran_left,gran_right
-#         self.graniza = 0
-#         strokeWeight(10)
-#         stroke("#9AECFA")
-#         for i in range(len(self.p)):
-#             line(self.p[i]['x'] * 120,self.p[i]['y'],self.p[i]['x'] * 120,self.p[i]['y2'])
-#             if self.p[i]['y'] >= 500 and self.p[i]['y'] <= 600 and self.graniza == 0:
-#                 print('1')
-#                 #print('------------------------------------------------')
-#                 #for gran in range(len(self.p)):
-#                 if head_X < self.p[i]['x'] * 120:
-#                     gran_right = self.p[i]['x'] * 120
-#                     #print(gran_right)
-#                 else: 
-#                     gran_right = 600
-#                 if head_X > self.p[i]['x'] * 120:
-#                     gran_left = self.p[i]['x'] * 120
-#                 else: 
-#                     gran_left = 0
-#                 self.graniza = 1
-#             if len(self.p_old) > 0:
-#                 if self.p_old[len(self.p_old)-1]['y2'] - 600 > 0 and self.p_old[len(self.p_old)-1]['y2'] - 600 < 50 and self.graniza == 1:
-#                     print('2')
-#                     self.graniza = 2
-#                     gran_right = 600
-#                     gran_left = 0
-#             if prep.polog_Y() < 360 or prep.polog_Y() > 370:
-#                 self.p[i]['y'] += 3
-#                 self.p[i]['y2'] += 3
-#         for i in range(len(self.p_old)):
-#             if prep.polog_Y() < 360 or prep.polog_Y() > 370:
-#                 self.p_old[i]['y'] += 3
-#                 self.p_old[i]['y2'] += 3
-#         if len(self.p) > 0:
-#             if self.p[0]['y'] > 600:
-#                 self.p_old.append(self.p[0])
-#                 del self.p[0]
-#         for i in range(len(self.p_old)):
-#             line(self.p_old[i]['x'] * 120,self.p_old[i]['y'],self.p_old[i]['x'] * 120,self.p_old[i]['y2'])
-#         stroke(0)
-#     def plus_wall(self):
-#         self.p.append(dict(x = floor(random(1,5)),y = -100,y2 = -200))
 class Ball:
     def __init__(self):
         self.p = [dict(x = random(10,590),y = -15,num = floor(random(1,10)),gold = 0)]
@@ -498,23 +463,23 @@ background_ = [0,0,0]
 ball = Ball()
 lava = lava()
 i = 1
-#wall = Wall()
 palette = 0
 Button_palette = button_palette()
 shop = button_shop()
 cartridge = cartridges()
 esc = esc()
 def setup():
-    global immage
+    global immage,kof
     immage = loadImage("fon2.png")
-    size(600,800)
+    size(X_size,Y_size)
     background(255)
     textSize(20)
     textAlign(CENTER, BOTTOM)
+    #scale(kof)
 def draw():
     global start,immage,background_,i,palette
     background(background_[0],background_[1],background_[2])
-    #image(immage,0,0,600,800)
+    image(immage,0,0,600,800)
     fill(255)
     textSize(25)
     text('money:',300,25)
@@ -536,8 +501,6 @@ def draw():
             ball.plus_ball()
             lava.plus_lava()
         esc.draw_()
-        #if i % 100 == 0:
-            #wall.plus_wall()
         i += 1
     else:
         i = 1
