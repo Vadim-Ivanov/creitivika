@@ -5,7 +5,7 @@ kof = 1.0 * pX / X
 X_size = pX
 Y_size = floor(800 * kof)
 
-dict_int = {'score':0,'start':False,'shop':False,'snake_head_X':300,'snake_head_Y':500,'prep_Y':0,'palette':False}
+dict_int = {'score':0,'start':False,'shop':False,'snake_head_X':300,'snake_head_Y':500,'prep_Y':0,'palette':False,'esc':False}
 dict_const = {'gran_left':0,'gran_right':600,'snake.scroll_tail_Y':3,'snake.move_to_palette_X':400,'snake.move_to_palette_Y':100,'gran_left_palette_line':50,'gran_right_palette_line':305,'palette_Y_line':50}
 dict_const_fill = {'button_LEFT_RIGHT_palette':125,'text_LEFT_RIGHT_palette':0}
 dict_const_stroke = {'line_palette1':125,'line_palette2':255,'button_collor_green_pallete':[0,255,0],'button_collor_red_pallete':[255,0,0],'button_palette':0,'RGB_palette':255}
@@ -27,10 +27,22 @@ class esc:
         self.X = 550
         self.Y = 20
     def draw_(self):
-        fill(255)
-        strokeWeight(1)
-        rect(self.X,self.Y,10,50)
-        rect(self.X + 20,self.Y,10,50)
+        if keyPressed == True:
+            if key == 'e' or key == 'у':
+                dict_int['esc'] = True
+        if dict_int['esc'] == True:
+            fill(0,0,0,230)
+            rect(150,150,300,400)
+            fill('#0E18C1')
+            rect(200,250,200,80)
+            rect(200,380,200,80)
+            fill(255,255,0)
+            textSize(30)
+            text(u'пауза',300,200)
+            text(u'продолжить',300,305)
+            text(u'в меню',300,435)
+            if mousePressed == True:
+                if mouseX >
 class lava:
     def __init__(self):
         self.p = [dict(x = random(10,X_size),y = -15,num = floor(random(1,10)),gold = 0)]
@@ -40,8 +52,6 @@ class lava:
             fill('#F5A328')
             rect(self.p[i]['x'],self.p[i]['y'],30,30)
             textSize(12)
-            if prep.polog_Y() < 360 or prep.polog_Y() > 370:
-                self.p[i]['y'] += 3
         if len(self.p) > 0:
             if self.p[0]['y'] >= Y_size / kof:
                 del self.p[0]
@@ -50,8 +60,12 @@ class lava:
                 snake.dlina_to(0)
                 del self.p[i]
                 return ' '
+    def move(self):
+        for i in range(len(self.p)):
+            if prep.polog_Y() < 360 or prep.polog_Y() > 370:
+                self.p[i]['y'] += 3
     def plus_lava(self):
-        if prep.polog_Y() > 20 and prep.polog_Y() < 800:
+        if prep.polog_Y() > 20 and prep.polog_Y() < 800 and dict_int['esc'] == False:
             self.p.append(dict(x = random(10,590),y = -15))
     def lava_clear(self):
         for i in range(len(self.p)):
@@ -62,7 +76,7 @@ class cartridges:
         self.cartridges = []
         self.keyTime = True
     def draw_(self):
-        if keyPressed == True and key == " " and len(self.cartridges) <= self.quantity and self.keyTime == True:
+        if keyPressed == True and key == " " and len(self.cartridges) <= self.quantity and self.keyTime == True and dict_int['esc'] == False:
             self.cartridges.append(dict(x = dict_int['snake_head_X'],y = dict_int['snake_head_Y'],speed = upgrade_dict['speed cartridges'][0]))
             self.keyTime = False
         if keyPressed == False:
@@ -70,11 +84,15 @@ class cartridges:
         for i in range(len(self.cartridges)-1):
             fill('#B2A38A')
             rect(self.cartridges[i]['x']-4,self.cartridges[i]['y']-7.5,8,15)
-            self.cartridges[i]['y'] -= self.cartridges[i]['speed']
+            if dict_int['esc'] == False:
+                cartridge.move()
             if self.cartridges[i]['y'] <= dict_int['prep_Y']-5 and self.cartridges[i]['y'] >= dict_int['prep_Y'] - 115:
                 del self.cartridges[i]
             if self.cartridges[i]['y'] <= 0:
                 del self.cartridges[i]
+    def move(self):
+        for i in range(len(self.cartridges)-1):
+            self.cartridges[i]['y'] -= self.cartridges[i]['speed']
     def Y_cartridges(self):
         if len(self.cartridges) > 0:
             return self.cartridges[0]['y']
@@ -298,8 +316,7 @@ class Ball:
             textSize(12)
             fill('#FFF827')
             text(self.p[i]['num'],self.p[i]['x'],self.p[i]['y']-5)
-            if prep.polog_Y() < 360 or prep.polog_Y() > 370:
-                self.p[i]['y'] += 3
+
         if len(self.p) > 0:
             if self.p[0]['y'] >= 800:
                 del self.p[0]
@@ -308,15 +325,20 @@ class Ball:
                 snake.dlina(self.p[i]['num'])
                 del self.p[i]
                 return ' '
+    def move(self):
+        for i in range(len(self.p)):
+            if prep.polog_Y() < 360 or prep.polog_Y() > 370:
+                self.p[i]['y'] += 3
     def plus_ball(self):
-        x = floor(random(0,1000))
-        y = floor(random(0,5))
-        if x == 1:
-            self.p.append(dict(x = random(10,590),y = -15,num = floor(random(100,1000)),gold = 1))
-        if x != 1 and y == 0:
-            self.p.append(dict(x = random(10,590),y = -15,num = floor(random(-15,-1)),gold = 0))
-        else:
-            self.p.append(dict(x = random(10,590),y = -15,num = floor(random(1,10)),gold = 0))
+        if dict_int['esc'] == False:
+            x = floor(random(0,1000))
+            y = floor(random(0,5))
+            if x == 1:
+                self.p.append(dict(x = random(10,590),y = -15,num = floor(random(100,1000)),gold = 1))
+            if x != 1 and y == 0:
+                self.p.append(dict(x = random(10,590),y = -15,num = floor(random(-15,-1)),gold = 0))
+            else:
+                self.p.append(dict(x = random(10,590),y = -15,num = floor(random(1,10)),gold = 0))
     def ball_clear(self):
         for i in range(len(self.p)):
             del self.p[0]
@@ -331,7 +353,7 @@ class Snake:
     def fill_(self,r,g,b):
         for i in range(len(self.p)):
             if mousePressed == 1:
-                if mouseX >= 390 and mouseX <= 410 and mouseY > self.p[i]['y'] - 7 and mouseY < self.p[i]['y'] + 7:
+                if mouseX / kof >= 390 and mouseX / kof <= 410 and mouseY / kof > self.p[i]['y'] - 7 and mouseY / kof < self.p[i]['y'] + 7:
                     self.p[i]['R'] = r
                     self.p[i]['G'] = g
                     self.p[i]['B'] = b
@@ -415,7 +437,7 @@ class Prep:
         if self.del_index == 5:
             for i in range(len(self.prep)):
                 if self.prep[i]['y'] < 365:
-                    self.prep[i]['y'] += 3
+                    pass
                 else:
                     if get_n > 0 and self.prep[i]['x'] <= head and self.prep[i]['x'] + 120 >= head:
                         self.prep[i]['num'] -= 1
@@ -434,7 +456,6 @@ class Prep:
                     #del self.prep[i]
         else:
             for i in range(len(self.prep)):
-                self.prep[i]['y'] += 3
                 if self.prep[i]['num'] > 0:
                     fill("#34FFFD")
                     rect(self.prep[i]['x'],self.prep[i]['y'],120,120)
@@ -447,6 +468,14 @@ class Prep:
                 self.del_index = i  
     def polog_Y(self):
         return self.prep[0]['y']
+    def move(self):
+        for i in range(len(self.prep)):
+            if self.del_index == 5:
+                if self.prep[i]['y'] < 365:
+                    self.prep[i]['y'] += 3
+            else:
+                self.prep[i]['y'] += 3
+
 dict_int['start'] = False
 snake = Snake(300,600,15,40)
 prep = Prep()
@@ -468,7 +497,7 @@ def setup():
     textAlign(CENTER, BOTTOM)
     #scale(kof)
 def draw():
-    global start,immage,background_,i,palette
+    global start,immage,background_,i,palette,m
     background(background_[0],background_[1],background_[2])
     image(immage,0,0,600,800)
     scale(kof)
@@ -477,13 +506,20 @@ def draw():
     text('money:',300,25)
     text(dict_int['score'],300,50)
     dict_int['snake_head_X'] = mouseX / kof
+    if dict_int['start'] == True and dict_int['esc'] == False:
+        lava.move()
+        ball.move()
+        prep.move()
     if dict_int['start'] == True:
         ball.draw_ball(snake.head_X())
         lava.draw_lava(snake.head_X())
         #wall.draw_wall(snake.head_X())
         snake.draw_()
         snake.scroll_tail_Y(3)
-        snake.move_to(mouseX / kof,500)
+        if mousePressed == True and dict_int['esc'] == False:
+            snake.move_to(mouseX / kof,500)
+        else:
+            snake.move_tail()
         textSize(20)
         prep.move_prep(snake.get_n(),snake.head_X())
         strokeWeight(1)
