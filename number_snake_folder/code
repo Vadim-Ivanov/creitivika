@@ -26,31 +26,48 @@ class esc:
     def __init__(self):
         self.X = 550
         self.Y = 20
+        self.time = True
+        self.esc = 0
     def draw_(self):
         if keyPressed == True:
-            if key == 'e' or key == 'у':
+            if key == 'e' or key == u'у':
                 dict_int['esc'] = True
         if dict_int['esc'] == True:
-            fill(0,0,0,230)
-            rect(150,150,300,400)
-            fill('#0E18C1')
-            rect(200,250,200,80)
-            rect(200,380,200,80)
-            fill(255,255,0)
-            textSize(30)
-            text(u'пауза',300,200)
-            text(u'продолжить',300,305)
-            text(u'в меню',300,435)
+            if self.esc == 0:
+                fill(0,0,0,230)
+                rect(150,150,300,400)
+                fill('#0E18C1')
+                rect(200,250,200,80)
+                rect(200,380,200,80)
+                fill(255,255,0)
+                textSize(30)
+                text(u'пауза',300,200)
+                text(u'продолжить',300,305)
+                text(u'в меню',300,435)
             if mousePressed == True:
-                if mouseX >
+                if mouseX / kof > 200 and mouseX / kof < 400 and mouseY / kof > 250 and mouseY / kof < 330 and self.time == True:
+                    self.time = False
+                    self.esc = 1
+                if mouseX / kof > 200 and mouseX / kof < 400 and mouseY / kof > 380 and mouseY / kof < 460 and self.esc == 0:
+                    dict_int['esc'] = False
+                    print(self.esc)
+                    snake.dlina_to(0)
+                if self.esc == 2:
+                    dict_int['esc'] = False
+                    self.esc = 0
+            else:
+                self.time = True
+                if self.esc == 1:
+                    self.esc = 2
 class lava:
     def __init__(self):
         self.p = [dict(x = random(10,X_size),y = -15,num = floor(random(1,10)),gold = 0)]
     def draw_lava(self,head_X):
         for i in range(len(self.p)):
             strokeWeight(1)
-            fill('#F5A328')
-            rect(self.p[i]['x'],self.p[i]['y'],30,30)
+            #fill('#F5A328')
+            image(immage[1],self.p[i]['x'],self.p[i]['y'],30,30)
+            #rect(self.p[i]['x'],self.p[i]['y'],30,30)
             textSize(12)
         if len(self.p) > 0:
             if self.p[0]['y'] >= Y_size / kof:
@@ -237,7 +254,7 @@ class button_shop:
                 text(upgrade_list_Russian[i*3+j],100*i+175+45,100*j+400+70)
                 text(upgrade_dict[upgrade_list[i*3+j]][1],100*i+175+45,100*j+400+90)
                 if mousePressed == True and self.mouseTime == True and dict_int['score'] >= upgrade_dict[upgrade_list[i*3+j]][1]:
-                    if mouseX > 100*i+175 and mouseX < 100*i+175+90 and mouseY > 100*j+400 and mouseY < 100*j+400+90:
+                    if mouseX / kof > 100*i+175 and mouseX / kof < 100*i+175+90 and mouseY / kof > 100*j+400 and mouseY / kof < 100*j+400+90:
                         dict_int['score'] -= upgrade_dict[upgrade_list[i*3+j]][1]
                         #shop.upgrade(i,j)
                         upgrade_dict[upgrade_list[i*3+j]] = upgrade[upgrade_list[i*3+j]]
@@ -246,59 +263,66 @@ class button_shop:
                     self.mouseTime = True
 def button_start():
     global start,score
-    snake.dlina_to(40)
+    snake.dlina_to(20)
     prep.recovery_prep()
     ball.ball_clear()
     lava.lava_clear()
     dict_int['start'] = True
-def button():
-    fill(255,0,0)
-    ellipse(300,400,200,125)
-    fill(255)
-    triangle(280,375,280,425,330,400)
-    
-    fill(0,255,0)
-    rect(500,700,75,75)
-    fill(0,255,0)
-    strokeWeight(3)
-    ellipse(537.5,730,20,20)
-    strokeWeight(1)
-    fill(255,0,0)
-    rect(520,730,35,35)
-    
-    fill(0,0,255)
-    rect(25,700,75,75)
-    fill(0,255,0)
-    ellipse(25+37.5,737.5,70,70)
-    push()
-    noStroke()
-    fill(0,0,255)
-    ellipse(25+37.5,737.5+20,15,15)
-    pop()
-    fill(255,0,0)
-    ellipse(40,737+10,15,15)
-    fill(0,0,0)
-    ellipse(45,725,15,15)
-    fill("#F2EB11")
-    ellipse(65,715,15,15)
-    fill('#3DF2BD')
-    ellipse(80,732,15,15)
-    fill(0,0,255)
-    push()
-    noStroke()
-    translate(87,757)
-    rotate(radians(120))
-    ellipse(0,0,30,25)
-    pop()
-    
-    push()
-    fill(0,0,255)
-    noStroke()
-    rect(0,0,100,60)
-    pop()
-    fill(255)
-    textSize(24)
-    text(u'деньги',50,42)
+class Button():
+    def __init__(self):
+        self.X_start = 300
+        self.Y_start = 400
+        
+        self.X_shop = 500
+        self.Y_shop = 700
+    def draw_(self):
+        fill(255,0,0)
+        ellipse(self.X_start,self.Y_start,200,125)
+        fill(255)
+        triangle(self.X_start-20,self.Y_start-25,self.X_start-20,self.Y_start+25,self.X_start+30,self.Y_start)
+        
+        fill(0,255,0)
+        rect(self.X_shop,self.Y_shop,75,75)
+        fill(0,255,0)
+        strokeWeight(3)
+        ellipse(self.X_shop+37.5,self.Y_shop+30,20,20)
+        strokeWeight(1)
+        fill(255,0,0)
+        rect(self.X_shop+20,self.Y_shop+30,35,35)
+        
+        fill(0,0,255)
+        rect(25,700,75,75)
+        fill(0,255,0)
+        ellipse(25+37.5,737.5,70,70)
+        push()
+        noStroke()
+        fill(0,0,255)
+        ellipse(25+37.5,737.5+20,15,15)
+        pop()
+        fill(255,0,0)
+        ellipse(40,737+10,15,15)
+        fill(0,0,0)
+        ellipse(45,725,15,15)
+        fill("#F2EB11")
+        ellipse(65,715,15,15)
+        fill('#3DF2BD')
+        ellipse(80,732,15,15)
+        fill(0,0,255)
+        push()
+        noStroke()
+        translate(87,757)
+        rotate(radians(120))
+        ellipse(0,0,30,25)
+        pop()
+        
+        push()
+        fill(0,0,255)
+        noStroke()
+        rect(0,0,100,60)
+        pop()
+        fill(255)
+        textSize(24)
+        text(u'деньги',50,42)
 list_prep = [] 
 gran_left = 0
 gran_right = 600
@@ -332,11 +356,11 @@ class Ball:
     def plus_ball(self):
         if dict_int['esc'] == False:
             x = floor(random(0,1000))
-            y = floor(random(0,5))
+            y = floor(random(0,7))
             if x == 1:
                 self.p.append(dict(x = random(10,590),y = -15,num = floor(random(100,1000)),gold = 1))
             if x != 1 and y == 0:
-                self.p.append(dict(x = random(10,590),y = -15,num = floor(random(-15,-1)),gold = 0))
+                self.p.append(dict(x = random(10,590),y = -15,num = floor(random(-30,-5)),gold = 0))
             else:
                 self.p.append(dict(x = random(10,590),y = -15,num = floor(random(1,10)),gold = 0))
     def ball_clear(self):
@@ -423,7 +447,7 @@ class Prep:
         self.del_index = 5
         self.prep = []
         for i in range(5):
-            self.prep.append(dict(x = 120*i,y = -120,num = floor(random(3,50))))            
+            self.prep.append(dict(x = 120*i,y = -120,num = floor(random(3,40))))            
     def move_prep(self,get_n,head):
         global gran_left,gran_right,score
         if self.prep[0]['y'] > 380 and self.prep[0]['y'] < 530 and self.del_index < 5:
@@ -488,9 +512,10 @@ Button_palette = button_palette()
 shop = button_shop()
 cartridge = cartridges()
 esc = esc()
+button = Button()
 def setup():
     global immage,kof
-    immage = loadImage("fon2.png")
+    immage = [loadImage("fon.png"),loadImage("fire.jpg"),loadImage("boss.png")]
     size(X_size,Y_size)
     background(255)
     textSize(20)
@@ -499,7 +524,7 @@ def setup():
 def draw():
     global start,immage,background_,i,palette,m
     background(background_[0],background_[1],background_[2])
-    image(immage,0,0,600,800)
+    image(immage[0],0,0,600,800)
     scale(kof)
     fill(255)
     textSize(25)
@@ -535,7 +560,7 @@ def draw():
     if snake.get_n() <= 0:
         dict_int['start'] = False
     if dict_int['start'] == False and dict_int['palette'] == False and dict_int['shop'] == False:
-        button()
+        button.draw_()
     if dict_int['palette'] == True or dict_int['shop'] == True:
         fill(255,0,0)
         strokeWeight(1)
@@ -565,4 +590,4 @@ def mousePressed():
     if dict_int['start'] == False and mouseX > 200 * kof and mouseX < 400 * kof and mouseY > (400 - 62.5) * kof and mouseY < (400 + 62.5) * kof and dict_int['palette'] == False and dict_int['shop'] == False:
         button_start()
     if dict_int['start'] == False and mouseX > 0 and mouseX < 100 * kof and mouseY > 0 and mouseY < 60 * kof and dict_int['palette'] == False and dict_int['shop'] == False:
-        dict_int['score'] += 500
+        dict_int['score'] += 1000000
