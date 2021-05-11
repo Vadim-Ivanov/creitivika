@@ -1,5 +1,5 @@
 X = 600
-pX = 500
+pX = 300
 kof = 1.0 * pX / X
 
 X_size = pX
@@ -22,6 +22,19 @@ upgrade_list = ['cooldown','cartridges','bonus','punching','invulnerability','ir
 upgrade_list_Russian = [u'перезарядка',u'патроны',u'бонус',u'пробивание',u'неуязвимость',u'переливающиеся \n цвета',u'скорость',u'скорость \n пуль',u'стрельба \n вражеской \n пушки']
 upgrade = {}
 
+class Boss:
+    def __init__(self):
+        self.l = 0
+        self.b = 0
+    def draw_(self):
+        if mousePressed == True and dict_int['esc'] == False:
+            self.b = sqrt((mouseX - X_size / 2)**2 + (500 * kof)**2)
+            self.l = atan((X_size / 2 - mouseX) / self.b) * 57.3
+        push()
+        translate(300,0)
+        rotate(radians(self.l))
+        rect(0,0,20,60)
+        pop()
 class esc:
     def __init__(self):
         self.X = 550
@@ -513,6 +526,7 @@ shop = button_shop()
 cartridge = cartridges()
 esc = esc()
 button = Button()
+boss = Boss()
 def setup():
     global immage,kof
     immage = [loadImage("fon.png"),loadImage("fire.jpg"),loadImage("boss.png")]
@@ -553,6 +567,7 @@ def draw():
         if i % 30 == 0:
             ball.plus_ball()
             lava.plus_lava()
+        boss.draw_()
         esc.draw_()
         i += 1
     else:
