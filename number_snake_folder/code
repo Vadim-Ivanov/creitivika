@@ -38,25 +38,36 @@ class Boss:
         #rect(0,0,20,60)
         image(immage[2],-50,-36.5,100,73)
         pop()
-        if self.time % 50 == 0:
+        if self.time % 30 == 0:
             boss_cartridges.plus(self.l)
         self.time += 1
 class Boss_cartridges:
     def __init__(self):
         self.cartridges = []
         self.l = 0
+        self.time_cartridges = True
     def draw_(self):
         for i in range(len(self.cartridges) - 1):
             push()
-            rectMode(CENTER)
             translate(self.cartridges[i]['x'],0)
             rotate(radians(self.cartridges[i]['l']))
             translate(0,self.cartridges[i]['y'])
             ellipse(0,0,10,10)
+            image(immage[3],0,0,25,10)
             pop()
             self.cartridges[i]['y'] += 10
         if self.cartridges[0]['y'] >= 800:
             del self.cartridges[0]
+        for i in range(len(self.cartridges) - 1):
+            if self.time_cartridges == True:
+                if snake.head_X() > self.cartridges[i]['x'] - 40:
+                    if snake.head_X() < self.cartridges[i]['x'] + 40:
+                        if 500 * kof > self.cartridges[i]['y'] - 40:
+                            if 500 * kof < self.cartridges[i]['y'] + 40:
+                                snake.dlina(-1)
+                                del self.cartridges[i]
+                                self.time_cartridges = False
+        self.time_cartridges = True
     def plus(self,l):
         self.l = l
         self.cartridges.append(dict(x = 300,y = 10,l = self.l))
@@ -300,12 +311,13 @@ class button_shop:
                 if mousePressed == False:
                     self.mouseTime = True
 def button_start():
-    global start,score
+    global time_boss
     snake.dlina_to(20)
     prep.recovery_prep()
     ball.ball_clear()
     lava.lava_clear()
     dict_int['start'] = True
+    time_boss = 0
 class Button():
     def __init__(self):
         self.X_start = 300
@@ -504,7 +516,7 @@ class Prep:
                     if get_n > 0 and self.prep[i]['x'] <= head and self.prep[i]['x'] + 120 >= head:
                         self.prep[i]['num'] -= 1
                         dict_int['score'] += 1
-                        snake.dlina(-1)
+                        #snake.dlina(-1)
                     if cartridge.Y_cartridges() <= self.prep[0]['y'] + 100 and cartridge.Y_cartridges() >= self.prep[0]['y']:
                         self.prep[i]['num'] -= 1
                         dict_int['score'] += 1
@@ -570,6 +582,7 @@ def draw():
     scale(kof)
     fill(255)
     textSize(25)
+    print(time_boss)
     if dict_int['boss'] == False:
         text('money:',300,25)
         text(dict_int['score'],300,50)
@@ -596,9 +609,12 @@ def draw():
         if i % 30 == 0:
             ball.plus_ball()
             lava.plus_lava()
-        if time_boss >= 
-        boss.draw_()
-        boss_cartridges.draw_()
+        if time_boss >= 100 and time_boss <= 10000:
+            boss.draw_()
+            boss_cartridges.draw_()
+        if time_boss >= 10000:
+            time_boss = 0
+        time_boss += 1
         esc.draw_()
         i += 1
     else:
