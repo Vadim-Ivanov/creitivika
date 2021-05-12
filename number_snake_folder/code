@@ -1,11 +1,11 @@
 X = 600
-pX = 300
+pX = 600
 kof = 1.0 * pX / X
 
 X_size = pX
 Y_size = floor(800 * kof)
 
-dict_int = {'score':0,'start':False,'shop':False,'snake_head_X':300,'snake_head_Y':500,'prep_Y':0,'palette':False,'esc':False}
+dict_int = {'score':0,'start':False,'shop':False,'snake_head_X':300,'snake_head_Y':500,'prep_Y':0,'palette':False,'esc':False,'boss':False}
 dict_const = {'gran_left':0,'gran_right':600,'snake.scroll_tail_Y':3,'snake.move_to_palette_X':400,'snake.move_to_palette_Y':100,'gran_left_palette_line':50,'gran_right_palette_line':305,'palette_Y_line':50}
 dict_const_fill = {'button_LEFT_RIGHT_palette':125,'text_LEFT_RIGHT_palette':0}
 dict_const_stroke = {'line_palette1':125,'line_palette2':255,'button_collor_green_pallete':[0,255,0],'button_collor_red_pallete':[255,0,0],'button_palette':0,'RGB_palette':255}
@@ -26,15 +26,40 @@ class Boss:
     def __init__(self):
         self.l = 0
         self.b = 0
+        self.time = 0
     def draw_(self):
         if mousePressed == True and dict_int['esc'] == False:
             self.b = sqrt((mouseX - X_size / 2)**2 + (500 * kof)**2)
-            self.l = atan((X_size / 2 - mouseX) / self.b) * 57.3
+            self.l = asin((X_size / 2 - mouseX) / self.b) * 57.3
         push()
+        rectMode(CENTER)
         translate(300,0)
         rotate(radians(self.l))
-        rect(0,0,20,60)
+        #rect(0,0,20,60)
+        image(immage[2],-50,-36.5,100,73)
         pop()
+        if self.time % 50 == 0:
+            boss_cartridges.plus(self.l)
+        self.time += 1
+class Boss_cartridges:
+    def __init__(self):
+        self.cartridges = []
+        self.l = 0
+    def draw_(self):
+        for i in range(len(self.cartridges) - 1):
+            push()
+            rectMode(CENTER)
+            translate(self.cartridges[i]['x'],0)
+            rotate(radians(self.cartridges[i]['l']))
+            translate(0,self.cartridges[i]['y'])
+            ellipse(0,0,10,10)
+            pop()
+            self.cartridges[i]['y'] += 10
+        if self.cartridges[0]['y'] >= 800:
+            del self.cartridges[0]
+    def plus(self,l):
+        self.l = l
+        self.cartridges.append(dict(x = 300,y = 10,l = self.l))
 class esc:
     def __init__(self):
         self.X = 550
@@ -527,6 +552,8 @@ cartridge = cartridges()
 esc = esc()
 button = Button()
 boss = Boss()
+boss_cartridges = Boss_cartridges()
+time_boss = 0
 def setup():
     global immage,kof
     immage = [loadImage("fon.png"),loadImage("fire.jpg"),loadImage("boss.png")]
@@ -534,16 +561,18 @@ def setup():
     background(255)
     textSize(20)
     textAlign(CENTER, BOTTOM)
+    frameRate(100)
     #scale(kof)
 def draw():
-    global start,immage,background_,i,palette,m
+    global start,immage,background_,i,palette,m,time_boss
     background(background_[0],background_[1],background_[2])
     image(immage[0],0,0,600,800)
     scale(kof)
     fill(255)
     textSize(25)
-    text('money:',300,25)
-    text(dict_int['score'],300,50)
+    if dict_int['boss'] == False:
+        text('money:',300,25)
+        text(dict_int['score'],300,50)
     dict_int['snake_head_X'] = mouseX / kof
     if dict_int['start'] == True and dict_int['esc'] == False:
         lava.move()
@@ -567,7 +596,9 @@ def draw():
         if i % 30 == 0:
             ball.plus_ball()
             lava.plus_lava()
+        if time_boss >= 
         boss.draw_()
+        boss_cartridges.draw_()
         esc.draw_()
         i += 1
     else:
@@ -587,6 +618,9 @@ def draw():
             Button_palette.palette()
         else:
             shop.draw_()
+    if mousePressed == True:
+        if dict_int['start'] == False and mouseX > 0 and mouseX < 100 * kof and mouseY > 0 and mouseY < 60 * kof and dict_int['palette'] == False and dict_int['shop'] == False:
+            dict_int['score'] += 1000000
 def mousePressed():
     global start,palette
     if dict_int['start'] == False and mouseX > 500 * kof and mouseX < 600 * kof and mouseY > 0 and mouseY < 60 * kof and dict_int['shop'] == True:
@@ -604,5 +638,4 @@ def mousePressed():
         snake.dlina_to(40)
     if dict_int['start'] == False and mouseX > 200 * kof and mouseX < 400 * kof and mouseY > (400 - 62.5) * kof and mouseY < (400 + 62.5) * kof and dict_int['palette'] == False and dict_int['shop'] == False:
         button_start()
-    if dict_int['start'] == False and mouseX > 0 and mouseX < 100 * kof and mouseY > 0 and mouseY < 60 * kof and dict_int['palette'] == False and dict_int['shop'] == False:
-        dict_int['score'] += 1000000
+
