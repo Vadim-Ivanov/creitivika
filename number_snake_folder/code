@@ -1,5 +1,5 @@
 X = 600
-pX = 600
+pX = 300
 kof = 1.0 * pX / X
 
 X_size = pX
@@ -28,9 +28,9 @@ class Boss:
         self.b = 0
         self.time = 0
     def draw_(self):
-        if mousePressed == True and dict_int['esc'] == False:
-            self.b = sqrt((mouseX - X_size / 2)**2 + (500 * kof)**2)
-            self.l = asin((X_size / 2 - mouseX) / self.b) * 57.3
+        if dict_int['esc'] == False:
+            self.b = sqrt((snake.head_X() * kof - X_size / 2)**2 + (500 * kof)**2)
+            self.l = asin((X_size / 2 - snake.head_X() * kof) / self.b) * 57.3
         push()
         rectMode(CENTER)
         translate(300,0)
@@ -38,7 +38,7 @@ class Boss:
         #rect(0,0,20,60)
         image(immage[2],-50,-36.5,100,73)
         pop()
-        if self.time % 30 == 0:
+        if self.time % 10 == 0:
             boss_cartridges.plus(self.l)
         self.time += 1
 class Boss_cartridges:
@@ -48,7 +48,7 @@ class Boss_cartridges:
         self.time_cartridges = True
         self.d = 0
     def draw_(self):
-        self.d = sqrt((snake.head_X() - X_size / 2)**2 + (500 * kof)**2)
+        self.d = sqrt((snake.head_X() * kof - X_size / 2)**2 + (500 * kof)**2)
         for i in range(len(self.cartridges) - 1):
             push()
             translate(self.cartridges[i]['x'],0)
@@ -56,14 +56,15 @@ class Boss_cartridges:
             translate(0,self.cartridges[i]['y'])
             #ellipse(0,0,10,10)
             rotate(radians(90))
-            image(immage[3],0,0,30,14)
+            image(immage[3],-15 * kof,-7.5 * kof,30,15)
             pop()
             self.cartridges[i]['y'] += 10
-        if self.cartridges[0]['y'] >= 800:
-            del self.cartridges[0]
+        if len(self.cartridges) > 0:
+            if self.cartridges[0]['y'] >= Y_size:
+                del self.cartridges[0]
         for i in range(len(self.cartridges) - 1):
             if self.time_cartridges == True:
-                if self.d > self.cartridges[i]['y'] - 1.3 and self.d < self.cartridges[i]['y'] + 1.3:
+                if self.d > self.cartridges[i]['y'] - 1.5 / kof and self.d < self.cartridges[i]['y'] + 1.5 / kof:
                     snake.dlina(-1)
                     del self.cartridges[i]
                     self.time_cartridges = False
@@ -71,6 +72,9 @@ class Boss_cartridges:
     def plus(self,l):
         self.l = l
         self.cartridges.append(dict(x = 300,y = 10,l = self.l))
+    def minus(self):
+        for i in range(len(self.cartridges)):
+            del self.cartridges[0]
 class esc:
     def __init__(self):
         self.X = 550
@@ -318,6 +322,7 @@ def button_start():
     lava.lava_clear()
     dict_int['start'] = True
     time_boss = 0
+    boss_cartridges.minus()
 class Button():
     def __init__(self):
         self.X_start = 300
@@ -459,10 +464,10 @@ class Snake:
         self.move_tail()
     def head_to_gran(self):
         global gran_left,gran_right
-        if self.p[0]['x'] <= gran_left:
-            self.p[0]['x'] = gran_left
-        if self.p[0]['x'] >= gran_right:
-            self.p[0]['x'] = gran_right
+        if self.p[0]['x'] <= gran_left + 7.5:
+            self.p[0]['x'] = gran_left + 7.5
+        if self.p[0]['x'] >= gran_right - 7.5:
+            self.p[0]['x'] = gran_right - 7.5
     def dlina(self,d):
         self.n += d
         if d > 0:
