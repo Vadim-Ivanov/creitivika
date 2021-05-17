@@ -1,5 +1,5 @@
 X = 600
-pX = 300
+pX = 600
 kof = 1.0 * pX / X
 
 X_size = pX
@@ -46,32 +46,30 @@ class Boss_cartridges:
         self.cartridges = []
         self.l = 0
         self.time_cartridges = True
-        self.d = 0
     def draw_(self):
-        self.d = sqrt((snake.head_X() * kof - X_size / 2)**2 + (500 * kof)**2)
         for i in range(len(self.cartridges) - 1):
             push()
-            translate(self.cartridges[i]['x'],0)
-            rotate(radians(self.cartridges[i]['l']))
-            translate(0,self.cartridges[i]['y'])
-            #ellipse(0,0,10,10)
-            rotate(radians(90))
+            translate(self.cartridges[i]['x'],self.cartridges[i]['y'])
+            rotate(radians(90 + self.cartridges[i]['l']))
             image(immage[3],-15 * kof,-7.5 * kof,30,15)
             pop()
-            self.cartridges[i]['y'] += 10
+            self.cartridges[i]['y'] += self.cartridges[i]['speed_Y']
+            self.cartridges[i]['x'] += self.cartridges[i]['speed_X']
         if len(self.cartridges) > 0:
             if self.cartridges[0]['y'] >= Y_size:
                 del self.cartridges[0]
         for i in range(len(self.cartridges) - 1):
             if self.time_cartridges == True:
-                if self.d > self.cartridges[i]['y'] - 1.5 / kof and self.d < self.cartridges[i]['y'] + 1.5 / kof:
-                    snake.dlina(-1)
-                    del self.cartridges[i]
-                    self.time_cartridges = False
+                if 500 * kof > self.cartridges[i]['y'] - 12 and 500 * kof < self.cartridges[i]['y'] + 12: 
+                    if snake.head_X() * kof > self.cartridges[i]['x'] - 12 and snake.head_X() * kof < self.cartridges[i]['x'] + 12:
+                        snake.dlina(-1)
+                        del self.cartridges[i]
+                        self.time_cartridges = False
         self.time_cartridges = True
     def plus(self,l):
         self.l = l
-        self.cartridges.append(dict(x = 300,y = 10,l = self.l))
+        self.cartridges.append(dict(x = 300,y = 10,l = self.l,speed_Y = upgrade_dict['speed boss cartridges'][0],
+                                    speed_X = (upgrade_dict['speed boss cartridges'][0] * (snake.head_X() - 300)) / (500 * kof)))
     def minus(self):
         for i in range(len(self.cartridges)):
             del self.cartridges[0]
@@ -152,20 +150,28 @@ class cartridges:
         if keyPressed == False:
             self.keyTime = True
         for i in range(len(self.cartridges)-1):
-            fill('#B2A38A')
-            rect(self.cartridges[i]['x']-4,self.cartridges[i]['y']-7.5,8,15)
+            push()
+            translate(self.cartridges[i]['x']-4 * kof,self.cartridges[i]['y']-7.5 * kof)
+            rotate(radians(-90))
+            image(immage[3],0,0,30,15)
+            #rect(self.cartridges[i]['x']-4,self.cartridges[i]['y']-7.5,8,15)
+            pop()
             if dict_int['esc'] == False:
                 cartridge.move()
-            if self.cartridges[i]['y'] <= dict_int['prep_Y']-5 and self.cartridges[i]['y'] >= dict_int['prep_Y'] - 115:
-                del self.cartridges[i]
             if self.cartridges[i]['y'] <= 0:
                 del self.cartridges[i]
+
+    def del_cart(self):
+        del self.cartridges[0]
     def move(self):
         for i in range(len(self.cartridges)-1):
             self.cartridges[i]['y'] -= self.cartridges[i]['speed']
     def Y_cartridges(self):
         if len(self.cartridges) > 0:
             return self.cartridges[0]['y']
+    def X_cartridges(self):
+        if len(self.cartridges) > 0:
+            return self.cartridges[0]['x']
 class button_palette:
     def __init__(self):
         self.x = [175,175,175]
@@ -516,15 +522,23 @@ class Prep:
         if self.del_index == 5:
             for i in range(len(self.prep)):
                 if self.prep[i]['y'] < 365:
-                    pass
+                    if cartridge.Y_cartridges() <= self.prep[0]['y'] + 200:
+                        print('1')
+                        if cartridge.Y_cartridges() <= self.prep[0]['y']:
+                            print('2')
+                            if self.prep[i]['x'] <= cartridge.X_cartridges():
+                                print('3')
+                                if self.prep[i]['x'] + 120 >= cartridge.X_cartridges():
+                                    print('4')
+                                    self.prep[i]['num'] -= upgrade_dict['punching'][0]
+                                    dict_int['score'] += upgrade_dict['bonus'][0]
+                                    cartridge.del_cart()
                 else:
                     if get_n > 0 and self.prep[i]['x'] <= head and self.prep[i]['x'] + 120 >= head:
                         self.prep[i]['num'] -= 1
-                        dict_int['score'] += 1
+                        dict_int['score'] += upgrade_dict['bonus'][0]
                         #snake.dlina(-1)
-                    if cartridge.Y_cartridges() <= self.prep[0]['y'] + 100 and cartridge.Y_cartridges() >= self.prep[0]['y']:
-                        self.prep[i]['num'] -= 1
-                        dict_int['score'] += 1
+
                 if self.prep[i]['num'] > 0 and i != self.del_index:
                     fill("#34FFFD")
                     rect(self.prep[i]['x'],self.prep[i]['y'],120,120)
@@ -587,7 +601,6 @@ def draw():
     scale(kof)
     fill(255)
     textSize(25)
-    print(time_boss)
     if dict_int['boss'] == False:
         text('money:',300,25)
         text(dict_int['score'],300,50)
@@ -614,10 +627,10 @@ def draw():
         if i % 30 == 0:
             ball.plus_ball()
             lava.plus_lava()
-        if time_boss >= 100 and time_boss <= 10000:
+        if time_boss >= 3000 and time_boss <= 5000:
             boss.draw_()
             boss_cartridges.draw_()
-        if time_boss >= 10000:
+        if time_boss >= 5000:
             time_boss = 0
         time_boss += 1
         esc.draw_()
