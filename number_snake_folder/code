@@ -5,7 +5,7 @@ kof = 1.0 * pX / X
 X_size = pX
 Y_size = floor(800 * kof)
 
-dict_int = {'score':0,'start':False,'shop':False,'snake_head_X':300,'snake_head_Y':500,'prep_Y':0,'palette':False,'esc':False,'boss':False}
+dict_int = {'score':0,'start':False,'shop':False,'snake_head_X':300,'snake_head_Y':500,'prep_Y':0,'palette':False,'esc':False,'boss':False,'invul':False}
 dict_const = {'gran_left':0,'gran_right':600,'snake.scroll_tail_Y':3,'snake.move_to_palette_X':400,'snake.move_to_palette_Y':100,'gran_left_palette_line':50,'gran_right_palette_line':305,'palette_Y_line':50}
 dict_const_fill = {'button_LEFT_RIGHT_palette':125,'text_LEFT_RIGHT_palette':0}
 dict_const_stroke = {'line_palette1':125,'line_palette2':255,'button_collor_green_pallete':[0,255,0],'button_collor_red_pallete':[255,0,0],'button_palette':0,'RGB_palette':255}
@@ -22,6 +22,24 @@ upgrade_list = ['cooldown','cartridges','bonus','punching','invulnerability','ir
 upgrade_list_Russian = [u'перезарядка',u'патроны',u'бонус',u'пробивание',u'неуязвимость',u'переливающиеся \n цвета',u'скорость',u'скорость \n пуль',u'стрельба \n вражеской \n пушки']
 upgrade = {}
 
+class invulnerability:
+    def __init__(self):
+        self.invulnerability = upgrade_dict['invulnerability'][0]
+        self.time = True
+        self.time_invul = 0
+    def draw_(self):
+        rect(500,700,60,60)
+        if self.invulnerability > 0:
+            if (mousePressed == True and self.time == True and mouseX > 500 * kof and mouseX < 560 * kof and mouseY > 700 * kof and mouseY < 760 * kof) or (self.time == True and keyPressed == True and key == 'q' or key == u'й'):
+                self.time = False
+                dict_int['invul'] = True
+                self.time_invul = 1
+            else: 
+                self.time = True
+        if self.time_invul > 0:
+            self.time_invul += 1
+            if self.time_invul % 1000 == 0:
+                dict_int['invul'] = False
 class Boss:
     def __init__(self):
         self.l = 0
@@ -38,7 +56,7 @@ class Boss:
         #rect(0,0,20,60)
         image(immage[2],-50,-36.5,100,73)
         pop()
-        if self.time % 10 == 0:
+        if self.time % 30 == 0:
             boss_cartridges.plus(self.l)
         self.time += 1
 class Boss_cartridges:
@@ -62,7 +80,8 @@ class Boss_cartridges:
             if self.time_cartridges == True:
                 if 500 * kof > self.cartridges[i]['y'] - 12 and 500 * kof < self.cartridges[i]['y'] + 12: 
                     if snake.head_X() * kof > self.cartridges[i]['x'] - 12 and snake.head_X() * kof < self.cartridges[i]['x'] + 12:
-                        snake.dlina(-1)
+                        if dict_int['invul'] == False:
+                            snake.dlina(-1)
                         del self.cartridges[i]
                         self.time_cartridges = False
         self.time_cartridges = True
@@ -125,13 +144,14 @@ class lava:
                 del self.p[0]
         for i in range(len(self.p)):
             if self.p[i]['y'] >= 462.5 and self.p[i]['y'] <= 537.5 and self.p[i]['x'] <= head_X and self.p[i]['x'] >= head_X - 37.5:
-                snake.dlina_to(0)
+                if dict_int['invul'] == False:
+                    snake.dlina_to(0)
                 del self.p[i]
                 return ' '
     def move(self):
         for i in range(len(self.p)):
             if prep.polog_Y() < 360 or prep.polog_Y() > 370:
-                self.p[i]['y'] += 3
+                self.p[i]['y'] += upgrade_dict['speed'][0]
     def plus_lava(self):
         if prep.polog_Y() > 20 and prep.polog_Y() < 800 and dict_int['esc'] == False:
             self.p.append(dict(x = random(10,590),y = -15))
@@ -143,10 +163,17 @@ class cartridges:
         self.quantity = upgrade_dict['cartridges'][0]
         self.cartridges = []
         self.keyTime = True
+        self.cartridge = self.quantity
+        self.cart_time = 0
     def draw_(self):
-        if keyPressed == True and key == " " and len(self.cartridges) <= self.quantity and self.keyTime == True and dict_int['esc'] == False:
-            self.cartridges.append(dict(x = dict_int['snake_head_X'],y = dict_int['snake_head_Y'],speed = upgrade_dict['speed cartridges'][0]))
+        if keyPressed == True and key == " " and len(self.cartridges) <= self.quantity and self.keyTime == True and dict_int['esc'] == False and self.cartridge > 0:
+            self.cartridges.append(dict(x = snake.head_X(),y = dict_int['snake_head_Y'],speed = upgrade_dict['speed cartridges'][0]))
             self.keyTime = False
+            self.cartridge -= 1
+        if self.cartridge != self.quantity:
+            self.cart_time += 1
+        if self.cart_time % (upgrade_dict['cooldown'][0] * 100) == 0:
+            self.cartridge += 1
         if keyPressed == False:
             self.keyTime = True
         for i in range(len(self.cartridges)-1):
@@ -180,7 +207,10 @@ class button_palette:
         self.mousePressed_time = True
         self.int_fill = 0
         self.RGB_ = ['R','G','B']
-        #self.mousePressed_time_money = True
+        self.time_iridescent_colors = 0
+        self.R = 0
+        self.G = 0
+        self.B = 0
     def palette(self):
         #рисуем змейку
         snake.draw_()
@@ -198,6 +228,16 @@ class button_palette:
         for i in range(1,4):
             stroke(dict_const_stroke['line_palette2'])
             line(self.x[i-1],(dict_const['palette_Y_line'] * i - 10),self.x[i-1],(dict_const['palette_Y_line'] * i + 10))
+        if upgrade_dict['iridescent colors'][0] > 0:
+            strokeWeight(1)
+            stroke(0)
+            if self.time_iridescent_colors % 100 == 0:
+                self.R = random(0,255)
+                self.G = random(0,255)
+                self.B = random(0,255)
+            fill(self.R,self.G,self.B)
+            self.time_iridescent_colors += 1
+            rect(20,600,80,80)
         if mousePressed == True:
             for i in range(1,4):
                 #управляем рычажками мышкой
@@ -413,7 +453,7 @@ class Ball:
     def move(self):
         for i in range(len(self.p)):
             if prep.polog_Y() < 360 or prep.polog_Y() > 370:
-                self.p[i]['y'] += 3
+                self.p[i]['y'] += upgrade_dict['speed'][0]
     def plus_ball(self):
         if dict_int['esc'] == False:
             x = floor(random(0,1000))
@@ -535,9 +575,10 @@ class Prep:
                                     cartridge.del_cart()
                 else:
                     if get_n > 0 and self.prep[i]['x'] <= head and self.prep[i]['x'] + 120 >= head:
-                        self.prep[i]['num'] -= 1
+                        self.prep[i]['num'] -= upgrade_dict['punching'][0]
                         dict_int['score'] += upgrade_dict['bonus'][0]
-                        #snake.dlina(-1)
+                        if dict_int['invul'] == False:
+                            snake.dlina(-1)
 
                 if self.prep[i]['num'] > 0 and i != self.del_index:
                     fill("#34FFFD")
@@ -565,9 +606,9 @@ class Prep:
         for i in range(len(self.prep)):
             if self.del_index == 5:
                 if self.prep[i]['y'] < 365:
-                    self.prep[i]['y'] += 3
+                    self.prep[i]['y'] += upgrade_dict['speed'][0]
             else:
-                self.prep[i]['y'] += 3
+                self.prep[i]['y'] += upgrade_dict['speed'][0]
 
 dict_int['start'] = False
 snake = Snake(300,600,15,40)
@@ -585,6 +626,7 @@ button = Button()
 boss = Boss()
 boss_cartridges = Boss_cartridges()
 time_boss = 0
+invul = invulnerability()
 def setup():
     global immage,kof
     immage = [loadImage("fon.png"),loadImage("fire.jpg"),loadImage("boss.png"),loadImage("pulya1.png")]
@@ -610,11 +652,12 @@ def draw():
         ball.move()
         prep.move()
     if dict_int['start'] == True:
+        invul.draw_()
         ball.draw_ball(snake.head_X())
         lava.draw_lava(snake.head_X())
         #wall.draw_wall(snake.head_X())
         snake.draw_()
-        snake.scroll_tail_Y(3)
+        snake.scroll_tail_Y(upgrade_dict['speed'][0])
         if mousePressed == True and dict_int['esc'] == False:
             snake.move_to(mouseX / kof,500)
         else:
@@ -624,7 +667,7 @@ def draw():
         strokeWeight(1)
         cartridge.draw_()
         fill(255-background_[0],255-background_[1],255-background_[2])
-        if i % 30 == 0:
+        if i % (90 / upgrade_dict['speed'][0]) == 0:
             ball.plus_ball()
             lava.plus_lava()
         if time_boss >= 3000 and time_boss <= 5000:
