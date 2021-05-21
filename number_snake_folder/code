@@ -4,7 +4,7 @@ kof = 1.0 * pX / X
 
 X_size = pX
 Y_size = floor(800 * kof)
-
+print
 dict_int = {'score':0,'start':False,'shop':False,'snake_head_X':300,'snake_head_Y':500,'prep_Y':0,'palette':False,'esc':False,'boss':False,'invul':False}
 dict_const = {'gran_left':0,'gran_right':600,'snake.scroll_tail_Y':3,'snake.move_to_palette_X':400,'snake.move_to_palette_Y':100,'gran_left_palette_line':50,'gran_right_palette_line':305,'palette_Y_line':50}
 dict_const_fill = {'button_LEFT_RIGHT_palette':125,'text_LEFT_RIGHT_palette':0}
@@ -28,18 +28,25 @@ class invulnerability:
         self.time = True
         self.time_invul = 0
     def draw_(self):
-        rect(500,700,60,60)
+        global dict_int,immage
+        image(immage[4],500,700,60,60)
+        #rect(500,700,60,60)
+        text(self.invulnerability,490,690)
         if self.invulnerability > 0:
             if (mousePressed == True and self.time == True and mouseX > 500 * kof and mouseX < 560 * kof and mouseY > 700 * kof and mouseY < 760 * kof) or (self.time == True and keyPressed == True and key == 'q' or key == u'й'):
                 self.time = False
                 dict_int['invul'] = True
                 self.time_invul = 1
-            else: 
+                self.invulnerability -= 1
+            if mousePressed == False and keyPressed == False: 
                 self.time = True
         if self.time_invul > 0:
             self.time_invul += 1
             if self.time_invul % 1000 == 0:
                 dict_int['invul'] = False
+    def plus(self):
+        if dict_int['start'] == False:
+            self.invulnerability = upgrade_dict['invulnerability'][0]
 class Boss:
     def __init__(self):
         self.l = 0
@@ -120,7 +127,6 @@ class esc:
                     self.esc = 1
                 if mouseX / kof > 200 and mouseX / kof < 400 and mouseY / kof > 380 and mouseY / kof < 460 and self.esc == 0:
                     dict_int['esc'] = False
-                    print(self.esc)
                     snake.dlina_to(0)
                 if self.esc == 2:
                     dict_int['esc'] = False
@@ -166,6 +172,9 @@ class cartridges:
         self.cartridge = self.quantity
         self.cart_time = 0
     def draw_(self):
+        fill(255)
+        text(self.cartridge,80,710)
+        image(immage[4],40,700,60,60)
         if keyPressed == True and key == " " and len(self.cartridges) <= self.quantity and self.keyTime == True and dict_int['esc'] == False and self.cartridge > 0:
             self.cartridges.append(dict(x = snake.head_X(),y = dict_int['snake_head_Y'],speed = upgrade_dict['speed cartridges'][0]))
             self.keyTime = False
@@ -199,6 +208,8 @@ class cartridges:
     def X_cartridges(self):
         if len(self.cartridges) > 0:
             return self.cartridges[0]['x']
+    def plus(self):
+        self.cartridge = upgrade_dict['cartridges'][0]
 class button_palette:
     def __init__(self):
         self.x = [175,175,175]
@@ -369,6 +380,7 @@ def button_start():
     dict_int['start'] = True
     time_boss = 0
     boss_cartridges.minus()
+    cartridge.plus()
 class Button():
     def __init__(self):
         self.X_start = 300
@@ -563,13 +575,9 @@ class Prep:
             for i in range(len(self.prep)):
                 if self.prep[i]['y'] < 365:
                     if cartridge.Y_cartridges() <= self.prep[0]['y'] + 200:
-                        print('1')
                         if cartridge.Y_cartridges() <= self.prep[0]['y']:
-                            print('2')
                             if self.prep[i]['x'] <= cartridge.X_cartridges():
-                                print('3')
                                 if self.prep[i]['x'] + 120 >= cartridge.X_cartridges():
-                                    print('4')
                                     self.prep[i]['num'] -= upgrade_dict['punching'][0]
                                     dict_int['score'] += upgrade_dict['bonus'][0]
                                     cartridge.del_cart()
@@ -629,7 +637,7 @@ time_boss = 0
 invul = invulnerability()
 def setup():
     global immage,kof
-    immage = [loadImage("fon.png"),loadImage("fire.jpg"),loadImage("boss.png"),loadImage("pulya1.png")]
+    immage = [loadImage("fon.png"),loadImage("fire.jpg"),loadImage("boss.png"),loadImage("pulya1.png"),loadImage("magazin.png")]
     size(X_size,Y_size)
     background(255)
     textSize(20)
@@ -647,6 +655,7 @@ def draw():
         text('money:',300,25)
         text(dict_int['score'],300,50)
     dict_int['snake_head_X'] = mouseX / kof
+    invul.plus()
     if dict_int['start'] == True and dict_int['esc'] == False:
         lava.move()
         ball.move()
