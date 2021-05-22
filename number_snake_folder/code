@@ -85,7 +85,7 @@ class Boss_cartridges:
                 del self.cartridges[0]
         for i in range(len(self.cartridges) - 1):
             if self.time_cartridges == True:
-                if 500 * kof > self.cartridges[i]['y'] - 12 and 500 * kof < self.cartridges[i]['y'] + 12: 
+                if 500 * kof > self.cartridges[i]['y'] - 20 and 500 * kof < self.cartridges[i]['y'] + 20: 
                     if snake.head_X() * kof > self.cartridges[i]['x'] - 12 and snake.head_X() * kof < self.cartridges[i]['x'] + 12:
                         if dict_int['invul'] == False:
                             snake.dlina(-1)
@@ -245,6 +245,7 @@ class button_palette:
             if self.iridescent_colors == 0:
                 #if self.time_fill == True:
                 stroke(255,0,0)
+                dict_int['iridescent colors'] = False
                 snake._fill_(False)
                     #self.time_fill = False
             else:
@@ -531,7 +532,12 @@ class Snake:
         global palette
         push()
         strokeWeight(1)
-        if dict_int['iridescent colors'] == Truea:
+        if dict_int['iridescent colors'] == True:
+            for i in range(self.n):
+                self.p[i]['rgb'] = self.rgb_fill + i
+            self.rgb_fill += 1
+            if self.rgb_fill >= 360:
+                self.rgb_fill = 0
             colorMode(HSB, 360, 100, 100)
             if self.n <= 40:
                 for i in range(self.n):
