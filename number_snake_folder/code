@@ -1,11 +1,12 @@
 X = 600
-pX = 600
+pX = 500
 kof = 1.0 * pX / X
 
 X_size = pX
 Y_size = floor(800 * kof)
-print
-dict_int = {'score':0,'start':False,'shop':False,'snake_head_X':300,'snake_head_Y':500,'prep_Y':0,'palette':False,'esc':False,'boss':False,'invul':False}
+#dict_int['iridescent colors']
+dict_int = {'score':0,'start':False,'shop':False,'snake_head_X':300,'snake_head_Y':500,'prep_Y':0,'palette':False,'esc':False,'boss':False,'invul':False,
+            'iridescent colors':False}
 dict_const = {'gran_left':0,'gran_right':600,'snake.scroll_tail_Y':3,'snake.move_to_palette_X':400,'snake.move_to_palette_Y':100,'gran_left_palette_line':50,'gran_right_palette_line':305,'palette_Y_line':50}
 dict_const_fill = {'button_LEFT_RIGHT_palette':125,'text_LEFT_RIGHT_palette':0}
 dict_const_stroke = {'line_palette1':125,'line_palette2':255,'button_collor_green_pallete':[0,255,0],'button_collor_red_pallete':[255,0,0],'button_palette':0,'RGB_palette':255}
@@ -218,9 +219,10 @@ class button_palette:
         self.int_fill = 0
         self.RGB_ = ['R','G','B']
         self.time_iridescent_colors = 0
-        self.R = 0
-        self.G = 0
-        self.B = 0
+        self.rgb = 0
+        self.iridescent_colors = 0
+        self.timeT = True
+        self.time_fill = True
     def palette(self):
         #рисуем змейку
         snake.draw_()
@@ -239,15 +241,35 @@ class button_palette:
             stroke(dict_const_stroke['line_palette2'])
             line(self.x[i-1],(dict_const['palette_Y_line'] * i - 10),self.x[i-1],(dict_const['palette_Y_line'] * i + 10))
         if upgrade_dict['iridescent colors'][0] > 0:
-            strokeWeight(1)
-            stroke(0)
-            if self.time_iridescent_colors % 100 == 0:
-                self.R = random(0,255)
-                self.G = random(0,255)
-                self.B = random(0,255)
-            fill(self.R,self.G,self.B)
+            push()
+            if self.iridescent_colors == 0:
+                #if self.time_fill == True:
+                stroke(255,0,0)
+                snake._fill_(False)
+                    #self.time_fill = False
+            else:
+                stroke(0,255,0)
+                dict_int['iridescent colors'] = True
+                snake._fill_(self.rgb)
+                #self.time_fill = True
+            if self.iridescent_colors > 1:
+                self.iridescent_colors = 0
+            colorMode(HSB, 360, 100, 100)
+            strokeWeight(5)
+            self.rgb += 1
+            fill(self.rgb,100,100)
             self.time_iridescent_colors += 1
-            rect(20,600,80,80)
+            rect(50,600,60,60)
+            if self.rgb >= 360:
+                self.rgb = 0
+            if mousePressed == True:
+                if self.timeT == True:
+                    if mouseX > 50 * kof and mouseX < 110 * kof and mouseY > 600 * kof and mouseY < 660 * kof:
+                        self.iridescent_colors += 1
+                        self.timeT = False
+            else:
+                self.timeT = True
+            pop()
         if mousePressed == True:
             for i in range(1,4):
                 #управляем рычажками мышкой
@@ -485,8 +507,10 @@ class Snake:
         self.d = d
         self.n = n
         self.p = []
+        self.rgb_ = False
+        self.rgb_fill = 0
         for i in range(n):
-            self.p.append(dict(x = x_,y = y_,R = 255,G = 255,B = 255))
+            self.p.append(dict(x = x_,y = y_,R = 255,G = 255,B = 255,rgb = False))
     def fill_(self,r,g,b):
         for i in range(len(self.p)):
             if mousePressed == 1:
@@ -494,22 +518,43 @@ class Snake:
                     self.p[i]['R'] = r
                     self.p[i]['G'] = g
                     self.p[i]['B'] = b
-                    #print(self.p[len(self.p)-i-1]['y'])
-                    #print(mouseY)
+    def _fill_(self,rgb):
+        if rgb != False:
+            for i in range(self.n):
+                self.rgb_ = rgb + i
+                self.p[i]['rgb'] = rgb + i
+        else:
+            self.rgb_ = False
+            for i in range(self.n):
+                self.p[i]['rgb'] = 255
     def draw_(self):
         global palette
+        push()
         strokeWeight(1)
-        if self.n <= 40:
-            for i in range(self.n):
-                fill(self.p[self.n-1-i]['R'], self.p[self.n-1-i]['G'], self.p[self.n-1-i]['B'])
-                circle(self.p[self.n-1-i]['x'],self.p[self.n-1-i]['y'],self.d)
+        if dict_int['iridescent colors'] == Truea:
+            colorMode(HSB, 360, 100, 100)
+            if self.n <= 40:
+                for i in range(self.n):
+                    fill(self.p[self.n-1-i]['rgb'], 100, 100)
+                    circle(self.p[self.n-1-i]['x'],self.p[self.n-1-i]['y'],self.d)
+            else:
+                for i in range(40):
+                    fill(self.p[40-1-i]['rgb'], 100, 100)
+                    circle(self.p[40-1-i]['x'],self.p[40-1-i]['y'],self.d)
         else:
-            for i in range(40):
-                fill(self.p[40-1-i]['R'], self.p[40-1-i]['G'], self.p[40-1-i]['B'])
-                circle(self.p[40-1-i]['x'],self.p[40-1-i]['y'],self.d)
+            colorMode(RGB, 255, 255, 255)
+            if self.n <= 40:
+                for i in range(self.n):
+                    fill(self.p[self.n-1-i]['R'], self.p[self.n-1-i]['G'], self.p[self.n-1-i]['B'])
+                    circle(self.p[self.n-1-i]['x'],self.p[self.n-1-i]['y'],self.d)
+            else:
+                for i in range(40):
+                    fill(self.p[40-1-i]['R'], self.p[40-1-i]['G'], self.p[40-1-i]['B'])
+                    circle(self.p[40-1-i]['x'],self.p[40-1-i]['y'],self.d)
         textSize(10)
         if dict_int['palette'] == False and dict_int['shop'] == False:
             text(self.n,self.p[0]['x'],self.p[0]['y']-10)
+        pop()
     def move_to(self,x,y):
         self.p[0]['x'] = x
         self.p[0]['y'] = y
@@ -637,7 +682,7 @@ time_boss = 0
 invul = invulnerability()
 def setup():
     global immage,kof
-    immage = [loadImage("fon.png"),loadImage("fire.jpg"),loadImage("boss.png"),loadImage("pulya1.png"),loadImage("magazin.png"),loadImage("shit.png")]
+    immage = [loadImage("fon.png"),loadImage("fire.jpg"),loadImage("boss.png"),loadImage("pulya1.png"),loadImage("magazin.png"),loadImage("shield.png")]
     size(X_size,Y_size)
     background(255)
     textSize(20)
@@ -679,7 +724,7 @@ def draw():
         if i % (90 / upgrade_dict['speed'][0]) == 0:
             ball.plus_ball()
             lava.plus_lava()
-        if time_boss >= 3000 and time_boss <= 5000:
+        if time_boss >= 1000 and time_boss <= 5000:
             boss.draw_()
             boss_cartridges.draw_()
         if time_boss >= 5000:
