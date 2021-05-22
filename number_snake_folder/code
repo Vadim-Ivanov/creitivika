@@ -76,7 +76,7 @@ class Boss_cartridges:
             push()
             translate(self.cartridges[i]['x'],self.cartridges[i]['y'])
             rotate(radians(90 + self.cartridges[i]['l']))
-            image(immage[3],-15 * kof,-7.5 * kof,30,15)
+            image(immage[3],-15 * kof,-7.5 * kof,30,15)#-15 * kof,-7.5 * kof
             pop()
             self.cartridges[i]['y'] += self.cartridges[i]['speed_Y']
             self.cartridges[i]['x'] += self.cartridges[i]['speed_X']
@@ -86,7 +86,7 @@ class Boss_cartridges:
         for i in range(len(self.cartridges) - 1):
             if self.time_cartridges == True:
                 if 500 * kof > self.cartridges[i]['y'] - 20 and 500 * kof < self.cartridges[i]['y'] + 20: 
-                    if snake.head_X() * kof > self.cartridges[i]['x'] - 12 and snake.head_X() * kof < self.cartridges[i]['x'] + 12:
+                    if snake.head_X() * kof > self.cartridges[i]['x'] - 20 and snake.head_X() * kof < self.cartridges[i]['x'] + 20:
                         if dict_int['invul'] == False:
                             snake.dlina(-1)
                         del self.cartridges[i]
@@ -730,7 +730,7 @@ def draw():
         if i % (90 / upgrade_dict['speed'][0]) == 0:
             ball.plus_ball()
             lava.plus_lava()
-        if time_boss >= 1000 and time_boss <= 5000:
+        if time_boss >= 100 and time_boss <= 5000:
             boss.draw_()
             boss_cartridges.draw_()
         if time_boss >= 5000:
