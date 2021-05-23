@@ -1,4 +1,8 @@
 #объявляем переменные
+list_prep = [] 
+gran_left = 0
+gran_right = 600
+
 X = 600
 pX = 500
 kof = 1.0 * pX / X
@@ -294,6 +298,7 @@ class button_palette:
                 self.iridescent_colors = 0
             #переводим цвет в формат HSB
             colorMode(HSB, 360, 100, 100)
+            #рисуем переливающуюся кнопку
             strokeWeight(5)
             self.rgb += 1
             fill(self.rgb,100,100)
@@ -301,6 +306,7 @@ class button_palette:
             rect(50,600,60,60)
             if self.rgb >= 360:
                 self.rgb = 0
+            #если нажали на кнопку, то включаем или выключаем переливание
             if mousePressed == True:
                 if self.timeT == True:
                     if mouseX > 50 * kof and mouseX < 110 * kof and mouseY > 600 * kof and mouseY < 660 * kof:
@@ -386,6 +392,7 @@ class button_palette:
         fill(self._fill_[self.int_fill]['R'],self._fill_[self.int_fill]['G'],self._fill_[self.int_fill]['B'])
         #рисуем квадрат с купленными цветами
         rect(dict_const_rect['list_fill'][0],dict_const_rect['list_fill'][1],dict_const_rect['list_fill'][2],dict_const_rect['list_fill'][3])
+#магазин
 class button_shop:
     def __init__(self):
         self.snake_X = 250
@@ -408,6 +415,7 @@ class button_shop:
         snake.scroll_tail_Y(dict_const['snake.scroll_tail_Y'])
         #переносим голову змейки в верх экрана
         snake.move_to(self.snake_X,self.snake_Y)
+        #управляем головой змейки
         if self.snake_X >= 350:
             self.speed_snake = -2
         if self.snake_X <= 250:
@@ -415,6 +423,7 @@ class button_shop:
         self.snake_X += self.speed_snake
         for i in range(3):
             for j in range(3):
+                #рисуем кнопки покупок
                 fill(0,255,0,240)
                 rect(100*i+175,100*j+400,90,90)
                 fill(0)
@@ -424,6 +433,7 @@ class button_shop:
                 textSize(10)
                 text(upgrade_list_Russian[i*3+j],100*i+175+45,100*j+400+70)
                 text(upgrade_dict[upgrade_list[i*3+j]][1],100*i+175+45,100*j+400+90)
+                #если нажали на кнопку покупки, то покупаем то, что написано на кнопке
                 if mousePressed == True and self.mouseTime == True and dict_int['score'] >= upgrade_dict[upgrade_list[i*3+j]][1]:
                     if mouseX / kof > 100*i+175 and mouseX / kof < 100*i+175+90 and mouseY / kof > 100*j+400 and mouseY / kof < 100*j+400+90:
                         dict_int['score'] -= upgrade_dict[upgrade_list[i*3+j]][1]
@@ -431,8 +441,10 @@ class button_shop:
                         self.mouseTime = False
                 if mousePressed == False:
                     self.mouseTime = True
+#старт
 def button_start():
     global time_boss
+    #переводим всё в первоначальное положение
     snake.dlina_to(20)
     prep.recovery_prep()
     ball.ball_clear()
@@ -442,6 +454,7 @@ def button_start():
     boss_cartridges.minus()
     cartridge.plus()
     cartridge.minus()
+#кнопки
 class Button():
     def __init__(self):
         self.X_start = 300
@@ -449,6 +462,9 @@ class Button():
         
         self.X_shop = 500
         self.Y_shop = 700
+        
+        self.X_palette = 25
+        self.Y_palette = 700
     def draw_(self):
         fill(255,0,0)
         ellipse(self.X_start,self.Y_start,200,125)
@@ -465,26 +481,26 @@ class Button():
         rect(self.X_shop+20,self.Y_shop+30,35,35)
         
         fill(0,0,255)
-        rect(25,700,75,75)
+        rect(self.X_palette,self.Y_palette,75,75)
         fill(0,255,0)
-        ellipse(25+37.5,737.5,70,70)
+        ellipse(self.X_palette+37.5,self.Y_palette+37.5,70,70)
         push()
         noStroke()
         fill(0,0,255)
-        ellipse(25+37.5,737.5+20,15,15)
+        ellipse(self.X_palette+37.5,self.Y_palette+37.5+20,15,15)
         pop()
         fill(255,0,0)
-        ellipse(40,737+10,15,15)
+        ellipse(self.X_palette+15,self.Y_palette+37+10,15,15)
         fill(0,0,0)
-        ellipse(45,725,15,15)
+        ellipse(self.X_palette+20,self.Y_palette+25,15,15)
         fill("#F2EB11")
-        ellipse(65,715,15,15)
+        ellipse(self.X_palette+40,self.Y_palette+15,15,15)
         fill('#3DF2BD')
-        ellipse(80,732,15,15)
+        ellipse(self.X_palette+55,self.Y_palette+32,15,15)
         fill(0,0,255)
         push()
         noStroke()
-        translate(87,757)
+        translate(self.X_palette+62,self.Y_palette+57)
         rotate(radians(120))
         ellipse(0,0,30,25)
         pop()
@@ -497,17 +513,19 @@ class Button():
         fill(255)
         textSize(24)
         text(u'деньги',50,42)
-list_prep = [] 
-gran_left = 0
-gran_right = 600
+#сферы силы
 class Ball:
     def __init__(self):
         self.p = [dict(x = random(10,590),y = -15,num = floor(random(1,10)),gold = 0)]
     def draw_ball(self,head_X):
         for i in range(len(self.p)):
             strokeWeight(1)
+            #меняем цвет
             if self.p[i]['gold'] == 0:
-                fill(255,0,0)
+                if self.p[i]['num'] < 0:
+                    fill(255,0,0)
+                else:
+                    fill(0,255,0)
             else:
                 fill('#FFF827')
             ellipse(self.p[i]['x'],self.p[i]['y'],10,10)
