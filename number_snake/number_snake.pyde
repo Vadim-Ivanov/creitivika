@@ -528,23 +528,27 @@ class Ball:
                     fill(0,255,0)
             else:
                 fill('#FFF827')
+            #рисуем сферы силы
             ellipse(self.p[i]['x'],self.p[i]['y'],10,10)
             textSize(12)
             fill('#FFF827')
             text(self.p[i]['num'],self.p[i]['x'],self.p[i]['y']-5)
-
+        #если сфера силы
         if len(self.p) > 0:
             if self.p[0]['y'] >= 800:
                 del self.p[0]
+        #если сфера силы касается головы змейки, то изменяем длину змейки
         for i in range(len(self.p)):
             if self.p[i]['y'] >= 460 and self.p[i]['y'] <= 540 and self.p[i]['x'] >= head_X - 40 and self.p[i]['x'] <= head_X + 40:
                 snake.dlina(self.p[i]['num'])
                 del self.p[i]
                 return ' '
+    #передвигаем сферу силы
     def move(self):
         for i in range(len(self.p)):
             if prep.polog_Y() < 360 or prep.polog_Y() > 370:
                 self.p[i]['y'] += upgrade_dict['speed'][0]
+    #добавляем сферу силы
     def plus_ball(self):
         if dict_int['esc'] == False:
             x = floor(random(0,1000))
@@ -555,6 +559,7 @@ class Ball:
                 self.p.append(dict(x = random(10,590),y = -15,num = floor(random(-30,-5)),gold = 0))
             else:
                 self.p.append(dict(x = random(10,590),y = -15,num = floor(random(1,10)),gold = 0))
+    #удаляем сферы силы
     def ball_clear(self):
         for i in range(len(self.p)):
             del self.p[0]
@@ -568,6 +573,7 @@ class Snake:
         self.rgb_fill = 0
         for i in range(n):
             self.p.append(dict(x = x_,y = y_,R = 255,G = 255,B = 255,rgb = False))
+    #установка цвета
     def fill_(self,r,g,b):
         for i in range(len(self.p)):
             if mousePressed == 1:
@@ -575,6 +581,7 @@ class Snake:
                     self.p[i]['R'] = r
                     self.p[i]['G'] = g
                     self.p[i]['B'] = b
+    #установка цвета
     def _fill_(self,rgb):
         if rgb != False:
             for i in range(self.n):
@@ -589,12 +596,14 @@ class Snake:
         push()
         strokeWeight(1)
         if dict_int['iridescent colors'] == True:
+            #делаем цвет переливающимся
             for i in range(self.n):
                 self.p[i]['rgb'] = self.rgb_fill + i
             self.rgb_fill += 1
             if self.rgb_fill >= 360:
                 self.rgb_fill = 0
             colorMode(HSB, 360, 100, 100)
+            #рисуем змейку
             if self.n <= 40:
                 for i in range(self.n):
                     fill(self.p[self.n-1-i]['rgb'], 100, 100)
@@ -605,6 +614,7 @@ class Snake:
                     circle(self.p[40-1-i]['x'],self.p[40-1-i]['y'],self.d)
         else:
             colorMode(RGB, 255, 255, 255)
+            #рисуем змейку
             if self.n <= 40:
                 for i in range(self.n):
                     fill(self.p[self.n-1-i]['R'], self.p[self.n-1-i]['G'], self.p[self.n-1-i]['B'])
@@ -614,32 +624,39 @@ class Snake:
                     fill(self.p[40-1-i]['R'], self.p[40-1-i]['G'], self.p[40-1-i]['B'])
                     circle(self.p[40-1-i]['x'],self.p[40-1-i]['y'],self.d)
         textSize(10)
+        #пишем длинну змейки
         if dict_int['palette'] == False and dict_int['shop'] == False:
             text(self.n,self.p[0]['x'],self.p[0]['y']-10)
         pop()
+    #передвижение
     def move_to(self,x,y):
         self.p[0]['x'] = x
         self.p[0]['y'] = y
         self.head_to_gran()
         self.move_tail()
+    #передвижение
     def move(self,dx,dy):
         self.p[0]['x'] += dx
         self.p[0]['y'] += dy
         self.head_to_gran()
         self.move_tail()
+    #голова от границы
     def head_to_gran(self):
         global gran_left,gran_right
         if self.p[0]['x'] <= gran_left + 7.5:
             self.p[0]['x'] = gran_left + 7.5
         if self.p[0]['x'] >= gran_right - 7.5:
             self.p[0]['x'] = gran_right - 7.5
+    #увеличение/уменьшение длины
     def dlina(self,d):
         self.n += d
         if d > 0:
             for i in range(d):
                 self.p.append(dict(x = 300,y = 1000,R = 255,G = 255,B = 255))
+    #увеличение/уменьшение длины
     def dlina_to(self,d):
         self.n = d
+    #передвижение тела
     def move_tail(self):
         for i in range(1,self.n):
             dx = self.p[i]['x'] - self.p[i-1]['x']
@@ -648,11 +665,14 @@ class Snake:
             if self.d < d:
                 self.p[i]['x'] = (self.d / d) * (self.p[i]['x'] - self.p[i-1]['x']) + self.p[i-1]['x']
                 self.p[i]['y'] = (self.d / d) * (self.p[i]['y'] - self.p[i-1]['y']) + self.p[i-1]['y']
+    #движение змейки
     def scroll_tail_Y(self,dy):
         for i in range(1,self.n):
             self.p[i]['y'] += dy
+    #длина змейки
     def get_n(self):
         return self.n
+    #координаты головы X
     def head_X(self):
         return self.p[0]['x']
 
