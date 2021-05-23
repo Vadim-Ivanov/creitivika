@@ -23,7 +23,7 @@ upgrade_dict = {'cooldown':[15,500,1],'cartridges':[5,500,1],'bonus':[1,500,1],'
 upgrade_list = ['cooldown','cartridges','bonus','punching','invulnerability','iridescent colors','speed','speed cartridges','speed boss cartridges']
 upgrade_list_Russian = [u'перезарядка',u'патроны',u'бонус',u'пробивание',u'неуязвимость',u'переливающиеся \n цвета',u'скорость',u'скорость \n пуль',u'стрельба \n вражеской \n пушки']
 upgrade = {}
-
+#неуязвимость
 class invulnerability:
     def __init__(self):
         self.invulnerability = upgrade_dict['invulnerability'][0]
@@ -31,9 +31,11 @@ class invulnerability:
         self.time_invul = 0
     def draw_(self):
         global dict_int,immage
+        #рисуем значок
         image(immage[5],500,700,60,60)
         text(self.invulnerability,490,690)
         if self.invulnerability > 0:
+            #если нажимаем то используем
             if (mousePressed == True and self.time == True and mouseX > 500 * kof and mouseX < 560 * kof and mouseY > 700 * kof and mouseY < 760 * kof) or (self.time == True and keyPressed == True and key == 'q' or key == u'й'):
                 self.time = False
                 dict_int['invul'] = True
@@ -41,31 +43,37 @@ class invulnerability:
                 self.invulnerability -= 1
             if mousePressed == False and keyPressed == False: 
                 self.time = True
+        #отключение неуязввимости
         if self.time_invul > 0:
             self.time_invul += 1
-            if self.time_invul % 1000 == 0:
+            if self.time_invul % 1000 == 0 or dict_int['start'] == False:
                 dict_int['invul'] = False
     def plus(self):
         if dict_int['start'] == False:
             self.invulnerability = upgrade_dict['invulnerability'][0]
+#босс
 class Boss:
     def __init__(self):
         self.l = 0
         self.b = 0
         self.time = 0
     def draw_(self):
+        #определяем направление полёта
         if dict_int['esc'] == False:
             self.b = sqrt((snake.head_X() * kof - X_size / 2)**2 + (500 * kof)**2)
             self.l = asin((X_size / 2 - snake.head_X() * kof) / self.b) * 57.3
+        #рисуем босса
         push()
         rectMode(CENTER)
         translate(300,0)
         rotate(radians(self.l))
         image(immage[2],-50,-36.5,100,73)
         pop()
+        #каждые 30 кадров босс стреляем
         if self.time % 30 == 0:
             boss_cartridges.plus(self.l)
         self.time += 1
+#пуля босса
 class Boss_cartridges:
     def __init__(self):
         self.cartridges = []
@@ -73,16 +81,20 @@ class Boss_cartridges:
         self.time_cartridges = True
     def draw_(self):
         for i in range(len(self.cartridges) - 1):
+            #рисуем все пули
             push()
             translate(self.cartridges[i]['x'],self.cartridges[i]['y'])
             rotate(radians(90 + self.cartridges[i]['l']))
             image(immage[3],-15 * kof,-7.5 * kof,30,15)
             pop()
+            #двигаем пули
             self.cartridges[i]['y'] += self.cartridges[i]['speed_Y']
             self.cartridges[i]['x'] += self.cartridges[i]['speed_X']
+        #если пуля улетела за границу экрана, то удаляем её
         if len(self.cartridges) > 0:
             if self.cartridges[0]['y'] >= Y_size:
                 del self.cartridges[0]
+                #если касается головы, то у змейки отнимается жизнь, а пуля удаляется
         for i in range(len(self.cartridges) - 1):
             if self.time_cartridges == True:
                 if 500 / kof > self.cartridges[i]['y'] - 20 and 500 / kof < self.cartridges[i]['y'] + 20: 
@@ -93,13 +105,16 @@ class Boss_cartridges:
                             del self.cartridges[i]
                             self.time_cartridges = False
         self.time_cartridges = True
+    #создаём пулю
     def plus(self,l):
         self.l = l
         self.cartridges.append(dict(x = 300,y = 10,l = self.l,speed_Y = upgrade_dict['speed boss cartridges'][0] / kof,
                                     speed_X = (upgrade_dict['speed boss cartridges'][0] * (snake.head_X() - 300)) / (500 * kof))) 
+    #удаляем все пули
     def minus(self):
         for i in range(len(self.cartridges)):
             del self.cartridges[0]
+#пауза
 class esc:
     def __init__(self):
         self.X = 550
@@ -107,9 +122,11 @@ class esc:
         self.time = True
         self.esc = 0
     def draw_(self):
+        #если кнопка нажата, то ставим на паузу
         if keyPressed == True:
             if key == 'e' or key == u'у':
                 dict_int['esc'] = True
+        #рисуем экран паузы
         if dict_int['esc'] == True:
             if self.esc == 0:
                 fill(0,0,0,230)
@@ -123,9 +140,11 @@ class esc:
                 text(u'продолжить',300,305)
                 text(u'в меню',300,435)
             if mousePressed == True:
+                #если нажата кнопка "продолжить", то продолжаем
                 if mouseX / kof > 200 and mouseX / kof < 400 and mouseY / kof > 250 and mouseY / kof < 330 and self.time == True:
                     self.time = False
                     self.esc = 1
+                #если нажата кнопка "в меню", то выходим в меню
                 if mouseX / kof > 200 and mouseX / kof < 400 and mouseY / kof > 380 and mouseY / kof < 460 and self.esc == 0:
                     dict_int['esc'] = False
                     snake.dlina_to(0)
@@ -141,28 +160,35 @@ class lava:
         self.p = [dict(x = random(10,X_size),y = -15,num = floor(random(1,10)),gold = 0)]
     def draw_lava(self,head_X):
         for i in range(len(self.p)):
+            #рисуем все кубики лавы
             strokeWeight(1)
             image(immage[1],self.p[i]['x'],self.p[i]['y'],30,30)
             textSize(12)
+        #если кубик лавы выходит за края, то удаляем его
         if len(self.p) > 0:
             if self.p[0]['y'] >= Y_size / kof:
                 del self.p[0]
+        #если кубик лавы касается головы, то убиваем змейку и удаляем лаву
         for i in range(len(self.p)):
             if self.p[i]['y'] >= 462.5 and self.p[i]['y'] <= 537.5 and self.p[i]['x'] <= head_X and self.p[i]['x'] >= head_X - 37.5:
                 if dict_int['invul'] == False:
                     snake.dlina_to(0)
                 del self.p[i]
                 return ' '
+    #передвижение лавы
     def move(self):
         for i in range(len(self.p)):
             if prep.polog_Y() < 360 or prep.polog_Y() > 370:
                 self.p[i]['y'] += upgrade_dict['speed'][0]
+    #добавление кубика лавы
     def plus_lava(self):
         if prep.polog_Y() > 20 and prep.polog_Y() < 800 and dict_int['esc'] == False:
             self.p.append(dict(x = random(10,590),y = -15))
+    #удаление всех кубиков лавы
     def lava_clear(self):
         for i in range(len(self.p)):
             del self.p[0]
+#патроны змейки
 class cartridges:
     def __init__(self):
         self.quantity = upgrade_dict['cartridges'][0]
@@ -171,43 +197,57 @@ class cartridges:
         self.cartridge = self.quantity
         self.cart_time = 0
     def draw_(self):
+        #рисуем значок
         fill(255)
         text(self.cartridge,80,710)
         image(immage[4],40,700,60,60)
+        #если кнопка пробел нажата, то создаём пулю
         if keyPressed == True and key == " " and len(self.cartridges) <= self.quantity and self.keyTime == True and dict_int['esc'] == False and self.cartridge > 0:
             self.cartridges.append(dict(x = snake.head_X(),y = dict_int['snake_head_Y'],speed = upgrade_dict['speed cartridges'][0]))
             self.keyTime = False
             self.cartridge -= 1
+        #добавляем патроны если их меньше чем нужно
         if self.cartridge != self.quantity:
             self.cart_time += 1
-        if self.cart_time % (upgrade_dict['cooldown'][0] * 100) == 0:
-            self.cartridge += 1
+            if self.cart_time % (upgrade_dict['cooldown'][0] * 100) == 0:
+                self.cartridge += 1
         if keyPressed == False:
             self.keyTime = True
         for i in range(len(self.cartridges)-1):
+            #рисуем все пули
             push()
             translate(self.cartridges[i]['x']-4 * kof,self.cartridges[i]['y']-7.5 * kof)
             rotate(radians(-90))
             image(immage[3],0,0,30,15)
             pop()
+            #передвигаем пули
             if dict_int['esc'] == False:
-                cartridge.move()
+                cartridge.move(i)
+            #если пуля долетела до края экрана, то удаляем её
             if self.cartridges[i]['y'] <= 0:
                 del self.cartridges[i]
-
+    #удаляем пулю
     def del_cart(self):
         del self.cartridges[0]
-    def move(self):
-        for i in range(len(self.cartridges)-1):
-            self.cartridges[i]['y'] -= self.cartridges[i]['speed']
+    #передвигаем пулю
+    def move(self,i):
+        self.cartridges[i]['y'] -= self.cartridges[i]['speed']
+    #координаты пули по Y
     def Y_cartridges(self):
         if len(self.cartridges) > 0:
             return self.cartridges[0]['y']
+    #координаты пули по X
     def X_cartridges(self):
         if len(self.cartridges) > 0:
             return self.cartridges[0]['x']
+    #добавлдяем патроны
     def plus(self):
         self.cartridge = upgrade_dict['cartridges'][0]
+    #удаляем летящие пули
+    def minus(self):
+        for i in range(len(self.cartridges)):
+            del self.cartridges[0]
+#палитра
 class button_palette:
     def __init__(self):
         self.x = [175,175,175]
@@ -240,19 +280,19 @@ class button_palette:
             line(self.x[i-1],(dict_const['palette_Y_line'] * i - 10),self.x[i-1],(dict_const['palette_Y_line'] * i + 10))
         if upgrade_dict['iridescent colors'][0] > 0:
             push()
+            #если не включено "переливающиеся цвета", то рамка красная
             if self.iridescent_colors == 0:
-                #if self.time_fill == True:
                 stroke(255,0,0)
                 dict_int['iridescent colors'] = False
                 snake._fill_(False)
-                    #self.time_fill = False
+            #иначе рамка зелёная
             else:
                 stroke(0,255,0)
                 dict_int['iridescent colors'] = True
                 snake._fill_(self.rgb)
-                #self.time_fill = True
             if self.iridescent_colors > 1:
                 self.iridescent_colors = 0
+            #переводим цвет в формат HSB
             colorMode(HSB, 360, 100, 100)
             strokeWeight(5)
             self.rgb += 1
@@ -401,6 +441,7 @@ def button_start():
     time_boss = 0
     boss_cartridges.minus()
     cartridge.plus()
+    cartridge.minus()
 class Button():
     def __init__(self):
         self.X_start = 300
