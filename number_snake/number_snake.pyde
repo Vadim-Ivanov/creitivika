@@ -2,6 +2,7 @@
 list_prep = [] 
 gran_left = 0
 gran_right = 600
+i = 1
 
 X = 600
 pX = 500
@@ -658,6 +659,7 @@ class Snake:
         self.n = d
     #передвижение тела
     def move_tail(self):
+        #по формуле вычисляем куда сдвинуть тело змейки
         for i in range(1,self.n):
             dx = self.p[i]['x'] - self.p[i-1]['x']
             dy = self.p[i]['y'] - self.p[i-1]['y']
@@ -682,14 +684,17 @@ class Prep:
         self.del_index = 5
         self.prep = []
         self.graniza = 0
+    #регенерация препятствий
     def recovery_prep(self):
         global score
         self.del_index = 5
         self.prep = []
         for i in range(5):
-            self.prep.append(dict(x = 120*i,y = -120,num = floor(random(3,40))))            
+            self.prep.append(dict(x = 120*i,y = -120,num = floor(random(3,40))))      
+    #передвижение препятствий    
     def move_prep(self,get_n,head):
         global gran_left,gran_right,score
+        #если змейка сломала препятствие, то создаём границы
         if self.prep[0]['y'] > 380 and self.prep[0]['y'] < 530 and self.del_index < 5:
             gran_left = self.prep[self.del_index]['x']
             gran_right = self.prep[self.del_index]['x'] + 120
@@ -698,8 +703,10 @@ class Prep:
             gran_right = 600
         strokeWeight(10)
         dict_int['prep_Y'] = self.prep[0]['y'] + 120
+        #если ничего не сломано
         if self.del_index == 5:
             for i in range(len(self.prep)):
+                #если пуля змейки касается препятствия
                 if self.prep[i]['y'] < 365:
                     if cartridge.Y_cartridges() <= self.prep[0]['y'] + 200:
                         if cartridge.Y_cartridges() <= self.prep[0]['y']:
@@ -708,13 +715,15 @@ class Prep:
                                     self.prep[i]['num'] -= upgrade_dict['punching'][0]
                                     dict_int['score'] += upgrade_dict['bonus'][0]
                                     cartridge.del_cart()
+                #если голова змейки касается препятствия
                 else:
                     if get_n > 0 and self.prep[i]['x'] <= head and self.prep[i]['x'] + 120 >= head:
                         self.prep[i]['num'] -= upgrade_dict['punching'][0]
                         dict_int['score'] += upgrade_dict['bonus'][0]
+                        #если неуязвимость не включена
                         if dict_int['invul'] == False:
                             snake.dlina(-1)
-
+                #рисуем препятствия
                 if self.prep[i]['num'] > 0 and i != self.del_index:
                     fill("#34FFFD")
                     rect(self.prep[i]['x'],self.prep[i]['y'],120,120)
@@ -723,19 +732,23 @@ class Prep:
                 else:
                     self.del_index = i
         else:
+            #рисуем препятствия
             for i in range(len(self.prep)):
                 if self.prep[i]['num'] > 0:
                     fill("#34FFFD")
                     rect(self.prep[i]['x'],self.prep[i]['y'],120,120)
                     fill(0)
                     text(self.prep[i]['num'],self.prep[i]['x']+60,self.prep[i]['y']+60)
-            if self.prep[0]['y'] >= 800:
+            #удаляем препятствия если они вышли за пределы экрана
+            if self.prep[0]['y'] >= 800 * kof:
                 self.recovery_prep()
         if snake.get_n() <= 0:
             for i in range(len(self.prep)):
                 self.del_index = i  
+    #положение препятствий по Y
     def polog_Y(self):
         return self.prep[0]['y']
+    #передвижение
     def move(self):
         for i in range(len(self.prep)):
             if self.del_index == 5:
@@ -743,14 +756,12 @@ class Prep:
                     self.prep[i]['y'] += upgrade_dict['speed'][0]
             else:
                 self.prep[i]['y'] += upgrade_dict['speed'][0]
-
-dict_int['start'] = False
+#объявляем все классы
 snake = Snake(300,600,15,40)
 prep = Prep()
 background_ = [0,0,0]
 ball = Ball()
 lava = lava()
-i = 1
 Button_palette = button_palette()
 shop = button_shop()
 cartridge = cartridges()
@@ -760,17 +771,24 @@ boss = Boss()
 boss_cartridges = Boss_cartridges()
 time_boss = 0
 invul = invulnerability()
+#начало
 def setup():
     global immage,kof
+    #загружаем все картинки
     immage = [loadImage("fon.png"),loadImage("fire.jpg"),loadImage("boss.png"),loadImage("pulya1.png"),loadImage("magazin.png"),loadImage("shield.png")]
+    #устанавливаем размер экрана
     size(X_size,Y_size)
     background(255)
     textSize(20)
+    #делаем, чтобы текст отображался по середине кнопки
     textAlign(CENTER, BOTTOM)
+    #устанавливаем колличество кадров в секунду 100
     frameRate(100)
+#основная часть
 def draw():
     global start,immage,background_,i,palette,m,time_boss
     background(background_[0],background_[1],background_[2])
+    #рисуем фон
     image(immage[0],0,0,600,800)
     scale(kof)
     fill(255)
@@ -780,10 +798,12 @@ def draw():
         text(dict_int['score'],300,50)
     dict_int['snake_head_X'] = mouseX / kof
     invul.plus()
+    #передвижение
     if dict_int['start'] == True and dict_int['esc'] == False:
         lava.move()
         ball.move()
         prep.move()
+    #действия
     if dict_int['start'] == True:
         invul.draw_()
         ball.draw_ball(snake.head_X())
@@ -799,12 +819,17 @@ def draw():
         strokeWeight(1)
         cartridge.draw_()
         fill(255-background_[0],255-background_[1],255-background_[2])
+        #лава и сферы силы
         if i % (90 / upgrade_dict['speed'][0]) == 0:
             ball.plus_ball()
             lava.plus_lava()
+        #босс
         if time_boss >= 1000 and time_boss <= 5000:
             boss.draw_()
             boss_cartridges.draw_()
+            dict_int['boss'] = True
+        else:
+            dict_int['boss'] = False
         if time_boss >= 5000:
             time_boss = 0
         time_boss += 1
@@ -812,10 +837,14 @@ def draw():
         i += 1
     else:
         i = 1
+        dict_int['boss'] = False
+    #если длина змейки 0, то завершаем игру
     if snake.get_n() <= 0:
         dict_int['start'] = False
+    #рисуем кнопки
     if dict_int['start'] == False and dict_int['palette'] == False and dict_int['shop'] == False:
         button.draw_()
+    #рисуем кнопку выхода из магазина или палитры
     if dict_int['palette'] == True or dict_int['shop'] == True:
         fill(255,0,0)
         strokeWeight(1)
@@ -827,23 +856,30 @@ def draw():
             Button_palette.palette()
         else:
             shop.draw_()
+    #рисуем кнопку получения денег 
     if mousePressed == True:
         if dict_int['start'] == False and mouseX > 0 and mouseX < 100 * kof and mouseY > 0 and mouseY < 60 * kof and dict_int['palette'] == False and dict_int['shop'] == False:
             dict_int['score'] += 1000000
+#функция на проверку нажатия мышки
 def mousePressed():
     global start,palette
+    #если нажата кнопка выйти из магазина, то выходим из магазина
     if dict_int['start'] == False and mouseX > 500 * kof and mouseX < 600 * kof and mouseY > 0 and mouseY < 60 * kof and dict_int['shop'] == True:
         snake.dlina_to(40)
         dict_int['shop'] = False
+    #если нажата кнопка магазин, то заходим в магазин
     if dict_int['start'] == False and mouseX > 500 * kof and mouseX < 575 * kof and mouseY > 700 * kof and mouseY < 775 * kof and dict_int['shop'] == False:
         dict_int['shop'] = True
         shop.draw_()
         snake.dlina_to(20)
+    #если нажата кнопка палитра, то заходим в палитру
     if dict_int['start'] == False and mouseX > 25 * kof and mouseX < 100 * kof and mouseY > 700 * kof and mouseY < 775 * kof:
         dict_int['palette'] = True
         snake.dlina_to(40)
+    #если нажата кнопка выйти из палитры, то выходим из палитры
     if dict_int['start'] == False and mouseX > 500 * kof and mouseX < 600 * kof and mouseY > 0 and mouseY < 60 * kof and dict_int['palette'] == True:
         dict_int['palette'] = False
         snake.dlina_to(40)
+    #если нажата кнопка старт, то начинаем игру
     if dict_int['start'] == False and mouseX > 200 * kof and mouseX < 400 * kof and mouseY > (400 - 62.5) * kof and mouseY < (400 + 62.5) * kof and dict_int['palette'] == False and dict_int['shop'] == False:
         button_start()
