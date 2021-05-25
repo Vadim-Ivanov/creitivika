@@ -859,7 +859,7 @@ def draw():
     #рисуем кнопку получения денег 
     if mousePressed == True:
         if dict_int['start'] == False and mouseX > 0 and mouseX < 100 * kof and mouseY > 0 and mouseY < 60 * kof and dict_int['palette'] == False and dict_int['shop'] == False:
-            dict_int['score'] += 10000000
+            dict_int['score'] += 1000000
 #функция на проверку нажатия мышки
 def mousePressed():
     global start,palette
