@@ -5,7 +5,7 @@ gran_right = 600
 i = 1
 
 X = 600
-pX = 500
+pX = 600
 kof = 1.0 * pX / X
 
 X_size = pX
@@ -102,9 +102,9 @@ class Boss_cartridges:
                 #если касается головы, то у змейки отнимается жизнь, а пуля удаляется
         for i in range(len(self.cartridges) - 1):
             if self.time_cartridges == True:
-                if 500 / kof > self.cartridges[i]['y'] - 20 and 500 / kof < self.cartridges[i]['y'] + 20: 
-                    if (self.cartridges[i]['x'] - (-15 * kof) - 20) + 55 <= snake.head_X() / kof: 
-                        if (self.cartridges[i]['x'] - (-7.5 * kof) + 20) + 55 >= snake.head_X() / kof:
+                if 500 / kof > self.cartridges[i]['y'] - 25 and 500 / kof < self.cartridges[i]['y'] + 25: 
+                    if (self.cartridges[i]['x'] - (-15 * kof) - 25) <= snake.head_X() / kof: 
+                        if (self.cartridges[i]['x'] - (-7.5 * kof) + 25) >= snake.head_X() / kof:
                             if dict_int['invul'] == False:
                                 snake.dlina(-1)
                             del self.cartridges[i]
@@ -214,7 +214,7 @@ class cartridges:
         #добавляем патроны если их меньше чем нужно
         if self.cartridge != self.quantity:
             self.cart_time += 1
-            if self.cart_time % (upgrade_dict['cooldown'][0] * 100) == 0:
+            if self.cart_time % (upgrade_dict['cooldown'][0] * 25) == 0:
                 self.cartridge += 1
         if keyPressed == False:
             self.keyTime = True
