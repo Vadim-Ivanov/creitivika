@@ -23,7 +23,7 @@ dict_const_ellipse = {'i':0}
 dict_const_text = {'RIGHT_paletter':[92.5,440],'LEFT_paletter':[62.5,440]}
 dict_const_textSize = {'LEFT_RIGHT_palette':30,'RGB_palette':30}
 upgrade_dict = {'cooldown':[15,500,1],'cartridges':[5,500,1],'bonus':[1,500,1],'punching':[1,500,1],'invulnerability':[1,500,1],
-                'iridescent colors':[0,5000,1],'speed':[3,250,1],'speed cartridges':[3,500,1],'speed boss cartridges':[10,10000,1]}
+                'iridescent colors':[0,20000,1],'speed':[3,250,1],'speed cartridges':[3,500,1],'speed boss cartridges':[10,10000,1]}
 #перезарядка,патроны,бонус,пробивание,патронов при выстреле,переливающиеся цвета,скорость,скорость стрельбы пушки
 upgrade_list = ['cooldown','cartridges','bonus','punching','invulnerability','iridescent colors','speed','speed cartridges','speed boss cartridges']
 upgrade_list_Russian = [u'перезарядка',u'патроны',u'бонус',u'пробивание',u'неуязвимость',u'переливающиеся \n цвета',u'скорость',u'скорость \n пуль',u'стрельба \n вражеской \n пушки']
@@ -756,7 +756,7 @@ class Prep:
                     self.prep[i]['y'] += upgrade_dict['speed'][0]
             else:
                 self.prep[i]['y'] += upgrade_dict['speed'][0]
-#объявляем все классы
+#создаём объекты всех классов
 snake = Snake(300,600,15,40)
 prep = Prep()
 background_ = [0,0,0]
