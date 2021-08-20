@@ -22,8 +22,8 @@ for i in range(10*a_y):
         else:
             a[i].append(0)
 
-for i in range(len(a)):
-    print(a[i])
+# for i in range(len(a)):
+#     print(a[i])
         
 start = 0, 0
 end_ = (10*a_y)-1, (16*a_y)-1
