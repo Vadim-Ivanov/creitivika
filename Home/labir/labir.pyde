@@ -52,13 +52,24 @@ def evaluation_of_zero_cells():
     evaluation_zero = []
     gor = []
     vert = []
+    min_gor = 0
+    min_vert = 0
     for i in range(len(city)):
         for j in range(len(city_col)):
             if city[i][j] == 0:
-                gor = city[i] - city[i][j]
-                print(gor)
-                gor.append(min(city[i]))
-                evaluation_zero.append(min(city[i]))
+                gor = city[i]
+                del gor[j]
+                min_gor = min(gor[i])
+            if city_col[j][i] == 0:
+                vert = city[i]
+                del vert[j]
+                min_vert = min(vert[i])
+            if city[i][j] == 0:
+                evaluation_zero.append(min_gor + min_vert)
+            else:
+                evaluation_zero.append(float('inf'))
+    print(evaluation_zero)
+                
             
 def setup():
     global city,city_col,column,stroka
