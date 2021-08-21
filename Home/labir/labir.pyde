@@ -11,7 +11,7 @@ city_col = []
 #         city_col[i].append(city[j][i])
 column = []
 stroka = []
-def city_col():
+def city_col_app():
     for i in range(len(city[0])):
         city_col.append([])
         for j in range(len(city)):
@@ -26,7 +26,7 @@ def str_const():
 def col_const():
     global column, stroka, city_col
     column = []
-    city_col()
+    city_col_app()
     for i in range(len(city)):
         column.append(min(city_col[i]))
         
@@ -48,7 +48,7 @@ def sum_col_str():
         
 def evaluation_of_zero_cells():
     global evaluation_zero
-    city_col()
+    city_col_app()
     evaluation_zero = []
     gor = []
     vert = []
