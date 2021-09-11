@@ -1,0 +1,17 @@
+import pyautogui
+import time
+pyautogui.hotkey("win", "d")
+pyautogui.moveTo(850,450)
+pyautogui.doubleClick()
+time.sleep(0.5)
+pyautogui.hotkey('ctrl','a')
+pyautogui.hotkey('ctrl','c')
+pyautogui.hotkey('alt','f4')
+pyautogui.moveTo(1325,545)
+pyautogui.doubleClick()
+time.sleep(0.5)
+pyautogui.hotkey('ctrl','v')
+pyautogui.hotkey('ctrl','s')
+time.sleep(1)
+pyautogui.moveTo(1100,110)
+pyautogui.click()
