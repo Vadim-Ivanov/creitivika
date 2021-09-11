@@ -1,0 +1,8 @@
+import pyautogui
+import time
+pyautogui.hotkey("win", "d")
+pyautogui.moveTo(380,750)
+pyautogui.click()
+time.sleep(1)
+pyautogui.write(u'home?', interval = 0.1)#, interval = 0.25
+pyautogui.press("enter")
