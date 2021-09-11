@@ -28,6 +28,7 @@ upgrade_dict = {'cooldown':[15,500,1],'cartridges':[5,500,1],'bonus':[1,500,1],'
 upgrade_list = ['cooldown','cartridges','bonus','punching','invulnerability','iridescent colors','speed','speed cartridges','speed boss cartridges']
 upgrade_list_Russian = [u'перезарядка',u'патроны',u'бонус',u'пробивание',u'неуязвимость',u'переливающиеся \n цвета',u'скорость',u'скорость \n пуль',u'стрельба \n вражеской \n пушки']
 upgrade = {}
+
 #неуязвимость
 class invulnerability:
     def __init__(self):
@@ -860,6 +861,7 @@ def draw():
     if mousePressed == True:
         if dict_int['start'] == False and mouseX > 0 and mouseX < 100 * kof and mouseY > 0 and mouseY < 60 * kof and dict_int['palette'] == False and dict_int['shop'] == False:
             dict_int['score'] += 10000000
+            
 #функция на проверку нажатия мышки
 def mousePressed():
     global start,palette
