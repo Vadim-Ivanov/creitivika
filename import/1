@@ -1,0 +1,5 @@
+import pyautogui
+import time
+pyautogui.hotkey("win", "d")
+pyautogui.moveTo(850,450)
+pyautogui.doubleClick()
