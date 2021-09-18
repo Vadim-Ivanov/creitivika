@@ -1,0 +1,5 @@
+import pyautogui
+import time
+x = input("имя ")
+y = input("отчество ")
+pyautogui.alert(text=x + " " + y, title="Имя Отчество",button = 'OK')
