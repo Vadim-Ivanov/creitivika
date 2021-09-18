@@ -1,0 +1,10 @@
+#pyautogui.alert(text=x + " " + y, title="Имя Отчество",button = 'OK')
+#import keyboard
+import pyautogui
+import time
+x = input("число от 1 до 10 ")
+pyautogui.hotkey("win", "d")
+pyautogui.moveTo(400,800)
+pyautogui.click()
+time.sleep(0.1)
+pyautogui.hotkey("ctrl", x)
