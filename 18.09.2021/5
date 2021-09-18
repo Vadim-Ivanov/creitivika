@@ -1,0 +1,11 @@
+#pyautogui.alert(text=x + " " + y, title="Имя Отчество",button = 'OK')
+#import keyboard
+import pyperclip
+import pyautogui
+import time
+p = 5.0
+r = p / 100
+s = float(input("займ "))
+n = float(input("кол-во лет "))
+m = (s*r*(1+r)*n)/(12*((1+r)*n-1))
+print(m)
