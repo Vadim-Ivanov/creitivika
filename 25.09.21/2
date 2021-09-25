@@ -1,0 +1,26 @@
+import pyautogui
+import time
+x = input("команда: ")
+if x == "поиск":
+    p = input("запрос: ")
+    pyautogui.hotkey("win","d")
+    pyautogui.moveTo(500,900)
+    pyautogui.click()
+    pyautogui.moveTo(1120,20)
+    pyautogui.click()
+    time.sleep(1)
+    pyautogui.write(p)
+    pyautogui.keyDown("Enter")
+if x == "выход":
+    pyautogui.hotkey("alt","f4")
+    pyautogui.moveTo(650,450)
+    pyautogui.click()
+if x == "текст":
+    t = input("текст: ")
+    pyautogui.hotkey("win","r")
+    pyautogui.write("notepad")
+    pyautogui.keyDown("Enter")
+    time.sleep(1)
+    pyautogui.write(t)
+else:
+    print("неизвестная команда")
