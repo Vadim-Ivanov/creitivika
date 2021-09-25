@@ -1,0 +1,14 @@
+import pyautogui
+import time
+x = input("логин: ")
+y = input("пароль: ")
+l = "vadim"
+p = "pass"
+if x == l and y == p:
+    print("логин и пароль верные")
+elif x == l and y != p:
+    print("неверный пароль")
+elif x != l and y == p:
+    print("неверный логин")
+elif x!= l and y != p:
+    print("неверный логин и пароль")
