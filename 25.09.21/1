@@ -1,0 +1,10 @@
+import pyautogui
+import time
+x = int(input("первое число "))
+y = int(input("второе число "))
+if x < y:
+    print(x)
+elif x == y:
+    print("числа одинаковые")
+elif x > y:
+    print(y)
