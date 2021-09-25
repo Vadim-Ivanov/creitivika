@@ -1,0 +1,8 @@
+import pyautogui
+import time
+x = int(input("число: "))
+if x > 0:
+    if x < 1000:
+        print(x)
+    elif x >= 1000:
+        print(int(x - (x / 100 * 30)))
