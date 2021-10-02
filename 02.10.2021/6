@@ -1,0 +1,5 @@
+import random
+f = open("file.txt","w")
+text = input("Введите текст ")
+f.write(text)
+f.close()
