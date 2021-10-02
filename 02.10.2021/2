@@ -1,0 +1,8 @@
+import random
+bonus = 0
+inp = 0
+while (bonus < 1000):
+    inp = int(input("Введите стоимость покупки: "))
+    bonus += (inp - (inp % 10)) / 10
+    print(bonus) 
+print("Бонусы накоплены, время тратить!")
