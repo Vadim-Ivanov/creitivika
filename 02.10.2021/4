@@ -1,0 +1,8 @@
+import time
+t = 10
+while(t > -1):
+    time.sleep(1)
+    print(t)
+    t -= 1
+for i in range(100):
+    print("БУМ!")
