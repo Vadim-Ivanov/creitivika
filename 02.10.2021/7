@@ -1,0 +1,10 @@
+import pyautogui
+import time
+f = open("file.txt","w")
+for i in range(500):
+    x, y = pyautogui.position()
+    kord = str(x) + "     " + str(y)
+    print(kord)
+    kord = str(x) + "     " + str(y) + "\n"
+    f.write(kord)
+f.close()
