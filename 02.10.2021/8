@@ -1,0 +1,16 @@
+import pyautogui
+import time
+f = open("file.txt","w")
+x_list = []
+y_list = []
+for i in range(1000):
+    x, y = pyautogui.position()
+    x_list.append(x)
+    y_list.append(y)
+    time.sleep(0.01)
+    print(str(x) + "     " + str(y))
+print("stop!")
+time.sleep(5)
+for i in range(len(x_list)):
+    pyautogui.moveTo(x_list[i],y_list[i]) 
+
