@@ -1,0 +1,16 @@
+import random
+x = 0
+res = int(input("Введите число: "))
+operator = ""
+while (operator != "="):
+    operator = input("Введите оператор: ")
+    x = int(input("Введите число: "))
+    if operator == "/":
+        res /= x
+    if operator == "*":
+        res *= x
+    if operator == "-":
+        res -= x
+    if operator == "+":
+        res += x
+    print(res)
