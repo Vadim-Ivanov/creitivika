@@ -1,1 +1,12 @@
-
+import pyautogui as py
+#while True:
+    #x,y = py.position()
+    #print(str(x) + " " + str(y))
+n = int(input("сколько создать вкладок? "))
+py.moveTo(172,758)
+py.click()
+py.hotkey("ctrl","n")
+py.moveTo(172,758)
+if n > 0:
+    for i in range(n - 1):
+        py.hotkey("ctrl","t")
