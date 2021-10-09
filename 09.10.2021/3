@@ -1,0 +1,13 @@
+import pyautogui as py
+import time
+n = int(input("введите число файлов "))
+py.click(120,750)
+for i in range(n):
+    py.click(1000,300,1,0,'right')
+    py.moveRel(20, 243)
+    py.click()
+    py.moveRel(-60, 120)
+    py.click()
+    py.write(str(i+1))
+    py.press("enter")
+    time.sleep(0.3)
