@@ -1,0 +1,42 @@
+import random
+import codecs
+#count=0
+#with open ('1.txt','rb') as f:
+#    for line in f:
+#        count+=1
+#print(count)
+a = ""
+t = ""
+otgadano = []
+n = ""
+otg = 0
+o = ""
+otg_now = False
+#"yourFile", "r", "utf-8" 
+f = codecs.open("1.txt","r","utf-8")
+for i in range(random.randint(0,25669)):
+    a = f.readline()
+for i in range(len(a)):
+    otgadano.append("_")
+f.close()
+while otg != len(a):
+    o = ""
+    for i in range(len(a)):
+        if a[i] == n:
+            otgadano[i] = a[i]
+    for i in range(len(otgadano)):
+        o += otgadano[i]
+    print(o)
+    n = ""
+    while len(n) != 1:
+        n = input("введите букву ")
+        for i in range(len(a)):
+            if n == a[i]:
+                otg_now = True
+        if otg_now == True:
+            otg+=1
+            print("отгадал")
+        else:
+            print("не отгадал")
+        otg_now = False
+#for i in range(n):
