@@ -36,4 +36,4 @@ for i in score:
     sr += i
 sr /= len(score)
 print("Поздравляем вы прошли тест!")
-print("Ваша оценка: " + str(sr))
+print("Ваша оценка: " + str(round(sr)) + " из 5")
