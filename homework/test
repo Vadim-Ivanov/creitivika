@@ -1,0 +1,39 @@
+import random
+primers = ["x^3-6x^2+11x-6","x^2 + 2x + 1 = 0","e^in(123)"]
+phrases = ["решите уравнение","решите уравнение","решите пример",]
+answers = [["1,2,3","5.5,-1,1.5","-5,-6,-7","0"],["162","-1","1","11/17"],["123","6","0","321"]]
+an = []
+correct_answers = ["1,2,3","-1","123"]
+letters = ["a","b","c","d"]
+r = random.randint(0,len(answers[0])-1)
+ans = ""
+pop = 2
+score = [5,5,5]
+sr = 0
+for i in range(len(primers)):
+    print(str(i+1) + ". " + phrases[i] + ": " + primers[i])
+    rand = []
+    an = answers[i]
+    while pop > 0:
+        ans = ""
+        for j in range(len(answers[i])):
+            rand.append(an.pop(random.randint(0,len(an)-1)))
+            print(letters[j] + ". " + rand[j])
+        while ans != "a" and ans != "b" and ans != "c" and ans != "d":
+            ans = input("Введите вариант ответа: ")
+        if rand[letters.index(ans,0,len(letters))] == correct_answers[i]:
+            print("верно")
+            pop = 2
+            break
+        else:
+            print("неверно")
+            score[i] -= 2
+            pop -= 1
+        if pop < 1:
+            pop = 2
+            break
+for i in score:
+    sr += i
+sr /= len(score)
+print("Поздравляем вы прошли тест!")
+print("Ваша оценка: " + str(sr))
