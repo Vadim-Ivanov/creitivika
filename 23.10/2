@@ -1,0 +1,36 @@
+import keyboard
+import random
+import time
+def band():
+    time.sleep(0.4)
+    raz = 0
+    s = 0
+    while s <= 0:
+        s = float(input("Какой уровень сложности: "))
+        s = round(s)
+        raz = s
+    time.sleep(0.4)
+    key = ""
+    while key != " ":
+        letters = []
+        lett = ""
+        if s >= 2:
+            raz = 2
+        for i in range(3 + round(s / 2)):
+            letters.append(random.randint(1,3))
+            lett += str(letters[len(letters) - 1]) + " "
+        print(lett)
+        for i in range(int(50 / raz)):
+            if keyboard.is_pressed(" ") == True:
+                key = " "
+                for i in range(len(letters) - 1):
+                    if letters[i] == letters[i+1]:
+                        print("победа")
+                        break
+                    else:
+                        print("проиграл")
+                        break
+                break
+            time.sleep(0.005)
+band()
+keyboard.add_hotkey("enter", lambda: band())
