@@ -1,0 +1,45 @@
+a = ["добавить","удалить","показать элемент по номеру","показать весь список","выйти"]
+delo = []
+prod = ""
+d = ""
+list_ = False
+err = "Ошибка"
+print("Привет")
+print("Я чат-бот")
+print("Я могу исполнять команды:")
+for i in a:
+    print(i)
+
+while True:
+    o = input("Введите команду ")
+    if o == a[0]:
+        d = input("Введите что добавить ")
+        delo.append(d)
+    if o == a[1]:
+        d = input("Введите что удалить ")
+        list_ = False
+        if len(delo) > 0:
+            for i in delo:
+                if d == i:
+                    list_ = True
+            c = input("Удалить все " + d + " ? ")
+            if list_ == False:
+                print(err)
+            elif list_ == True and c == "да":
+                for i in range(delo.count(d)):
+                    delo.remove(d)
+            elif list_ == True and c == "нет":
+                delo.remove(d)
+    if o == a[2]:
+        d = input("Введите номер ")
+        if len(delo) - 1 >= int(d):
+            print(delo[d+1])
+        else:
+            print(err)
+    if o == a[3]:
+        l = ""
+        for i in delo:
+            l += i + " "
+        print(l)
+    if o == a[4]:
+        break
