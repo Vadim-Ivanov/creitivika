@@ -1,4 +1,4 @@
-a = ["добавить","удалить","показать элемент по номеру","показать весь список","выйти"]
+a = ["добавить","удалить","показать элемент по номеру","показать весь список","выйти","изменить по номеру","изменить по элементу"]
 delo = []
 prod = ""
 d = ""
@@ -15,7 +15,7 @@ while True:
     if o == a[0]:
         d = input("Введите что добавить ")
         delo.append(d)
-    if o == a[1]:
+    elif o == a[1]:
         d = input("Введите что удалить ")
         list_ = False
         if len(delo) > 0:
@@ -30,16 +30,36 @@ while True:
                     delo.remove(d)
             elif list_ == True and c == "нет":
                 delo.remove(d)
-    if o == a[2]:
+    elif o == a[2]:
         d = input("Введите номер ")
         if len(delo) - 1 >= int(d):
             print(delo[d+1])
         else:
             print(err)
-    if o == a[3]:
+    elif o == a[3]:
         l = ""
         for i in delo:
             l += i + " "
         print(l)
-    if o == a[4]:
+    elif o == a[4]:
         break
+    elif o == a[5]:
+        d = int(input("Какой элемент изменить "))
+        n = input("На что изменить ")
+        if len(delo)-1 >= int(d):
+            delo[d+1] = n
+    elif o == a[6]:
+        d = int(input("Какой элемент изменить "))
+        n = input("На что изменить ")
+        all_ = input("Всё именить? ")
+        if all_ == "нет":
+            if len(delo)-1 >= int(d):
+                for i in delo:
+                    if i == d:
+                        delo[d+1] = n
+                    break
+        elif all_ == "да":
+            if len(delo)-1 >= int(d):
+                for i in delo:
+                    if i == d:
+                        delo[d+1] = n
