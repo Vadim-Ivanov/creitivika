@@ -1,6 +1,5 @@
 import random
 #import pyautogui
-import keyboard
 def p():
     for i in my_pole_vr:
         for j in i:
@@ -11,16 +10,16 @@ def p():
         for j in i:
             print(j,end=" ")
         print()
-def prov():
-    if pole[y-2][x-2] == "*" and pole[y-2][x-1] == "*" and pole[y-2][x] == "*":
-        if pole[y-1][x-2] == "*" and pole[y-1][x-1] == "*" and pole[y-1][x] == "*":
-            if pole[y][x-2] == "*" and pole[y][x-1] == "*" and pole[y][x] == "*":
-                pole[y-1][x-1] = "#"
+def prov(x,y,n,d,px,py):
+    if pole[y-1][x-1] == "*" and pole[y-1][x] == "*" and pole[y-1][x+1] == "*":
+        if pole[y][x-1] == "*" and pole[y][x] == "*" and pole[y][x+1] == "*":
+            if pole[y+1][x-1] == "*" and pole[y+1][x] == "*" and pole[y+1][x+1] == "*":
+                for i in range(d):
+                    pole[y][x] = "#"
                 print("============================================================================================================")
                 return True
-    else:
-        print("ошибка")
-        return False
+    print("ошибка")
+    return False
 boat = ["однопалубные","двухпалубные","трёхпалубные","четырёхпалубный"]
 pole = [["*","*","*","*","*","*","*","*","*","*"],
          ["*","*","*","*","*","*","*","*","*","*"],
@@ -73,7 +72,7 @@ p()
         #y = int(input("строка "))
         #pr = prov()
         #print(pr)
-    #sp()
+    #p()
     
 for i in range(3):
     pr = False
@@ -82,17 +81,17 @@ for i in range(3):
         print(boat[1])
         x = int(input("столбец "))
         y = int(input("строка "))
-        pr = prov()
+        pr = prov(x-1,y-1)
         n = input("направление ")
         if n == "left" and x-2 > 1:
-            x -= 1
+            pr2 = prov(x-2,y-1,n,2,x,y)
         elif n == "right" and x < 10:
-            x += 1
+            pr2 = prov(x,y-1,n,2,x,y)
         elif n == "up" and y-2 > 1:
-            y -= 1
+            pr2 = prov(x-1,y-2,n,2,x,y)
         elif n == "down" and y < 10:
-            y += 1
-        pr2 = prov()
+            pr2 = prov(x-1,y,n,2,x,y)
+        
     p()
 for i in range(2):
     pr = False
