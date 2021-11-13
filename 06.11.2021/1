@@ -1,5 +1,4 @@
 import random
-#import pyautogui
 def p():
     for i in my_pole_vr:
         for j in i:
@@ -10,43 +9,40 @@ def p():
         for j in i:
             print(j,end=" ")
         print()
-def prov(x,y,n,d,px,py):
-    if pole[y-1][x-1] != "#" and pole[y-1][x] != "#" and pole[y-1][x+1] != "#":
-        if pole[y][x-1] != "#" and pole[y][x] != "#" and pole[y][x+1] != "#":
-            if pole[y+1][x-1] != "#" and pole[y+1][x] != "#" and pole[y+1][x+1] != "#":
-                l_x = []
-                l_y = []
-                for i in range(d):
-                    if x > px:
-                        l_x.append(x-i)
-                        l_y.append(y)
-                    if x < px:
-                        l_x.append(x+i)
-                        l_y.append(y)
-                    if y > py:
-                        l_x.append(x)
-                        l_y.append(y-i)
-                    if y < py:
-                        l_x.append(x)
-                        l_y.append(y+i)
-                for i in range(len(l_x)):
-                    pole[l_y[i]][l_x[i]] = "#"
-                    #print("============================================================================================================")
-                return True
-    print("ошибка")
-    return False
-boat = ["однопалубные","двухпалубные","трёхпалубные","четырёхпалубный"]
-pole = [["0","0","0","0","0","0","0","0","0","0","0"],
-        ["0","*","*","*","*","*","*","*","*","*","*","0"],
-        ["0","*","*","*","*","*","*","*","*","*","*","0"],
-        ["0","*","*","*","*","*","*","*","*","*","*","0"],
-        ["0","*","*","*","*","*","*","*","*","*","*","0"],
-        ["0","*","*","*","*","*","*","*","*","*","*","0"],
-        ["0","*","*","*","*","*","*","*","*","*","*","0"],
-        ["0","*","*","*","*","*","*","*","*","*","*","0"],
-        ["0","*","*","*","*","*","*","*","*","*","*","0"],
-        ["0","*","*","*","*","*","*","*","*","*","*","0"],
-        ["0","0","0","0","0","0","0","0","0","0","0"]]
+        
+        
+        
+def add_ship(x0,y0,d,px,py):
+    for i in range(d):
+        x = x0 + i * px 
+        y = y0 + i * py
+        if x < 0 or x > 9 or y < 0 or y > 9:
+            print("Ошибка: выход за границы поля")
+            return False
+        for dy in range(-1,2):
+            for dx in range(-1,2):
+                if x + dx < 0 or x + dx > 9 or y + dy < 0 or y + dy > 9:
+                    continue
+                if pole[y + dy][x + dx] == "#":
+                    print("Ошибка: нельзя ставить рядом с другими кораблями")
+                    return False
+    for i in range(d):
+        x = x0 + i * px 
+        y = y0 + i * py
+        pole[y][x] = "#"
+    return True
+
+ship_type = ["однопалубные","двухпалубные","трёхпалубные","четырёхпалубный"]
+pole = [["*","*","*","*","*","*","*","*","*","*"],
+        ["*","*","*","*","*","*","*","*","*","*"],
+        ["*","*","*","*","*","*","*","*","*","*"],
+        ["*","*","*","*","*","*","*","*","*","*"],
+        ["*","*","*","*","*","*","*","*","*","*"],
+        ["*","*","*","*","*","*","*","*","*","*"],
+        ["*","*","*","*","*","*","*","*","*","*"],
+        ["*","*","*","*","*","*","*","*","*","*"],
+        ["*","*","*","*","*","*","*","*","*","*"],
+        ["*","*","*","*","*","*","*","*","*","*"],]
 my_pole_vr = [["*","*","*","*","*","*","*","*","*","*"],
               ["*","*","*","*","*","*","*","*","*","*"],
               ["*","*","*","*","*","*","*","*","*","*"],
@@ -80,65 +76,26 @@ my_pole = [["*","*","*","*","*","*","*","*","*","*"],
          ["*","*","*","*","*","*","*","*","*","*"],
          ["*","*","*","*","*","*","*","*","*","*"],]
 p()
-for i in range(4):
-    pr = False
-    while pr == False or pr == None:
-        print(boat[0])
-        x = int(input("столбец "))
-        y = int(input("строка "))
-        pr = prov(x-1,y-1,"none",1,x,y)
-    p()
-    
-for i in range(3):
-    pr = False
-    pr2 = False
-    while (pr == False or pr == None) and (pr2 == False or pr2 == None):
-        print(boat[1])
-        x = int(input("столбец "))
-        y = int(input("строка "))
-        n = input("направление ")
-        d = 2
-        if n == "left" and x-2 >= 1:
-            pr = prov(x-2,y-1,n,d,x,y-1)
-        elif n == "right" and x < 10-(d-1):
-            pr = prov(x-1,y-1,n,d,x,y-1)
-        elif n == "up" and y-2 >= 1:
-            pr = prov(x-1,y-2,n,d,x-1,y)
-        elif n == "down" and y < 10-(d-1):
-            pr = prov(x-1,y-1,n,d,x-1,y)
-        
-    p()
-for i in range(2):
-    pr = False
-    while pr == False or pr == None:
-        print(boat[2])
-        x = int(input("столбец "))
-        y = int(input("строка "))
-        n = input("направление ")
-        d = 3
-        if n == "left" and x-d >= 1:
-            pr = prov(x-d,y-1,n,d,x,y-1)
-        elif n == "right" and x < 10-(d-1):
-            pr = prov(x-(d-2),y-1,n,d,x,y-1)
-        elif n == "up" and y-d >= 1:
-            pr = prov(x-1,y-d,n,d,x-1,y)
-        elif n == "down" and y < 10-(d-1):
-            pr = prov(x-1,y-(d-2),n,d,x-1,y)
-    p()
-for i in range(1):
-    pr = False
-    while pr == False or pr == None:
-        print(boat[3])
-        x = int(input("столбец "))
-        y = int(input("строка "))
-        n = input("направление ")
-        d = 4
-        if n == "left" and x-d >= 1:
-            pr = prov(x-d,y-1,n,d,x,y-1)
-        elif n == "right" and x < 10-(d-1):
-            pr = prov(x-(d-3),y-1,n,d,x,y-1)
-        elif n == "up" and y-d >= 1:
-            pr = prov(x-1,y-d,n,d,x-1,y)
-        elif n == "down" and y < 10-(d-1):
-            pr = prov(x-1,y-(d-3),n,d,x-1,y)
-    p()
+
+for d in range(1,5):
+    for i in range(5-d):
+        pr = False
+        while pr != True:
+            if pr == None:
+                print("None")
+            print(ship_type[d-1])
+            x = int(input("столбец "))
+            y = int(input("строка "))
+            if d == 1:
+                pr = add_ship(x-1,y-1,1,0,0)
+            else:
+                n = input("направление ")
+                if n == "left":
+                    pr = add_ship(x-1,y-1,d,-1,0)
+                elif n == "right":
+                    pr = add_ship(x-1,y-1,d,1,0)
+                elif n == "up":
+                    pr = add_ship(x-1,y-1,d,0,-1)
+                elif n == "down":
+                    pr = add_ship(x-1,y-1,d,0,1)
+        p()
