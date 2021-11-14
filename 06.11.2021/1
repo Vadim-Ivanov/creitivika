@@ -1,4 +1,9 @@
 import random
+
+vopros = ""
+sopernik = 1
+I = 1
+
 def p():
     for i in my_pole_vr:
         for j in i:
@@ -32,17 +37,38 @@ def add_ship(x0,y0,d,px,py):
         pole[y][x] = "#"
     return True
 
+def popal(x_snaryad,y_snaryad,storona,storona_sopernika):
+    if x_snaryad < 0 or x_snaryad > 9 or y < 0 or y > 9:
+        print("Ошибка: выход за границы поля")
+        return False 
+    if storona[y_snaryad][x_snaryad] == "#":
+        storona[y_snaryad][x_snaryad] = "x"
+        storona_sopernika[y_snaryad][x_snaryad] = "x"
+        print("попал")
+        return True
+    elif storona[y_snaryad][x_snaryad] == "*":
+        storona[y_snaryad][x_snaryad] = "0"
+        storona_sopernika[y_snaryad][x_snaryad] = "0"
+        print("промазал")
+        return "m"
+    else:
+        print("Ошибка: повторное попадание в клетку")
+        return False 
+        
+    
+
 ship_type = ["однопалубные","двухпалубные","трёхпалубные","четырёхпалубный"]
-pole = [["*","*","*","*","*","*","*","*","*","*"],
-        ["*","*","*","*","*","*","*","*","*","*"],
-        ["*","*","*","*","*","*","*","*","*","*"],
-        ["*","*","*","*","*","*","*","*","*","*"],
-        ["*","*","*","*","*","*","*","*","*","*"],
-        ["*","*","*","*","*","*","*","*","*","*"],
-        ["*","*","*","*","*","*","*","*","*","*"],
-        ["*","*","*","*","*","*","*","*","*","*"],
-        ["*","*","*","*","*","*","*","*","*","*"],
-        ["*","*","*","*","*","*","*","*","*","*"],]
+pole = [["*","*","*","*","*","*","*","#","#","*"],
+           ["*","#","#","#","*","#","*","*","*","*"],
+           ["*","*","*","*","*","#","*","*","*","*"],
+           ["*","*","*","*","*","*","*","*","*","#"],
+           ["#","#","#","*","*","*","#","#","*","*"],
+           ["*","*","*","*","#","*","*","*","*","*"],
+           ["*","*","*","*","#","*","#","*","*","*"],
+           ["*","*","*","*","#","*","*","*","*","*"],
+           ["#","*","*","*","#","*","*","*","*","#"],
+           ["*","*","*","*","*","*","*","*","*","*"],]
+
 my_pole_vr = [["*","*","*","*","*","*","*","*","*","*"],
               ["*","*","*","*","*","*","*","*","*","*"],
               ["*","*","*","*","*","*","*","*","*","*"],
@@ -77,25 +103,49 @@ my_pole = [["*","*","*","*","*","*","*","*","*","*"],
          ["*","*","*","*","*","*","*","*","*","*"],]
 p()
 
-for d in range(1,5):
-    for i in range(5-d):
-        pr = False
-        while pr != True:
-            if pr == None:
-                print("None")
-            print(ship_type[d-1])
-            x = int(input("столбец "))
-            y = int(input("строка "))
-            if d == 1:
-                pr = add_ship(x-1,y-1,1,0,0)
-            else:
-                n = input("направление ")
-                if n == "left":
-                    pr = add_ship(x-1,y-1,d,-1,0)
-                elif n == "right":
-                    pr = add_ship(x-1,y-1,d,1,0)
-                elif n == "up":
-                    pr = add_ship(x-1,y-1,d,0,-1)
-                elif n == "down":
-                    pr = add_ship(x-1,y-1,d,0,1)
+# for d in range(1,5):
+#     for i in range(5-d):
+#         pr = False
+#         while pr != True:
+#             if pr == None:
+#                 print("None")
+#             print(ship_type[d-1])
+#             x = int(input("столбец "))
+#             y = int(input("строка "))
+#             if d == 1:
+#                 pr = add_ship(x-1,y-1,1,0,0)
+#             else:
+#                 n = input("направление ")
+#                 if n == "left":
+#                     pr = add_ship(x-1,y-1,d,-1,0)
+#                 elif n == "right":
+#                     pr = add_ship(x-1,y-1,d,1,0)
+#                 elif n == "up":
+#                     pr = add_ship(x-1,y-1,d,0,-1)
+#                 elif n == "down":
+#                     pr = add_ship(x-1,y-1,d,0,1)
+#         p()
+
+while vopros != "старт":
+    vopros = input("чтобы начать введите 'старт': ")
+
+while I == sopernik:
+#     sopernik = random.randint(0,7)
+#     I = random.randint(0,7)
+    sopernik = 0
+    I = 5
+while True:
+    if I > sopernik:
+        print("вы начинаете")
         p()
+        pop = 0
+        while pop != "m":
+            x = int(input("столбец куда стрелять "))
+            y = int(input("строка куда стрелять "))
+            pop = popal(x-1,y-1,pole_vr,my_pole_vr)
+    elif I < sopernik:
+        print("соперник начинает")
+
+    
+
+
