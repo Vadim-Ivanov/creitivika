@@ -4,6 +4,7 @@ vopros = ""
 sopernik = 1
 I = 1
 
+          
 def p():
     for i in my_pole_vr:
         for j in i:
@@ -14,6 +15,7 @@ def p():
         for j in i:
             print(j,end=" ")
         print()
+
         
         
         
@@ -38,7 +40,7 @@ def add_ship(x0,y0,d,px,py):
     return True
 
 def popal(x_snaryad,y_snaryad,storona,storona_sopernika):
-    if x_snaryad < 0 or x_snaryad > 9 or y < 0 or y > 9:
+    if x_snaryad < 0 or x_snaryad > 9 or y_snaryad < 0 or y_snaryad > 9:
         print("Ошибка: выход за границы поля")
         return False 
     if storona[y_snaryad][x_snaryad] == "#":
@@ -55,9 +57,27 @@ def popal(x_snaryad,y_snaryad,storona,storona_sopernika):
         print("Ошибка: повторное попадание в клетку")
         return False 
         
-    
-
+def pob(listing):
+    pobed = 0
+    for i in range(10):
+        for j in range(10):
+            if listing[i][j] == "#":
+                pobed += 1
+    if pobed > 0:
+        return False
+    elif pobed <= 0:
+        return True
 ship_type = ["однопалубные","двухпалубные","трёхпалубные","четырёхпалубный"]
+# pole = [["*","*","*","*","*","*","*","*","*","*"],
+#            ["*","*","*","*","*","*","*","*","*","*"],
+#            ["*","*","*","*","*","*","*","*","*","*"],
+#            ["*","*","*","*","*","*","*","*","*","*"],
+#            ["*","*","*","*","*","*","*","*","*","*"],
+#            ["*","*","*","*","*","*","*","*","*","*"],
+#            ["*","*","*","*","*","*","*","*","*","*"],
+#            ["*","*","*","*","*","*","*","*","*","*"],
+#            ["*","*","*","*","*","*","*","*","*","*"],
+#            ["*","*","*","*","*","*","*","*","*","*"],]
 pole = [["*","*","*","*","*","*","*","#","#","*"],
            ["*","#","#","#","*","#","*","*","*","*"],
            ["*","*","*","*","*","#","*","*","*","*"],
@@ -90,6 +110,16 @@ pole_vr = [["*","*","*","*","*","*","*","#","#","*"],
            ["*","*","*","*","#","*","*","*","*","*"],
            ["#","*","*","*","#","*","*","*","*","#"],
            ["*","*","*","*","*","*","*","*","*","*"],]
+# pole_vr = [["*","*","*","*","*","*","*","*","*","*"],
+#            ["*","*","*","*","*","*","*","*","*","*"],
+#            ["*","*","*","*","*","*","*","*","*","*"],
+#            ["*","*","*","*","*","*","*","*","*","*"],
+#            ["*","*","*","*","*","*","*","*","*","*"],
+#            ["*","*","*","*","*","*","*","*","*","*"],
+#            ["*","*","*","*","*","*","*","*","*","*"],
+#            ["*","*","*","*","*","*","*","*","*","*"],
+#            ["*","*","*","*","*","*","*","*","*","*"],
+#            ["*","*","*","*","*","*","*","*","*","*"],]
 
 my_pole = [["*","*","*","*","*","*","*","*","*","*"],
          ["*","*","*","*","*","*","*","*","*","*"],
@@ -103,49 +133,90 @@ my_pole = [["*","*","*","*","*","*","*","*","*","*"],
          ["*","*","*","*","*","*","*","*","*","*"],]
 p()
 
-# for d in range(1,5):
-#     for i in range(5-d):
-#         pr = False
-#         while pr != True:
-#             if pr == None:
-#                 print("None")
-#             print(ship_type[d-1])
-#             x = int(input("столбец "))
-#             y = int(input("строка "))
-#             if d == 1:
-#                 pr = add_ship(x-1,y-1,1,0,0)
-#             else:
-#                 n = input("направление ")
-#                 if n == "left":
-#                     pr = add_ship(x-1,y-1,d,-1,0)
-#                 elif n == "right":
-#                     pr = add_ship(x-1,y-1,d,1,0)
-#                 elif n == "up":
-#                     pr = add_ship(x-1,y-1,d,0,-1)
-#                 elif n == "down":
-#                     pr = add_ship(x-1,y-1,d,0,1)
-#         p()
+for d in range(1,5):
+    for i in range(5-d):
+        pr = False
+        while pr != True:
+            if pr == None:
+                print("None")
+            print(ship_type[d-1])
+            x = int(input("столбец "))
+            y = int(input("строка "))
+            if d == 1:
+                pr = add_ship(x-1,y-1,1,0,0)
+            else:
+                n = input("направление ")
+                if n == "left":
+                    pr = add_ship(x-1,y-1,d,-1,0)
+                elif n == "right":
+                    pr = add_ship(x-1,y-1,d,1,0)
+                elif n == "up":
+                    pr = add_ship(x-1,y-1,d,0,-1)
+                elif n == "down":
+                    pr = add_ship(x-1,y-1,d,0,1)
+        p()
+
 
 while vopros != "старт":
     vopros = input("чтобы начать введите 'старт': ")
 
 while I == sopernik:
-#     sopernik = random.randint(0,7)
-#     I = random.randint(0,7)
-    sopernik = 0
-    I = 5
-while True:
+    sopernik = random.randint(0,7)
+    I = random.randint(0,7)
+#     sopernik = 0
+#     I = 5
+while sopernik != I:
     if I > sopernik:
         print("вы начинаете")
-        p()
         pop = 0
         while pop != "m":
+            p()
             x = int(input("столбец куда стрелять "))
             y = int(input("строка куда стрелять "))
             pop = popal(x-1,y-1,pole_vr,my_pole_vr)
+            if pob(pole_vr) == True:
+                print("победа")
+                I = sopernik
+                pop = "m"
+            elif pob(pole) == True:
+                print("проиграл")
+                I = sopernik
+                pop = "m"
+        if I != sopernik:
+            sopernik = 1
+            I = 0
+        
     elif I < sopernik:
         print("соперник начинает")
+        pop = 0
+        while pop != "m":
+            p()
+            err = True
+            while err == True:
+                x_vr = random.randint(0,9)
+                y_vr = random.randint(0,9)
+                if pole[x_vr][y_vr] == "*" or pole[x_vr][y_vr] == "#":
+                    err = False
+                else:
+                    err = True
+                if err == False:
+                    pop = popal(x_vr,y_vr,pole,my_pole)
+                    break
+                if pob(pole_vr) == True:
+                    print("победа")
+                    I = sopernik
+                    err = False
+                    pop = "m"
+                elif pob(pole) == True:
+                    print("проиграл")
+                    I = sopernik
+                    err = False
+                    pop = "m"
+        if I != sopernik:
+            sopernik = 0
+            I = 1
+    else:
+        break
 
     
-
 
