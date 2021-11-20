@@ -4,22 +4,33 @@ vopros = ""
 sopernik = 1
 I = 1
 
+var = 0
+napr = 0
+
 def popadenie():
-    x_pr = 0
-    y_pr = 0
+    var_x = [1,-1,0,0,2,-2,0,0]
+    var_y = [0,0,1,-1,0,0,2,-2]
+    pop = ""
+    err = True
     while pop != "m":
         while err == True:
-            x_vr = random.randint(0,9)
-            y_vr = random.randint(0,9)
-            if pole[x_vr][y_vr] == "*" or pole[x_vr][y_vr] == "#":
+            if pop == True:
+                x_pr += var_x[var]
+                y_pr += var_y[var]
+            else:
+                x_pr = random.randint(0,9)
+                y_pr = random.randint(0,9)
+                
+            #x_vr = random.randint(0,9)
+            #y_vr = random.randint(0,9)
+            if pole[x_pr][y_pr] == "*" or pole[x_pr][y_pr] == "#":
                 err = False
             else:
                 err = True
             if err == False:
-                pop = popal(x_vr,y_vr,pole,my_pole)
-        if pop == True:
-            
+                pop = popal(x_pr,y_pr,pole,my_pole)
         
+            
         
 def rass(spis):
     napr = ["up","down","right","left"]
@@ -199,8 +210,6 @@ while vopros != "старт":
 while I == sopernik:
     sopernik = random.randint(0,7)
     I = random.randint(0,7)
-#     sopernik = 0
-#     I = 5
 while sopernik != I:
     if I > sopernik:
         print("вы начинаете")
