@@ -4,31 +4,62 @@ vopros = ""
 sopernik = 1
 I = 1
 
-var = 0
+var = False
 napr = 0
+x_glob = 0
+y_glob = 0
 
-def popadenie():
-    var_x = [1,-1,0,0,2,-2,0,0]
-    var_y = [0,0,1,-1,0,0,2,-2]
-    pop = ""
-    err = True
-    while pop != "m":
-        while err == True:
-            if pop == True:
-                x_pr += var_x[var]
-                y_pr += var_y[var]
-            else:
-                x_pr = random.randint(0,9)
-                y_pr = random.randint(0,9)
-                
-            #x_vr = random.randint(0,9)
-            #y_vr = random.randint(0,9)
-            if pole[x_pr][y_pr] == "*" or pole[x_pr][y_pr] == "#":
-                err = False
-            else:
-                err = True
-            if err == False:
-                pop = popal(x_pr,y_pr,pole,my_pole)
+def taktika(px,py):
+    global napr, x_glob, y_glob
+    if napr == 0:
+        x_glob = px
+        y_glob = py
+        pot = potop(pole,x_glob,y_glob)
+    if pot == True:
+        x_glob = px
+        y_glob = py
+        napr = 0
+    pot = potop(pole,px,py)
+    if pot == False:
+        napr_x = [1,-1,0,0]
+        napr_y = [0,0,1,-1]
+        if var == False:
+            x = px + napr_x[napr]
+            y = py + napr_y[napr]
+        else:
+            x = x_glob + napr_x[napr]
+            y = y_glob + napr_y[napr]
+        pop = popal(x,y,pole,my_pole)
+        if pop == "m":
+            napr += 1
+        if napr > 3:
+            napr = 0
+    
+    
+    
+    
+# def popadanie():
+#     var_x = [1,-1,0,0,2,-2,0,0]
+#     var_y = [0,0,1,-1,0,0,2,-2]
+#     pop = ""
+#     err = True
+#     while pop != "m":
+#         while err == True:
+#             if pop == True:
+#                 x_pr += var_x[var]
+#                 y_pr += var_y[var]
+#             else:
+#                 x_pr = random.randint(0,9)
+#                 y_pr = random.randint(0,9)
+#                 
+#             #x_vr = random.randint(0,9)
+#             #y_vr = random.randint(0,9)
+#             if pole[x_pr][y_pr] == "*" or pole[x_pr][y_pr] == "#":
+#                 err = False
+#             else:
+#                 err = True
+#             if err == False:
+#                 pop = popal(x_pr,y_pr,pole,my_pole)
         
             
         
@@ -106,6 +137,20 @@ def add_ship(x0,y0,d,px,py,spis):
         spis[y][x] = "#"
     return True
 
+def potop(spis,x_s,y_s):
+    napr_x = [1,-1,0,0]
+    napr_y = [0,0,1,-1]
+    for i in range(4):
+        x = x_s + napr_x[i]
+        y = y_s + napr_y[i]
+        while x >= 0 and x <= 9 and y >= 0 and y <= 9 and spis[y][x] != "*" and spis[y][x] != "0":
+            if spis[y][x] == "#":
+                return False
+            x = x_s + napr_x[i]
+            y = y_s + napr_y[i]
+    return True
+        
+        
 def popal(x_snaryad,y_snaryad,storona,storona_sopernika):
     if x_snaryad < 0 or x_snaryad > 9 or y_snaryad < 0 or y_snaryad > 9:
         print("Ошибка: выход за границы поля")
@@ -113,7 +158,12 @@ def popal(x_snaryad,y_snaryad,storona,storona_sopernika):
     if storona[y_snaryad][x_snaryad] == "#":
         storona[y_snaryad][x_snaryad] = "x"
         storona_sopernika[y_snaryad][x_snaryad] = "x"
-        print("попал")
+        if potop(storona,x_snaryad,y_snaryad) == True:
+            print("потопил")
+        else:
+            print("попал")
+            if storona == pole:
+                taktika(False,x_snaryad,y_snaryad)
         return True
     elif storona[y_snaryad][x_snaryad] == "*":
         storona[y_snaryad][x_snaryad] = "0"
@@ -145,6 +195,16 @@ ship_type = ["однопалубные","двухпалубные","трёхпа
 #            ["*","*","*","*","*","*","*","*","*","*"],
 #            ["*","*","*","*","*","*","*","*","*","*"],
 #            ["*","*","*","*","*","*","*","*","*","*"],]
+# pole = [["#","*","#","*","#","*","#","*","#","*"],
+#         ["*","#","*","#","*","#","*","#","*","#"],
+#         ["#","*","#","*","#","*","#","*","#","*"],
+#         ["*","#","*","#","*","#","*","#","*","#"],
+#         ["#","*","#","*","#","*","#","*","#","*"],
+#         ["*","#","*","#","*","#","*","#","*","#"],
+#         ["#","*","#","*","#","*","#","*","#","*"],
+#         ["*","#","*","#","*","#","*","#","*","#"],
+#         ["#","*","#","*","#","*","#","*","#","*"],
+#         ["*","#","*","#","*","#","*","#","*","#"],]
 pole = [["*","*","*","*","*","*","*","#","#","*"],
            ["*","#","#","#","*","#","*","*","*","*"],
            ["*","*","*","*","*","#","*","*","*","*"],
@@ -235,9 +295,13 @@ while sopernik != I:
         print("соперник начинает")
         pop = 0
         while pop != "m":
-            p()
             err = True
-            popadenie()
+#             print(x)
+#             print(y)
+            x = random.randint(0,9)
+            y = random.randint(0,9)
+            pop = popal(x,y,pole,my_pole)
+#             popadanie()
             if pob(pole_vr) == True:
                 print("победа")
                 I = sopernik
@@ -248,9 +312,11 @@ while sopernik != I:
                 I = sopernik
                 err = False
                 pop = "m"
+            p()
         if I != sopernik:
             sopernik = 0
             I = 1
     else:
         break
+
 
