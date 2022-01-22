@@ -1,0 +1,23 @@
+import mylib
+# массивы и функция vyvodPolya в файле mylib.py           
+mylib.mins()
+mylib.rasst()
+mylib.vyvodPolya(mylib.vidimost_polya)
+game = True
+while game:
+    stroka = 0
+    stolb = 0
+    while stroka < 1 or stroka > 12:
+        stroka = int(input("Введите номер строки "))
+    while stolb < 1 or stolb > 12:
+        stolb = int(input("Введите номер столбца "))
+    # передадим не номера строки и столбца, а индексы
+    if mylib.vidimost_polya[stroka-1][stolb-1]== "O" and mylib.flag() == False:
+        print("вы попали на мину")
+        break
+    mylib.check(stroka-1,stolb-1)
+    mylib.vyvodPolya(mylib.vidimost_polya)
+    if mylib.isOpen():
+        game = False
+if game ==False:
+    print("Всё поле открыто!")
