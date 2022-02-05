@@ -1,0 +1,32 @@
+def out(train):
+    n = ""
+    while n != 1 and n != 2:
+        n = input("сортировка по номеру(1) или по пункту назначения(2)? ")
+    if n == "по номеру":
+        train = sort(train)
+        return train
+    elif n == "по пункту назначения":
+        train = sort(train)
+        return train
+        
+class Train:
+    def __init__(self,n,p,t):
+        self.punkt = p
+        self.number = n
+        self.time = t
+
+        
+tr1 = Train(4, "station1", 11.23)
+tr2 = Train(5, "station2", 7.01)
+tr3 = Train(1, "station3", 4.57)
+tr4 = Train(3, "station4", 13.57)
+tr5 = Train(2, "station5", 18.59)
+train =[]
+train.append([tr1.number,tr1.punkt,tr1.time])# = [tr1.out,tr2.out,tr3.out,tr4.out,tr5.out]
+train.append([tr2.number,tr2.punkt,tr2.time])
+train.append([tr3.number,tr3.punkt,tr3.time])
+train.append([tr4.number,tr4.punkt,tr4.time])
+train.append([tr5.number,tr5.punkt,tr5.time])
+train.sort()
+print(train)
+print(out(train))
