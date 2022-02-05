@@ -1,0 +1,34 @@
+
+class Student:
+    def __init__(self,s,init,g,u):
+        self.surname=s
+        self.initials=init
+        self.group=g
+        self.usp=u
+        
+    def output(self):
+        if not 1 in self.usp and not 2 in self.usp and not 3 in self.usp:
+            print(self.surname," из группы ",self.group," отличник")
+            
+            
+study1 = Student("Иванов","В.М",6,[5,5,5,5,5])
+study2 = Student("Петров","Д.Д",3,[5,5,5,4,5])
+study3 = Student("Сидоров","К.Ч",1,[5,3,5,5,4])
+study4 = Student("Смирнов","Ц.И",8,[5,2,5,5,5])
+study5 = Student("Попов","Б.З",4,[5,4,5,1,5])
+study6 = Student("Попов","В.Ц",2,[4,4,4,4,5])
+study7 = Student("Попов","Р.Ш",5,[5,5,5,3,5])
+study8 = Student("Попов","Я.З",7,[5,4,5,2,5])
+study9 = Student("Попов","Ц.Н",9,[5,4,4,4,5])
+study10 = Student("Попов","И.В",10,[5,5,5,4,5])
+
+study1.output()
+study2.output()
+study3.output()
+study4.output()
+study5.output()
+study6.output()
+study7.output()
+study8.output()
+study9.output()
+study10.output()
