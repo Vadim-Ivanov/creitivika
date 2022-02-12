@@ -1,0 +1,14 @@
+import random
+def sor():
+    for i in range(len(l)):
+        for i in range(len(l)-1):
+            if l[i] > l[i+1]:
+                l[i+1] += l[i]
+                l[i] = l[i+1]-l[i]
+                l[i+1] -= l[i] 
+            
+l = []
+for i in range(random.randint(5,1000)):
+    l.append(random.randint(0,12345))
+sor()
+print(l)
