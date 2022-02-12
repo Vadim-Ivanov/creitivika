@@ -1,0 +1,14 @@
+f1 = open("file1.txt",'r')
+a=f1.readline()
+a += " sdfg"
+f1.close()
+
+f2 = open("file2.txt",'r')
+b=f2.readline()
+f2.close()
+
+f3 = open("file3.txt",'w')
+c = a + " " + b
+print(c)
+f3.write(c)
+f3.close()
