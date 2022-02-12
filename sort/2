@@ -1,0 +1,11 @@
+f = open("file.txt",'w')
+a = 0
+while a == 0:
+    n = input("введите строку: ")
+    n += "\n"
+    if n == "stop\n":
+        a = 1
+        break
+    f.write(n)
+    
+f.close()
