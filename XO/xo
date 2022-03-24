@@ -6,11 +6,21 @@ tk = Tk()
 tk.title("крестики нолики")
 tk.geometry("390x490")
 
-game = False
+game = True
 players = ["x","o"]
 walking = players[0]
 pole = [" "," "," "," "," "," "," "," "," "]
 
+def num(n,b):
+    global walking, game
+    if pole[n] == " " and game == True:
+        pole[n] = walking
+        b.configure(text=walking)
+        end()
+        if players.index(walking) == 1:
+            walking = players[0]
+        else:
+            walking = players[1]
 def conf():
     b1.configure(text=pole[0])
     b2.configure(text=pole[1])
@@ -28,112 +38,45 @@ def clear():
     conf()
     
 def new_game():
+    global game, walking
     conf()
     clear()
     lbl.place(x=0,y=-50)
+    walking = players[0]
     game = True
     
 def end():
+    global game
     if (pole[0] == "x" and pole[1] == "x" and pole[2] == "x") or (pole[3] == "x" and pole[4] == "x" and pole[5] == "x") or (pole[6] == "x" and pole[7] == "x" and pole[8] == "x") or (pole[0] == "x" and pole[3] == "x" and pole[6] == "x") or (pole[1] == "x" and pole[4] == "x" and pole[7] == "x") or (pole[2] == "x" and pole[5] == "x" and pole[8] == "x") or (pole[0] == "x" and pole[4] == "x" and pole[8] == "x") or (pole[2] == "x" and pole[4] == "x" and pole[6] == "x"):
         lbl.configure(text="ИГРОК X ПОБЕДИЛ!",fg="green")
         lbl.place(x=35,y=197)
         clear()
+        game = False
     if (pole[0] == "o" and pole[1] == "o" and pole[2] == "o") or (pole[3] == "o" and pole[4] == "o" and pole[5] == "o") or (pole[6] == "o" and pole[7] == "o" and pole[8] == "o") or (pole[0] == "o" and pole[3] == "o" and pole[6] == "o") or (pole[1] == "o" and pole[4] == "o" and pole[7] == "o") or (pole[2] == "o" and pole[5] == "o" and pole[8] == "o") or (pole[0] == "o" and pole[4] == "o" and pole[8] == "o") or (pole[2] == "o" and pole[4] == "o" and pole[6] == "o"):
         lbl.configure(text="ИГРОК O ПОБЕДИЛ!",fg="green")
         lbl.place(x=35,y=197)
         clear()
+        game = False
         
 def one():
-    global walking
-    if pole[0] == " " and game:
-        pole[0] = walking
-        b1.configure(text=walking)
-        end()
-        if players.index(walking) == 1:
-            walking = players[0]
-        else:
-            walking = players[1]
-    
+    num(0,b1)
 def two():
-    global walking
-    if pole[1] == " " and game:
-        pole[1] = walking
-        b2.configure(text=walking)
-        end()
-        if players.index(walking) == 1:
-            walking = players[0]
-        else:
-            walking = players[1]
+    num(1,b2)
 def three():
-    global walking
-    if pole[2] == " " and game:
-        pole[2] = walking
-        b3.configure(text=walking)
-        end()
-        if players.index(walking) == 1:
-            walking = players[0]
-        else:
-            walking = players[1]
+    num(2,b3)
 def four():
-    global walking
-    if pole[3] == " " and game:
-        pole[3] = walking
-        b4.configure(text=walking)
-        end()
-        if players.index(walking) == 1:
-            walking = players[0]
-        else:
-            walking = players[1]
+    num(3,b4)
 def five():
-    global walking
-    if pole[4] == " " and game:
-        pole[4] = walking
-        b5.configure(text=walking)
-        end()
-        if players.index(walking) == 1:
-            walking = players[0]
-        else:
-            walking = players[1]
+    num(4,b5)
 def six():
-    global walking
-    if pole[5] == " " and game:
-        pole[5] = walking
-        b6.configure(text=walking)
-        end()
-        if players.index(walking) == 1:
-            walking = players[0]
-        else:
-            walking = players[1]
+    num(5,b6)
 def seven():
-    global walking
-    if pole[6] == " " and game:
-        pole[6] = walking
-        b7.configure(text=walking)
-        end()
-        if players.index(walking) == 1:
-            walking = players[0]
-        else:
-            walking = players[1]
+    num(6,b7)
 def eight():
-    global walking
-    if pole[7] == " " and game:
-        pole[7] = walking
-        b8.configure(text=walking)
-        end()
-        if players.index(walking) == 1:
-            walking = players[0]
-        else:
-            walking = players[1]
+    num(7,b8)
 def nine():
-    global walking
-    if pole[8] == " " and game:
-        pole[8] = walking
-        b9.configure(text=walking)
-        end()
-        if players.index(walking) == 1:
-            walking = players[0]
-        else:
-            walking = players[1]
+    num(8,b9)
+    
 
 b_game = Button(tk,text="Новая игра",width=38,height=3,font=("Arial",10,"bold"),relief=FLAT,command=new_game)
 b_game.place(x=-2,y=428)# 
@@ -159,8 +102,6 @@ b9.place(x=260,y=288)
 
 lbl = Label(tk,text="ВЫ ПОБЕДИЛИ!",font=("Arial",20,"bold"))
 lbl.place(x=0,y=-50)
-
-game = True
 
 conf()
 end()
