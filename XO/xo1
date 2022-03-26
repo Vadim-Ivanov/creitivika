@@ -49,14 +49,17 @@ def end():
         lbl.configure(text="ИГРОК X ПОБЕДИЛ!",fg="green")
         lbl.place(x=35,y=505)
         game = False
+        return
     if (pole[0] == "o" and pole[1] == "o" and pole[2] == "o") or (pole[3] == "o" and pole[4] == "o" and pole[5] == "o") or (pole[6] == "o" and pole[7] == "o" and pole[8] == "o") or (pole[0] == "o" and pole[3] == "o" and pole[6] == "o") or (pole[1] == "o" and pole[4] == "o" and pole[7] == "o") or (pole[2] == "o" and pole[5] == "o" and pole[8] == "o") or (pole[0] == "o" and pole[4] == "o" and pole[8] == "o") or (pole[2] == "o" and pole[4] == "o" and pole[6] == "o"):
         lbl.configure(text="ИГРОК O ПОБЕДИЛ!",fg="green")
         lbl.place(x=35,y=505)
         game = False
+        return
     if not " " in pole:
         lbl.configure(text="НИЧЬЯ",fg="green")
         lbl.place(x=145,y=505)
         game = False
+        return
 
         
         
