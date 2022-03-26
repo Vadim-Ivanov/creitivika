@@ -1,7 +1,4 @@
 from tkinter import *
-import random
-import time
-#import bot
 tk = Tk()
 tk.title("крестики нолики")
 tk.geometry("390x560")
