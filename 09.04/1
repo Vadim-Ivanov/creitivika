@@ -1,0 +1,112 @@
+from tkinter import *
+import random
+
+fill = ["#FF0000","#FFFF00","#00FF00","#00FFFF","#0000FF","#4B0082","#FF4500"]
+
+root = Tk()
+root.title("Тетрис")
+
+c = Canvas(root, width=600, height=700, background="#FFFFFF")
+c.pack()
+
+pole = []
+
+for i in range(35):
+    pole.append([])
+    for j in range(30):
+        pole[i].append("")
+        
+
+class Tetris(object):
+    def __init__(self):
+        global pole
+        self.forms = [[["*","*","*"],
+                       ["*","*","*"],
+                       ["#","#","*"],
+                       ["#","#","*"]],
+                      
+                      [["*","#","*"],
+                       ["*","#","*"],
+                       ["*","#","*"],
+                       ["*","#","*"]],
+                      
+                      [["*","*","*"],
+                       ["*","*","*"],
+                       ["*","#","#"],
+                       ["#","#","*"]],
+                      
+                      [["*","*","*"],
+                       ["*","*","*"],
+                       ["#","#","*"],
+                       ["*","#","#"]],
+                      
+                      [["*","*","*"],
+                       ["*","#","*"],
+                       ["*","#","*"],
+                       ["*","#","#"]],
+                      
+                      [["*","*","*"],
+                       ["*","#","*"],
+                       ["*","#","*"],
+                       ["#","#","*"]],
+                      
+                      [["*","*","*"],
+                       ["*","*","*"],
+                       ["#","#","#"],
+                       ["*","#","*"]]]
+        self.form = random.randint(0,len(self.forms)-1)
+        self.fill = fill[self.form]
+        self.x = 270
+        self.y = -40
+        self.tetris = []
+        for i in range(4):
+            for j in range(3):
+                if self.forms[self.form][i][j]=="#":
+                    pole[j+14][i] = "#"
+        print(pole)
+        #self.a = a   
+        #c.create_rectangle(60, 80, 140, 190, fill = fill[random.randint(0,len(fill)-1)])
+    def new(self):
+        global pole
+        self.tetris = []
+        for i in range(4):
+            for j in range(3):
+                if self.forms[self.form][i][j] == "#":
+                    self.tetris.append(c.create_rectangle(self.x+j*20, self.y+20+i*20, self.x+20+j*20, self.y+i*20, fill = self.fill))
+    def move_rec(self):
+        if self.y <= 600:
+            print(self.y)
+            for i in range(len(self.tetris)):
+                c.move(self.tetris[i],0,20)
+            self.y += 20
+    #def move_down():
+        if self.y >= 600:
+            t.new()
+    def move_down(self):
+        self.y += 20
+
+def main():
+    t.move_rec()
+    root.after(800, main)
+
+t = Tetris()
+c.focus_set()
+t.new()
+
+def movement_handler(event):
+    if event.keysym == "a":
+        pass
+    elif event.keysym == "s":
+        t.move_down()
+    elif event.keysym == "d":
+        pass
+    elif event.keysym == "w":
+        pass
+    if event.keysym == "space":
+        main()
+c.bind("<KeyPress>", movement_handler)
+
+
+
+#c.create_rectangle(100, 150, 150, 100, fill = fill[random.randint(0,len(fill)-1)])
+root.mainloop()
