@@ -1,0 +1,94 @@
+from tkinter import *
+import random
+
+m = False
+root = Tk()
+root.title("Тетрис")
+
+c = Canvas(root, width=600, height=700, background="#FFFFFF")
+c.pack()
+
+pole = []
+forms = [[["*","*","*"],
+        ["*","*","*"],
+        ["#","#","*"],
+        ["#","#","*"]],
+                      
+        [["*","#","*"],
+        ["*","#","*"],
+        ["*","#","*"],
+        ["*","#","*"]],
+      
+       [["*","*","*"],
+        ["*","*","*"],
+        ["*","#","#"],
+        ["#","#","*"]],
+      
+       [["*","*","*"],
+        ["*","*","*"],
+        ["#","#","*"],
+        ["*","#","#"]],
+      
+       [["*","*","*"],
+        ["*","#","*"],
+        ["*","#","*"],
+        ["*","#","#"]],
+      
+       [["*","*","*"],
+        ["*","#","*"],
+        ["*","#","*"],
+        ["#","#","*"]],
+      
+       [["*","*","*"],
+        ["*","*","*"],
+        ["#","#","#"],
+        ["*","#","*"]]]
+form = random.randint(0,len(forms)-1)
+for i in range(35):
+    pole.append([])
+    for j in range(30):
+        pole[i].append("*")
+pole[0][0] = "#"
+def pol():
+    for i in range(len(pole)):
+        for j in range(len(pole[i])):
+            if pole[i][j] == "#":
+                c.create_rectangle(j*20, i*20, j*20+20, i*20+20, fill = "black")
+def p():
+    for i in pole:
+        print()
+        for j in i:
+            print(j,end="")
+def new():
+    form = random.randint(0,len(forms)-1)
+    for i in range(4):
+        for j in range(3):
+            if forms[form][i][j]=="#":
+                pole[i][j+14] = "#"
+    #p()
+def move_pole(self):
+    global pole
+    for i in range(len(pole)):
+        for j in range(len(pole[i])):
+            if pole[len(pole)-i-2][len(pole[j])-j-2] == "#":
+                pole[len(pole)-i-2][len(pole[j])-j-2] = ""
+                pole[len(pole)-i-1][len(pole[j])-j-1] = "#"
+    pol()
+       
+def main():
+    move_pole()
+    root.after(800, main)
+def movement_handler(event):
+    global m
+    if event.keysym == "s":
+        move_pole()
+        print(0)
+    elif event.keysym == "space":# and m == False
+        print(123456789)
+        new()
+        main()
+        m = True
+   
+c.bind("<KeyPress>", movement_handler)
+root.mainloop()
+
