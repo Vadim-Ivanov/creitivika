@@ -1,0 +1,52 @@
+from tkinter import *
+
+size = 800
+
+size_constant = 400
+rel = size / size_constant
+
+tk = Tk()
+
+c = Canvas(tk, width=size, height=size, bg='#d0f7f7')
+c.pack()
+
+#хвост
+c.create_arc(-12*rel, 64*rel, 360*rel, 436*rel, start=-38, extent=65, fill='#d0dfdf',
+             style=CHORD,width=3,outline='#d0dfdf')
+c.create_polygon(305*rel, 230*rel, 340*rel, 166*rel, 321*rel, 363*rel,
+                 fill='#d0dfdf', outline='#d0dfdf', width=3)
+
+#контур хвоста
+c.create_line(304*rel,230*rel,340*rel,166*rel,fill="black",width=3)
+c.create_arc(-12*rel, 64*rel, 360*rel, 436*rel, start=-38, extent=65,style=ARC,width=3)
+
+#туловище
+c.create_polygon(80*rel, 365*rel, 120*rel, 35*rel, 170*rel, 120*rel,
+                 230*rel, 120*rel, 280*rel, 35*rel, 320*rel, 365*rel,
+                 fill='#b0bfbf', outline='black', width=3)
+
+#поле с текстом
+c.create_rectangle(140*rel, 270*rel, 260*rel, 310*rel,fill='#ecf2aa',outline='black',width=3)
+
+#текст
+c.create_text(200*rel, 290*rel, text="МУР-МЯУ", font=("Verdana",int(15*rel)))
+
+for i in range(2):
+    #глаз
+    c.create_oval((60*i+140)*rel, 140*rel, (60*i+200)*rel, 200*rel, width=3, fill="white")
+    #зрачок
+    c.create_oval((50*i+175)*rel, 165*rel, (30*i+185)*rel, 175*rel, fill='black', outline='white')
+    #лапы
+    c.create_oval((60*i+140)*rel, 345*rel, (60*i+200)*rel, 375*rel, fill='#b0bfbf', outline='black',width=3)
+    #линии
+    c.create_line((220*i+90)*rel, 278*rel, (120*i+140)*rel, 290*rel, fill='black',width=3)
+
+#нос
+c.create_oval(195*rel, 180*rel, 205*rel, 190*rel, fill='#f7b2e8', outline='black',width=3)
+
+#рот
+c.create_line(200*rel,190*rel,200*rel,230*rel,fill='black',width=3)
+c.create_arc(180*rel,215*rel,220*rel,230*rel, start=180, extent=180,
+             style=ARC, outline='black', width=3)
+
+tk.mainloop()
