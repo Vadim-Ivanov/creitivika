@@ -1,0 +1,40 @@
+from tkinter import *
+import random
+import pyautogui
+
+root = Tk()
+root.title("Тетрис")
+
+c = Canvas(root, width=520, height=720, background="#FFFFFF")
+c.pack()
+
+pole = []
+for i in range(18):
+    pole.append([])
+    for j in range(13):
+        pole[i].append("")
+forms = [[["*","*","*"],["*","*","*"],["#","#","*"],["#","#","*"]],     
+         [["*","#","*"],["*","#","*"],["*","#","*"],["*","#","*"]],
+         [["*","*","*"],["*","*","*"],["*","#","#"],["#","#","*"]],
+         [["*","*","*"],["*","*","*"],["#","#","*"],["*","#","#"]],
+         [["*","*","*"],["*","#","*"],["*","#","*"],["*","#","#"]],
+         [["*","*","*"],["*","#","*"],["*","#","*"],["#","#","*"]],
+         [["*","*","*"],["*","*","*"],["#","#","#"],["*","#","*"]]]
+def start():
+    start == True
+def new():
+    form = forms[random.randint(0,6)]
+    for i in range(4):
+        for j in range(3):
+            pole[i][j+5] = form[i][j]
+def main():
+    for i in range(len(pole)):
+        for j in range(len(pole[i])):
+            if pole[i][j] == "#":
+                c.create_rectangle(j*40,i*40,j*40+40,i*40+40,fill="black")
+    root.after(100, main)
+#c.bind_all("<enter>",start)
+new()
+#print(pole)
+main()
+root.mainloop()
