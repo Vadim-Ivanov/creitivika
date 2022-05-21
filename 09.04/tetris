@@ -1,0 +1,91 @@
+from tkinter import *
+import random
+
+root = Tk()
+root.title("Тетрис")
+
+c = Canvas(root, width=600, height=700, background="white")
+c.pack()
+
+pole = []
+data = []
+
+for i in range(35):
+    pole.append([])
+    data.append([])
+    for j in range(30):
+        pole[i].append(" ")
+        data[i].append(" ")
+        
+def draw():
+    for i in range(len(data)):
+        for j in range(len(data[i])):
+            c.delete(data[i][j])
+            data[i][j] = " "
+    for i in range(len(data)):
+        for j in range(len(data[i])):
+            if pole[len(pole)-i-1][j] == "#" or pole[len(pole)-i-1][j] == "*":
+                data[len(pole)-i-2][j] = " "
+                data[len(pole)-i-1][j] = c.create_rectangle(j*20,(len(pole)-i-1)*20,j*20+20,(len(pole)-i-1)*20+20,
+                                                fill="black",outline="black")
+                #print(data)
+forms = [[["","",""],["","",""],["#","#",""],["#","#",""]],     
+         [["","#",""],["","#",""],["","#",""],["","#",""]],
+         [["","",""],["","",""],["","#","#"],["#","#",""]],
+         [["","",""],["","",""],["#","#",""],["","#","#"]],
+         [["","",""],["","#",""],["","#",""],["","#","#"]],
+         [["","",""],["","#",""],["","#",""],["#","#",""]],
+         [["","",""],["","",""],["#","#","#"],["","#",""]]]
+def new():
+    form = forms[random.randint(0,6)]
+    for i in range(4):
+        for j in range(3):
+            pole[i][j+14] = form[i][j]
+stop = False
+def main():
+    global stop
+    print(pole)
+    for i in range(len(pole)):
+        for j in range(len(pole[i])):
+            if pole[len(pole)-i-1][j] == "#" and stop == False:
+                if len(pole)-i < 35:
+                    if pole[len(pole)-i][j] != "*":
+                        if pole[len(pole)-i-1][j] == "#":
+                            pole[len(pole)-i][j] = "#"
+                            pole[len(pole)-i-1][j] = " "
+                    else:
+                        stop = True
+                else:
+                    stop = True
+    if stop == True:
+        for i in range(len(pole)):
+            for j in range(len(pole[i])):
+                if pole[i][j] == "#":
+                    pole[i][j] = "*"
+        stop = False
+        new()
+    draw()
+    root.after(200, main)
+def left(event):
+    wall = False
+    for i in range(len(pole)):
+        for j in range(len(pole[i])): 
+            if pole[i][j] == "#" and i > 0:
+#                 if pole[i][j-1] == "*":
+#                     wall = True
+                pole[i][j] = " "
+                pole[i][j-1] = "#"
+    draw()
+def right(event):
+    for i in range(len(pole)):
+        for j in range(len(pole[i])):
+            if pole[i][len(pole[i])-j-1] == "#" and i < 29:
+                pole[i][len(pole[i])-j-1] = " "
+                pole[i][len(pole[i])-j] = "#"
+    draw()
+c.bind_all("a",left)
+c.bind_all("d",right)
+new()
+draw()
+main()
+root.mainloop()
