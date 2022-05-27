@@ -1,91 +1,301 @@
 from tkinter import *
 import random
+import pyautogui
+
+m = False
+
+fill = ["#FF0000","#FFFF00","#00FF00","#00FFFF","#0000FF","#4B0082","#FF4500"]
 
 root = Tk()
 root.title("Тетрис")
 
-c = Canvas(root, width=600, height=700, background="white")
+pole_height = 700
+pole_width = 600
+
+h = 35
+w = int(pole_width/(pole_height/h))
+
+height = pole_height / h
+width = pole_width / w
+
+c = Canvas(root, width=pole_width, height=pole_height, background="#aaf2f2")
 c.pack()
 
 pole = []
-data = []
-
-for i in range(35):
+rec = []
+# list_fill = []
+# int_fill = 0
+m = False
+for i in range(h):
     pole.append([])
-    data.append([])
-    for j in range(30):
+    rec.append([])
+    for j in range(w+1):
         pole[i].append(" ")
-        data[i].append(" ")
+        rec[i].append("")
         
-def draw():
-    for i in range(len(data)):
-        for j in range(len(data[i])):
-            c.delete(data[i][j])
-            data[i][j] = " "
-    for i in range(len(data)):
-        for j in range(len(data[i])):
-            if pole[len(pole)-i-1][j] == "#" or pole[len(pole)-i-1][j] == "*":
-                data[len(pole)-i-2][j] = " "
-                data[len(pole)-i-1][j] = c.create_rectangle(j*20,(len(pole)-i-1)*20,j*20+20,(len(pole)-i-1)*20+20,
-                                                fill="black",outline="black")
-                #print(data)
-forms = [[["","",""],["","",""],["#","#",""],["#","#",""]],     
-         [["","#",""],["","#",""],["","#",""],["","#",""]],
-         [["","",""],["","",""],["","#","#"],["#","#",""]],
-         [["","",""],["","",""],["#","#",""],["","#","#"]],
-         [["","",""],["","#",""],["","#",""],["","#","#"]],
-         [["","",""],["","#",""],["","#",""],["#","#",""]],
-         [["","",""],["","",""],["#","#","#"],["","#",""]]]
-def new():
-    form = forms[random.randint(0,6)]
-    for i in range(4):
-        for j in range(3):
-            pole[i][j+14] = form[i][j]
-stop = False
-def main():
-    global stop
-    print(pole)
-    for i in range(len(pole)):
-        for j in range(len(pole[i])):
-            if pole[len(pole)-i-1][j] == "#" and stop == False:
-                if len(pole)-i < 35:
-                    if pole[len(pole)-i][j] != "*":
-                        if pole[len(pole)-i-1][j] == "#":
-                            pole[len(pole)-i][j] = "#"
-                            pole[len(pole)-i-1][j] = " "
-                    else:
-                        stop = True
-                else:
-                    stop = True
-    if stop == True:
+
+class Tetris(object):
+    def __init__(self):
+        global pole,f
+        self.forms = [[[" "," "," "," "],
+                       [" "," "," "," "],
+                       [" ","#","#"," "],
+                       [" ","#","#"," "]],
+                      
+                      [[" ","#"," "," "],
+                       [" ","#"," "," "],
+                       [" ","#"," "," "],
+                       [" ","#"," "," "]],
+                      
+                      [[" "," "," "," "],
+                       [" "," "," "," "],
+                       [" ","#","#"," "],
+                       ["#","#"," "," "]],
+                      
+                      [[" "," "," "," "],
+                       [" "," "," "," "],
+                       ["#","#"," "," "],
+                       [" ","#","#"," "]],
+                      
+                      [[" "," "," "," "],
+                       [" ","#"," "," "],
+                       [" ","#"," "," "],
+                       [" ","#","#"," "]],
+                      
+                      [[" "," "," "," "],
+                       [" "," ","#"," "],
+                       [" "," ","#"," "],
+                       [" ","#","#"," "]],
+                      
+                      [[" "," "," "," "],
+                       [" "," "," "," "],
+                       ["#","#","#"," "],
+                       [" ","#"," "," "]]]
+        self.x = 13
+        self.y = 1
+        self.p = False
+        self.tetris = []
+        self.rot = 1
+        self.rot_data = []
+        self.m = 0
+        self.n = 0
+        self.rev_data = 0
+    def new(self):
+        global pole
+        self.form = random.randint(0,len(self.forms)-1)
+        self.fill = fill[self.form]
+        for i in range(4):
+            for j in range(4):
+                if self.forms[self.form][i][j]=="#":
+                    pole[i+1][j+int(w//2)-1] = "#"
+    def move_pole(self):
+        global pole,f
         for i in range(len(pole)):
             for j in range(len(pole[i])):
-                if pole[i][j] == "#":
-                    pole[i][j] = "*"
-        stop = False
-        new()
-    draw()
-    root.after(200, main)
-def left(event):
-    wall = False
-    for i in range(len(pole)):
-        for j in range(len(pole[i])): 
-            if pole[i][j] == "#" and i > 0:
-#                 if pole[i][j-1] == "*":
-#                     wall = True
-                pole[i][j] = " "
-                pole[i][j-1] = "#"
-    draw()
-def right(event):
+                if pole[len(pole)-i-1][len(pole[j])-j-1] == "#" and pole[len(pole)-i][len(pole[j])-j-1] != "*":
+                    pole[len(pole)-i-1][len(pole[j])-j-1] = " "
+                    pole[len(pole)-i][len(pole[j])-j-1] = "#"
+    def move_rec(self):
+        #print(self.stop)
+        global pole
+        self.stop = False
+        self.i = True
+        self.move = True
+        for i in range(len(pole)):
+            for j in range(len(pole[i])):
+                if len(pole) - 1 > i + 1:
+                    if pole[i][j] == "#" and pole[i+1][j] == "*":
+                        self.move = False
+        for i in range(len(pole[-1])):
+            if pole[-1][i] == "#":
+                self.stop = True
+        if self.stop == False and self.move == True:#self.y <= 600
+            tetr[-1].move_pole()
+            self.y += 1
+        for i in range(len(pole)):
+            for j in range(len(pole[i])):
+                if self.i == True:
+                    if pole[i-1][j] == "#" and pole[i][j] == "*":
+                        self.i = False
+                        for i in range(len(pole)):
+                                for j in range(len(pole[i])):
+                                    if pole[i][j] == "#":
+                                        pole[i][j] = "*"
+                        new()
+                    elif self.stop == True:#self.y == 600:
+                        self.i = False
+                        for i in range(len(pole)):
+                                for j in range(len(pole[i])):
+                                    if pole[i][j] == "#":
+                                        pole[i][j] = "*"
+                        new()
+                        
+    def pole_right(self):
+        for i in range(len(pole)):
+            for j in range(len(pole[i])):
+                if pole[-i-1][-j-1] == "#":
+                    pole[-i-1][-j-1] = " "
+                    pole[-i-1][-j] = "#"
+        self.x += 1
+    def pole_left(self):
+        for i in range(len(pole)):
+            for j in range(len(pole[i])):
+                if pole[i][j-1] == "#":
+                    pole[i][j-1] = " "
+                    pole[i][j-2] = "#"
+        self.x -= 1
+    def move_right(self):
+        self.right = True
+        for i in range(len(pole)):
+            for j in range(len(pole[i])):
+                if pole[i][-2] == "#":
+                    self.right = False
+                elif pole[i][j] == "#":
+                    if pole[i][j+1] == "*":
+                        self.right = False
+        if (self.form == 0 or self.form == 2 or self.form == 3 or self.form == 4 or self.form == 6):# and self.x <= 26
+            if self.right == True:
+                tetr[-1].pole_right()
+        if (self.form == 1 or self.form == 5):# and self.x <= 27
+            if self.right == True:
+                tetr[-1].pole_right()
+                
+    def move_left(self):
+        self.left = True
+        for i in range(len(pole)):
+            for j in range(len(pole[i])):
+                if pole[i][0] == "#":
+                    self.left = False
+                elif pole[i][j] == "#":
+                    if pole[i][j-1] == "*":
+                        self.left = False
+        if (self.form == 0 or self.form == 1 or self.form == 4):# and self.x >= 0
+            if self.left == True:
+                tetr[-1].pole_left()
+        if (self.form == 2 or self.form == 3 or self.form == 5 or self.form == 6):# and self.x >= 1
+            if self.left == True:
+                tetr[-1].pole_left()
+    def rotate(self):
+        if self.x >= 0 and self.x <= 26: 
+            if self.form != 0:
+                tetr[-1].pole_rotate(self.forms[self.form],self.rot)
+    def pole_rotate(self,data,times = 1):
+        self.rot_data = []
+        self.not_rotate = False
+        for t in range(times):
+            self.m = len(data)
+            self.n = len(data[0])
+            self.rev_data = data[ : : -1]
+            self.rot_data = [[self.rev_data[j][i] for j in range(self.m)] for i in range(self.n)]
+            data = self.rot_data
+            
+        for i in range(4):
+            for j in range(4):
+                if pole[self.y+i][self.x+j] == "*":
+                    self.not_rotate = True
+        if self.not_rotate == False:
+            for i in range(4):
+                for j in range(4):
+                    #print(str(i) + "  " + str(j))
+                    pole[self.y+i][self.x+j] = self.rot_data[i][j]
+            self.rot += 1
+            if self.rot > 4:
+                self.rot = 1
+        
+        
+def pol():
     for i in range(len(pole)):
         for j in range(len(pole[i])):
-            if pole[i][len(pole[i])-j-1] == "#" and i < 29:
-                pole[i][len(pole[i])-j-1] = " "
-                pole[i][len(pole[i])-j] = "#"
-    draw()
-c.bind_all("a",left)
-c.bind_all("d",right)
-new()
-draw()
-main()
+            c.delete(rec[i][j])
+            if pole[i][j] == "#":
+                rec[i][j] = c.create_rectangle(j*width,i*height,j*width+width,i*height+height,fill = tetr[-1].fill)#list_fill[int_fill]
+            if pole[i][j] == "*":
+                rec[i][j] = c.create_rectangle(j*width,i*height,j*width+width,i*height+height,fill = "gray")
+def new():
+    tetr.append(Tetris())
+    tetr[-1].new()
+score = 0
+
+def clean():
+    global score,lbl
+    stroke = 0
+    down_stroke = len(pole) - 1
+    for i in range(len(pole)):
+        if pole[-i].count("*") == len(pole[-1])-1:
+            down_stroke = -i
+            
+    if pole[down_stroke].count("*") == len(pole[down_stroke])-1:
+        stroke = 1
+    if pole[down_stroke-1].count("*") == len(pole[down_stroke-1])-1 and stroke == 1:
+        stroke = 2
+    if pole[down_stroke-2].count("*") == len(pole[down_stroke-2])-1 and stroke == 2:
+        stroke = 3
+    if pole[down_stroke-3].count("*") == len(pole[down_stroke-3])-1 and stroke == 3:
+        stroke = 4
+    if stroke > 0:
+        for i in range(stroke):
+            for j in range(len(pole[0])-1):
+                pole[down_stroke-i][j] = " "
+                
+        for i in range(stroke):
+            for j in range(len(pole[0])-1):
+                for x in range(len(pole)+down_stroke):
+                    if pole[-x-1+down_stroke][j] == "*":#x 0 - 
+                        pole[-x-1+down_stroke][j] = " "
+                        pole[-x+down_stroke][j] = "*"
+        if stroke == 1:
+            score += 100
+        elif stroke == 2:
+            score += 300
+        elif stroke == 3:
+            score += 700
+        elif stroke == 4:
+            score += 1500
+time = 450
+start = False
+def main():
+    global time
+    tetr[-1].move_rec()
+    pol()
+    clean()
+    time -= 0.2
+    if time < 150:
+        time = 150
+    lbl.configure(text = str(score))
+    root.after(round(time), main)
+
+lbl = Label(root,text=str(score),font=("Calibri", 20),bg = "#aaf2f2")
+lbl.place(x = 10,y = 10)
+
+tetr = []
+tetr.append(Tetris())
+tetr[-1].new()
+c.focus_set()
+pol()
+
+def movement_handler(event):
+    global m,time,start
+    if start == True:
+        if event.keysym == "a":
+            tetr[-1].move_left()
+            pol()
+        elif event.keysym == "u":
+            print(pole)
+        elif event.keysym == "s":
+            tetr[-1].move_rec()
+            pol()
+            time -= 0.2
+        elif event.keysym == "d":
+            tetr[-1].move_right()
+            pol()
+        elif event.keysym == "w":
+            tetr[-1].rotate()
+            pol()
+    if event.keysym == "space" and m == False:
+        main()
+        m = True
+        start = True
+c.bind("<KeyPress>", movement_handler)
+
 root.mainloop()
+
