@@ -32,7 +32,9 @@ for i in range(h):
     for j in range(w+1):
         pole[i].append(" ")
         rec[i].append("")
-        
+# for i in range(2):
+#     for j in range(len(pole[0])-1):
+#         pole[-i*2-1][j] = "*"
 
 class Tetris(object):
     def __init__(self):
@@ -223,19 +225,28 @@ def clean():
     for i in range(len(pole)):
         if pole[-i].count("*") == len(pole[-1])-1:
             down_stroke = -i
-            
+            break
+    #print(down_stroke)
     if pole[down_stroke].count("*") == len(pole[down_stroke])-1:
-        stroke = 1
-    if pole[down_stroke-1].count("*") == len(pole[down_stroke-1])-1 and stroke == 1:
-        stroke = 2
-    if pole[down_stroke-2].count("*") == len(pole[down_stroke-2])-1 and stroke == 2:
-        stroke = 3
-    if pole[down_stroke-3].count("*") == len(pole[down_stroke-3])-1 and stroke == 3:
-        stroke = 4
+        stroke += 1
+        for j in range(len(pole[0])-1):
+                pole[down_stroke][j] = " "
+    if pole[down_stroke-1].count("*") == len(pole[down_stroke-1])-1:
+        stroke += 1
+        for j in range(len(pole[0])-1):
+                pole[down_stroke-1][j] = " "
+    if pole[down_stroke-2].count("*") == len(pole[down_stroke-2])-1:
+        stroke += 1
+        for j in range(len(pole[0])-1):
+                pole[down_stroke-2][j] = " "
+    if pole[down_stroke-3].count("*") == len(pole[down_stroke-3])-1:
+        stroke += 1
+        for j in range(len(pole[0])-1):
+                pole[down_stroke-3][j] = " "
     if stroke > 0:
-        for i in range(stroke):
-            for j in range(len(pole[0])-1):
-                pole[down_stroke-i][j] = " "
+#         for i in range(stroke):
+#             for j in range(len(pole[0])-1):
+#                 pole[down_stroke-i][j] = " "
                 
         for i in range(stroke):
             for j in range(len(pole[0])-1):
@@ -243,6 +254,7 @@ def clean():
                     if pole[-x-1+down_stroke][j] == "*":#x 0 - 
                         pole[-x-1+down_stroke][j] = " "
                         pole[-x+down_stroke][j] = "*"
+        print(stroke)
         if stroke == 1:
             score += 100
         elif stroke == 2:
@@ -298,4 +310,5 @@ def movement_handler(event):
 c.bind("<KeyPress>", movement_handler)
 
 root.mainloop()
+
 
