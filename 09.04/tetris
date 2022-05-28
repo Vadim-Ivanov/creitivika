@@ -1,6 +1,5 @@
 from tkinter import *
 import random
-import pyautogui
 
 m = False
 
@@ -263,7 +262,7 @@ def clean():
             score += 700
         elif stroke == 4:
             score += 1500
-time = 450
+time = 600
 start = False
 def main():
     global time
@@ -271,12 +270,12 @@ def main():
     pol()
     clean()
     time -= 0.2
-    if time < 150:
-        time = 150
-    lbl.configure(text = str(score))
+    if time < 300:
+        time = 300
+    lbl.configure(text = "счёт: " + str(score))
     root.after(round(time), main)
 
-lbl = Label(root,text=str(score),font=("Calibri", 20),bg = "#aaf2f2")
+lbl = Label(root,text="счёт: " + str(score),font=("Calibri", 20))
 lbl.place(x = 10,y = 10)
 
 tetr = []
@@ -310,5 +309,3 @@ def movement_handler(event):
 c.bind("<KeyPress>", movement_handler)
 
 root.mainloop()
-
-
