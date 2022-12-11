@@ -1,0 +1,41 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class tank : MonoBehaviour
+{
+    //GameObject[] enemys = GameObject.FindGameObjectsWithTag("Enemy");
+    //int enemysCount = enemys.Length;
+    //public GameObject respawnPrefab;
+    //public GameObject[] respawns;
+    //GameObject[] gos;
+    //gos = GameObject.FindGameObjectsWithTag("Enemy");
+    void Start()
+    {
+        GameObject[] gameObjects;
+        gameObjects = GameObject.FindGameObjectsWithTag("enemy");
+
+        if (gameObjects.Length == 0)
+        {
+            Debug.Log("No game objects are tagged with 'Enemy'");
+        }
+        else{
+             Debug.Log(gameObjects.Length);
+        }
+        /*if (respawns == null)
+            respawns = GameObject.FindGameObjectsWithTag("enemy");
+            Debug.Log(respawns.Length);
+
+        foreach (GameObject respawn in respawns)
+        {
+            Instantiate(respawnPrefab, respawn.transform.position, respawn.transform.rotation);
+        }*/
+        //Debug.Log(respawns.Length);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //Debug.Log(enemysCount);
+    }
+}
