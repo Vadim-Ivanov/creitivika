@@ -1,0 +1,31 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Tilemaps;
+
+public class tilemap : MonoBehaviour
+{
+    public TileBase TileToSet;
+    private Tilemap map;
+    private Camera mainCamera;
+    // Start is called before the first frame update
+    void Start()
+    {
+        map = GetComponent<Tilemap>();
+        mainCamera = Camera.main;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0)){
+            //Vector3 ClickWorld = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 ClickWorld = new Vector3(3, 3, 0);
+            Vector3Int click = map.WorldToCell(ClickWorld);
+            //Vector3 click = new Vector3(3, 3, 0);
+            Debug.Log(mainCamera.ScreenToWorldPoint(Input.mousePosition));
+
+            map.SetTile(click, TileToSet);
+        }
+    }
+}
