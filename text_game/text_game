@@ -1,0 +1,96 @@
+#сколько табов в строке
+tab = 0
+#обрабатываемая строка
+stroke = 1
+#инвентарь
+inventory = {}
+#файл
+file = [line.replace("    ", "|") for line in open("text_for_game.py").read().split("\n")]
+#часть файла
+part_file = file
+#функция которая определяет хватает ли предметов в инвентаре для прохождения по этой ветви истории
+def inv_srav(stroke, inventory):
+    #в переменную s записываем то что нужно для этого пути 
+    s = stroke[stroke.find("(")+1:stroke.find(")")].split("; ")
+    s = [s[i].split(", ") for i in range(len(s))]
+    #если в строке есть условие по кол-ву предметов
+    if stroke[stroke.find("(")+1:stroke.find(")")] != "":
+        #если кол-во пересекающихся элементов в строке и в инвентаре равно длинне кол-ву нужных предметов 
+        if len(list(set(inventory.keys()) & set(i[0] for i in s))) == len(s):
+            #если хватает предметов для прохождения
+            if len([True for i, j in zip(range(len(s)), inventory.items()) if s[i][0] == j[0] and int(s[i][1]) <= int(j[1])]) == len(s):
+                #вернуть True
+                return True
+    #если условия нет
+    else:
+        #Вернуть True
+        return True
+    #Вернуть False
+    return False
+#функция для добавления новых предметов
+def inv_add(stroke):
+    #в переменную s записываем то что нужно добавить
+    s = stroke[stroke.rfind("(")+1:stroke.rfind(")")]
+    #если есть хотябы один элемент
+    if s != "":
+        #делаем из строки с предметами список
+        s = [s.split("; ")[i].split(", ") for i in range(len(s.split("; ")))]
+        #отображение выданных предметов
+        print(f"Вы получили новые предметы: {', '.join([i[0] + ': ' + i[1] for i in s])}")
+        #если такой предмет есть в инвентаре то увеличиваем кол-во
+        inventory.update([s[i][0], str(int(s[i][1]) + int(inventory.get(s[i][0])))] for i in range(len(s)) if inventory.get(s[i][0]) != None)
+        #если такого предмета в инвентаре нет то добавляем его
+        inventory.update(s[i] for i in range(len(s)) if inventory.get(s[i][0]) == None)
+#пока в файле вступление выводим всё в чат
+while stroke < len(file) and file[stroke].count("|") == tab and file[stroke].count("|") == tab:
+    #выводим строку из файла в чат
+    print(file[stroke][file[stroke].find(")")+1:file[stroke].rfind("(")])
+    #перезаписываем обрабатываемую часть файла
+    part_file = file[stroke+1:]
+    #добавляем предметы в инвентарь 
+    inv_add(file[stroke])
+    #переходим к новой строке
+    stroke += 1
+tab += 1
+#создаём список словарей в которых находится слово которое нужно отправить для продвижения дальше и номер этой строки в файле
+dic = {s[s.find('"')+1:s.rfind('"')]: i for i, s in enumerate(file) if s.count("|") == tab and i != 0 and s[s.find('"')+1:s.rfind('"')] != ""}# and len(file) != (i+1) and file[i+1].count("|")
+#список в котором хранятся пути куда мы не можем пойти
+ban = [""]
+#пока остались обрабатываенмые строки
+while part_file != []:
+    #переменная в которую мы будем вводить команды
+    inp = ""
+    #пока не ввели правильно
+    while not inp in list(dic.keys()) or inp in ban:
+        #если ввели инвентарь
+        if inp == "инвентарь":
+            #вывести инвентарь
+            print(inventory)
+        #иначе
+        else:
+            ban = []
+            #список вариантов
+            for i in range(len(list(dic.keys()))):
+                if inv_srav(file[dic.get(list(dic.keys())[i])], inventory):
+                    print(list(dic.keys())[i], end = "")
+                else:
+                    f = file[dic.get(list(dic.keys())[i])]
+                    print("\U0001F512" + list(dic.keys())[i] + f[f.find("("):f.find(")")+1], end = "")
+                    ban.append(list(dic.keys())[i])
+                if i != len(list(dic.keys())) - 1:
+                    print(", ", end = "")
+            print()
+        #попросить ввести заново
+        inp = input()
+    print(file[dic[inp]][file[dic[inp]].find(")")+1:file[dic[inp]].rfind("(")])
+    result = dic[inp]
+    for i, item in enumerate(file[dic[inp]+1:]):
+        if not item.startswith("|"*(file[dic[inp]].count("|")+1)):
+            result = i + dic[inp]
+            break
+        if i == len(file[dic[inp]+1:])-1:
+            result = len(file)-1
+            break
+    part_file = file[dic[inp]+1:result+1]
+    tab += 1
+    dic = {s[s.find('"')+1:s.rfind('"')]: i for i, s in enumerate(file[:result+1]) if s.count("|") == tab and i != 0 and s[s.find('"')+1:s.rfind('"')] != ""}
