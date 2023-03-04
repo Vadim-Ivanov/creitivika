@@ -10,3 +10,4 @@ def history():
     pass
 start()
 history()
+with open('text.txt', encoding = 'utf-8', mode = 'r') as my_file:
